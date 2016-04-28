@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="Kontni na&#x10d;rt"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <Events>
+    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="formFocusGained"/>
+  </Events>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="dodajKonto" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="osvezi" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="natisni" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Component id="jScrollPane1" pref="836" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="dodajKonto" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="natisni" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="osvezi" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="545" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JButton" name="dodajKonto">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Dodaj konto"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dodajKontoActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="Connection con = null;&#xa;        PreparedStatement pst = null;&#xa;        ResultSet rsDovoljenja = null;        &#xa;        &#xa;        String [] aryNastavitve;&#xa;        aryNastavitve=new String[3];&#xa;        int i=0;&#xa;        &#xa;&#x9;&#x9;try (BufferedReader br = new BufferedReader(new FileReader(&quot;properties.txt&quot;)))//preberi nastavive iz datoteke&#xa;&#x9;&#x9;{&#xa;&#xa;&#x9;&#x9;&#x9;String trenutnaVrstica;&#xa;&#xa;&#x9;&#x9;&#x9;while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo&#x9;&#x9;&#x9;&#x9;&#xa;                            aryNastavitve[i]=trenutnaVrstica;&#xa;                            i++;                            &#xa;&#x9;&#x9;&#x9;}&#xa;&#xa;&#x9;&#x9;} catch (IOException e) {&#xa;&#x9;&#x9;&#x9;e.printStackTrace();&#xa;&#x9;&#x9;}&#xa;                &#xa;                String dburl = aryNastavitve[0];//spremenjivke iz tabele&#xa;                String dbuser = aryNastavitve[1];&#xa;                String dbpassword = aryNastavitve[2];                &#xa;&#xa;                try {&#xa;            con = DriverManager.getConnection(dburl, dbuser, dbpassword);&#xa;            &#xa;            pst = con.prepareStatement(&quot;SELECT * FROM dovoljenja WHERE skupina=?&quot;);&#xa;            pst.setInt(1,Login.skupina);&#xa;            rsDovoljenja = pst.executeQuery();&#xa;&#xa;            if (rsDovoljenja.next()) {           &#xa;              dovoljenjaDodajKonto=rsDovoljenja.getInt(&quot;dodajKonto&quot;);&#xa;            }&#xa;            &#xa;        } catch (SQLException ex) {           &#xa;&#xa;        } &#xa;                &#xa;        finally {&#xa;            try {&#xa;                &#xa;                if (pst != null) {&#xa;                    pst.close();&#xa;                }&#xa;                if (con != null) {&#xa;                    con.close();&#xa;                }&#xa;&#xa;            } catch (SQLException ex) {&#xa;                &#xa;            }&#xa;            }&#xa;if (dovoljenjaDodajKonto==0)&#xa;                {&#xa;                  dodajKonto.setEnabled(false);&#xa;                }"/>
+      </AuxValues>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="jTable1">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="tm" type="code"/>
+            </Property>
+            <Property name="rowSelectionAllowed" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="true" type="code"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable1MouseClicked"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){&#xa;    public boolean isCellEditable(int rowIndex, int colIndex) {&#xa;        return false;   //Disallow the editing of any cell&#xa;    }&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="tm.setColumnCount(0);&#xa;&#xa;    // add specified columns to table&#xa;    for (i = 1; i &lt;= columnCount; i++ ) {&#xa;        tm.addColumn(rsmd.getColumnName(i));&#xa;    }   &#xa;&#xa;    // clear existing rows&#xa;    tm.setRowCount(0);&#xa;&#xa;    // add rows to table&#xa;    while (rs.next()) {&#xa;        parrent = rs.getString(&quot;konto&quot;);&#xa;        osnovna.test.setText(String.valueOf(parrent));&#xa;        String[] a = new String[columnCount];&#xa;        for(i = 0; i &lt; columnCount; i++) {&#xa;            a[i] = rs.getString(i+1);&#xa;        }&#xa;    tm.addRow(a);&#xa;        &#xa;                    pst2 = con.prepareStatement(&quot;SELECT konto, opis, debet, kredit, stm FROM kontniNacrt WHERE parrent=?&quot;);&#xa;                    pst2.setString(1, parrent);&#xa;                    rs2 = pst2.executeQuery();&#xa;                    while (rs2.next()) {&#xa;                    parrent = rs2.getString(&quot;konto&quot;);                   &#xa;                    String[] b = new String[columnCount];&#xa;                    for(int j = 0; j &lt; columnCount; j++) {&#xa;                        b[j] = rs2.getString(j+1);&#xa;                    }&#xa;                    tm.addRow(b);&#xa;&#xa;                        pst3 = con.prepareStatement(&quot;SELECT konto, opis, debet, kredit, stm FROM kontniNacrt WHERE parrent=?&quot;);&#xa;                        pst3.setString(1, parrent);&#xa;                        rs3 = pst3.executeQuery();&#xa;                        while (rs3.next()) {&#xa;                        parrent = rs3.getString(&quot;konto&quot;);                   &#xa;                        String[] c = new String[columnCount];&#xa;                        for(int k = 0; k &lt; columnCount; k++) {&#xa;                            c[k] = rs3.getString(k+1);&#xa;                        }&#xa;                        tm.addRow(c);&#xa;&#xa;                            pst4 = con.prepareStatement(&quot;SELECT konto, opis, debet, kredit, stm FROM kontniNacrt WHERE parrent=?&quot;);&#xa;                            pst4.setString(1, parrent);&#xa;                            rs4 = pst4.executeQuery();&#xa;                            while (rs4.next()) {&#xa;                            parrent = rs4.getString(&quot;konto&quot;);                   &#xa;                            String[] d = new String[columnCount];&#xa;                            for(int l = 0; l &lt; columnCount; l++) {&#xa;                                d[l] = rs4.getString(l+1);&#xa;                            }&#xa;                            tm.addRow(d);&#xa;&#xa;&#xa;&#xa;                    }&#xa;&#xa;                    }&#xa;&#xa;                    }                    &#xa;&#xa;    }&#xa;    tm.fireTableDataChanged();&#xa;&#xa;    // Close ResultSet and Statement&#xa;    rs.close();&#xa;    pst.close();&#xa;&#xa;} catch (Exception ex) { &#xa;    //JOptionPane.showMessageDialog(this, ex, ex.getMessage(), WIDTH, null);&#xa;}*/"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="populateKN();&#xa;&#xa;/*Connection con = null;&#xa;PreparedStatement pst = null;&#xa;ResultSet rs = null;&#xa;ResultSet rs3 = null;&#xa;ResultSet rs2 = null;&#xa;ResultSet rs4 = null;&#xa;PreparedStatement pst2 = null;&#xa;PreparedStatement pst3 = null;&#xa;PreparedStatement pst4 = null;&#xa;String parrent=&quot;a&quot;;&#xa;&#xa;        String [] aryNastavitve;&#xa;        aryNastavitve=new String[3];&#xa;        int i=0;&#xa;        &#xa;&#x9;&#x9;try (BufferedReader br = new BufferedReader(new FileReader(&quot;properties.txt&quot;)))//preberi nastavive iz datoteke&#xa;&#x9;&#x9;{&#xa;&#xa;&#x9;&#x9;&#x9;String trenutnaVrstica;&#xa;&#xa;&#x9;&#x9;&#x9;while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo&#x9;&#x9;&#x9;&#x9;&#xa;                            aryNastavitve[i]=trenutnaVrstica;&#xa;                            i++;                            &#xa;&#x9;&#x9;&#x9;}&#xa;&#xa;&#x9;&#x9;} catch (IOException e) {&#xa;&#x9;&#x9;&#x9;e.printStackTrace();&#xa;&#x9;&#x9;}&#xa;                &#xa;                String dburl = aryNastavitve[0];//spremenjivke iz tabele&#xa;                String dbuser = aryNastavitve[1];&#xa;                String dbpassword = aryNastavitve[2];                &#xa;&#xa;                try {&#xa;            con = DriverManager.getConnection(dburl, dbuser, dbpassword);&#xa;            pst = con.prepareStatement(&quot;SELECT konto, opis, debet, kredit, stm FROM kontniNacrt WHERE parrent=?&quot;);&#xa;            pst.setString(1, &quot;1234567890&quot;);&#xa;            rs = pst.executeQuery();&#xa;            &#xa;        } catch (SQLException ex) {&#xa;           // Logger lgr = Logger.getLogger(Version.class.getName());&#xa;            //lgr.log(Level.SEVERE, ex.getMessage(), ex);&#xa;        }&#xa;&#xa;try {&#xa;&#xa;ResultSetMetaData rsmd = rs.getMetaData();&#xa;int columnCount = rsmd.getColumnCount();&#xa;&#xa;tm = (DefaultTableModel) jTable1.getModel();"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JButton" name="natisni">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Natisni"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="natisniActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="osvezi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Osve&#x17e;i"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="osveziActionPerformed"/>
+      </Events>
+    </Component>
+  </SubComponents>
+</Form>
