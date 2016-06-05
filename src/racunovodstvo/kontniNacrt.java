@@ -188,6 +188,7 @@ public class kontniNacrt extends javax.swing.JFrame {
             
             if (rs5.next()) {           
               dovoljenjaSpremeniKonto=rs5.getInt("spremeniKonto");
+              osnovna.test.setText(String.valueOf(dovoljenjaSpremeniKonto));
             }
             
         } catch (SQLException ex) {
@@ -568,8 +569,12 @@ public class kontniNacrt extends javax.swing.JFrame {
 
         
         if (evt.getClickCount() == 2){
+            
+            //osnovna.test.setText(String.valueOf(Login.skupina));
             if(dovoljenjaSpremeniKonto==1)
-            getValueOfSelectedRow();            
+            {
+            getValueOfSelectedRow();
+            }
         }     
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -586,6 +591,7 @@ public class kontniNacrt extends javax.swing.JFrame {
         value=jTable1.getValueAt(row, 0);
         Login.stariKonto=String.valueOf(value);
         //osnovna.test.setText(Login.stariKonto);
+        
         new spremeniKonto().setVisible(true);
     }
        

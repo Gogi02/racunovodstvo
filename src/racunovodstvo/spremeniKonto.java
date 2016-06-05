@@ -50,7 +50,7 @@ public class spremeniKonto extends javax.swing.JFrame {
     public void spremeniKonto2()
     {
        String sKonto=Login.stariKonto;
-       osnovna.test.setText(Login.stariKonto);
+       //osnovna.test.setText(Login.stariKonto);
        
        
         Connection con = null;
