@@ -23,19 +23,25 @@ import java.io.FileReader;
 import javax.swing.JTable;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static racunovodstvo.Login.anUporabnik;
 import static racunovodstvo.Login.dbpassword;
 import static racunovodstvo.Login.dburl;
 import static racunovodstvo.Login.dbuser;
 
-import static racunovodstvo.Login.value;
-import static racunovodstvo.Login.stariKonto;
+//import static racunovodstvo.Login.value;
+//import static racunovodstvo.Login.stariKonto;
 
 public class kontniNacrt extends javax.swing.JFrame {
     DefaultTableModel tm;
     int dovoljenjaDodajKonto, dovoljenjaSpremeniKonto;
+    public static Object value;
+    public static String stariKonto=null, staraDrzava;
+    String konto, konto2, nKonto, opis, parrent, nParrent, tekstNapake;
+    int debet, kredit, stm, zapst, partner, napaka;
     
 
     /**
@@ -303,14 +309,24 @@ public class kontniNacrt extends javax.swing.JFrame {
         };
         natisni = new javax.swing.JButton();
         osvezi = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        dodajKontoPanel = new javax.swing.JPanel();
+        spremeniKontoPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        kontoTxt = new javax.swing.JTextField();
+        opisTxt = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        parrentTxt = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        debetCheck = new javax.swing.JCheckBox();
+        kreditCheck = new javax.swing.JCheckBox();
+        stmCheck = new javax.swing.JCheckBox();
+        partnerCheck = new javax.swing.JCheckBox();
+        potrdiButt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Kontni načrt");
-        addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                formFocusGained(evt);
-            }
-        });
 
         dodajKonto.setText("Dodaj konto");
         dodajKonto.addActionListener(new java.awt.event.ActionListener() {
@@ -463,6 +479,120 @@ public class kontniNacrt extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout dodajKontoPanelLayout = new javax.swing.GroupLayout(dodajKontoPanel);
+        dodajKontoPanel.setLayout(dodajKontoPanelLayout);
+        dodajKontoPanelLayout.setHorizontalGroup(
+            dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 873, Short.MAX_VALUE)
+        );
+        dodajKontoPanelLayout.setVerticalGroup(
+            dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 114, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Dodaj konto", dodajKontoPanel);
+
+        jLabel1.setText("Konto");
+
+        jLabel2.setText("Opis");
+
+        jLabel3.setText("Gornja skupina");
+
+        parrentTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parrentTxtActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Dovoljena knjižba");
+
+        debetCheck.setText("Debet");
+
+        kreditCheck.setText("Kredit");
+
+        stmCheck.setText("Obvezno stroškovno mesto");
+        stmCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stmCheckActionPerformed(evt);
+            }
+        });
+
+        partnerCheck.setText("Obvezen vnos partnerja");
+
+        potrdiButt.setText("Potrdi");
+        potrdiButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                potrdiButtActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout spremeniKontoPanelLayout = new javax.swing.GroupLayout(spremeniKontoPanel);
+        spremeniKontoPanel.setLayout(spremeniKontoPanelLayout);
+        spremeniKontoPanelLayout.setHorizontalGroup(
+            spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
+                .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
+                        .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
+                                .addGap(65, 65, 65)
+                                .addComponent(jLabel1))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, spremeniKontoPanelLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(kontoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(opisTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(parrentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(22, 22, 22)
+                .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
+                        .addComponent(partnerCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                        .addComponent(potrdiButt))
+                    .addComponent(stmCheck)
+                    .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(debetCheck)
+                        .addGap(18, 18, 18)
+                        .addComponent(kreditCheck)))
+                .addContainerGap())
+        );
+        spremeniKontoPanelLayout.setVerticalGroup(
+            spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(kontoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(kreditCheck)
+                    .addComponent(debetCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(opisTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(stmCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(parrentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(partnerCheck))
+                .addGap(0, 25, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, spremeniKontoPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(potrdiButt)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Spremeni konto", spremeniKontoPanel);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -470,6 +600,7 @@ public class kontniNacrt extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(dodajKonto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -477,7 +608,7 @@ public class kontniNacrt extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(natisni)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 836, Short.MAX_VALUE))
+                    .addComponent(jTabbedPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -489,8 +620,10 @@ public class kontniNacrt extends javax.swing.JFrame {
                     .addComponent(natisni)
                     .addComponent(osvezi))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 545, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         Connection con = null;
@@ -574,25 +707,333 @@ public class kontniNacrt extends javax.swing.JFrame {
             if(dovoljenjaSpremeniKonto==1)
             {
             getValueOfSelectedRow();
+            jTabbedPane1.setSelectedIndex(1);
+            if(stariKonto!=null)
+                {
+                    populateSK();
+                }
+            
             }
         }     
     }//GEN-LAST:event_jTable1MouseClicked
-
-    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
-
-    }//GEN-LAST:event_formFocusGained
 
     private void osveziActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_osveziActionPerformed
         populateKN();
     }//GEN-LAST:event_osveziActionPerformed
 
+    private void parrentTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parrentTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_parrentTxtActionPerformed
+
+    private void stmCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stmCheckActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_stmCheckActionPerformed
+
+    private void potrdiButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potrdiButtActionPerformed
+        if(dovoljenjaSpremeniKonto==1)
+        {
+            preberiSpremenljivke();
+            preveriSpremenljivke();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Nimate dovoljenja za spremembo konta","Spremeni konto - napaka",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_potrdiButtActionPerformed
+
+    public void preberiSpremenljivke()
+    {
+       konto=kontoTxt.getText();
+       nKonto=konto.replaceAll("[^0-9]", "");       
+       opis=opisTxt.getText();
+       parrent=parrentTxt.getText();
+       nParrent=parrent.replaceAll("[^0-9]", "");
+       if(debetCheck.isSelected())
+       {
+           debet=1;
+       }
+       else
+       {
+           debet=0;
+       }
+       if(kreditCheck.isSelected())
+       {
+           kredit=1;
+       }
+       else
+       {
+           kredit=0;
+       }
+       if(stmCheck.isSelected())
+       {
+           stm=1;
+       }
+       else
+       {
+           stm=0;
+       }
+    }
+    
+    public void preveriSpremenljivke()
+    {
+        napaka=0; //resetira napake
+        
+        if(nKonto!=null&&!nKonto.isEmpty()) //preveri, če je vrednost konta prazna
+        {
+            
+        }
+        else
+        {
+            napaka=1;            
+        }        
+        
+        if(!stariKonto.equals(nKonto)) //preveri, če je novi konto enak staremu
+        {
+            Connection con = null; //če novi konto ni enak staremu, preveri, če že obstaja
+            PreparedStatement pst = null;
+            ResultSet rs = null;
+            
+            try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword); 
+            pst = con.prepareStatement("SELECT * FROM kontniNacrt WHERE konto=?");          
+            pst.setString(1, nKonto);                        
+            rs=pst.executeQuery();
+            if (rs.next()) {           
+               napaka=2;
+               }            
+            }            
+            catch (SQLException ex)
+            {
+            }
+            finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } 
+            catch (SQLException ex) {
+                //Logger lgr = Logger.getLogger(Version.class.getName());
+                //lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }            
+        }
+        
+        if(opis!=null&&!opis.isEmpty()) //preveri, če je vrednost opisa prazna
+        {
+            
+        }
+        else
+        {
+            napaka=3;            
+        }
+        
+        if(nParrent!=null&&!nParrent.isEmpty()) //preveri, če je vrednost gornje skupine prazna
+        {
+            
+        }
+        else
+        {
+            napaka=4;            
+        } 
+        
+        osnovna.test.setText(String.valueOf(napaka));
+        
+        switch (napaka)
+        {
+            case 1:
+                tekstNapake="Vrednost konta ne sme biti prazna!";
+                break;
+            case 2:
+                tekstNapake="Konto že obstaja!";
+                break;
+            case 3:
+                tekstNapake="Vrednost opisa ne sme biti prazna!";
+                break;
+            case 4:
+                tekstNapake="Vrednost gornje skupine ne sme biti prazna!";
+                break;
+        }        
+        if(napaka==0)
+        {
+            updateSK();
+        }
+        else
+        {
+            prikazNapake(tekstNapake);
+        }
+    }
+    
+    public void updateSK()
+    {
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        konto=kontoTxt.getText();
+        nKonto=konto.replaceAll("[^0-9]", "");       
+        opis=opisTxt.getText();
+        parrent=parrentTxt.getText();
+        nParrent=parrent.replaceAll("[^0-9]", "");
+        if(debetCheck.isSelected())
+        {
+           debet=1;
+        }
+        else
+        {
+           debet=0;
+        }
+        if(kreditCheck.isSelected())
+        {
+           kredit=1;
+        }
+        else
+        {
+           kredit=0;
+        }
+        if(stmCheck.isSelected())
+        {
+           stm=1;
+        }
+        else
+        {
+           stm=0;
+        }
+        if(partnerCheck.isSelected())
+        {
+           partner=1;
+        }
+        else
+        {
+           partner=0;
+        }
+
+        try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            pst = con.prepareStatement("UPDATE kontniNacrt SET konto=?, opis=?, debet=?, kredit=?, parrent=?, stm=?, partner=? WHERE zapst=?");
+            pst.setString(1, nKonto);
+            pst.setString(2, opis);
+            pst.setInt(3, debet);
+            pst.setInt(4, kredit);
+            pst.setString(5, nParrent);
+            pst.setInt(6, stm);            
+            pst.setInt(7,partner);
+            pst.setInt(8, zapst);
+            //osnovna.test.setText(String.valueOf(pst));
+            String statement=String.valueOf(pst);
+            pst.executeUpdate();
+            pst = con.prepareStatement("INSERT INTO log"+"(tekst, uporabnik, podrocje, datum) VALUES"+"(?,?,?,?)");
+            pst.setString(1, statement);
+            pst.setString(2, Login.anUporabnik);
+            String podrocje="kontni načrt";
+            pst.setString(3, podrocje);
+            long zdaj = Instant.now().getEpochSecond();
+            pst.setLong(4,zdaj);
+            pst.executeUpdate();
+
+        } catch (SQLException ex) {
+           // Logger lgr = Logger.getLogger(Version.class.getName());
+            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                //Logger lgr = Logger.getLogger(Version.class.getName());
+                //lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        populateKN();
+    }
+    
+    public void prikazNapake(String tekstNapake)
+    {
+        JOptionPane.showMessageDialog(null,tekstNapake,"Spremeni konto - napaka",JOptionPane.ERROR_MESSAGE);
+    }
+    
     public void getValueOfSelectedRow(){
         int row = jTable1.getSelectedRow();
         value=jTable1.getValueAt(row, 0);
-        Login.stariKonto=String.valueOf(value);
+        stariKonto=String.valueOf(value);
         //osnovna.test.setText(Login.stariKonto);
-        
-        new spremeniKonto().setVisible(true);
+        //jTabbedPane1.setSelectedIndex(1);
+        //new spremeniKonto().setVisible(true);
+    }
+    
+    public void populateSK() //izpolni vrednosti v področju spremeni konto
+    {
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        //geslo1=null;                        
+
+        try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword); //populate with old values
+            pst = con.prepareStatement("SELECT * FROM kontniNacrt WHERE konto=?");          
+            pst.setString(1, stariKonto);                        
+            rs=pst.executeQuery();
+            if (rs.next()) {           
+               konto2= rs.getString("konto");
+               opis= rs.getString("opis");
+               parrent= rs.getString("parrent");
+               debet=rs.getInt("debet");
+               kredit=rs.getInt("kredit");
+               stm=rs.getInt("stm");
+               zapst=rs.getInt("zapst");
+               partner=rs.getInt("partner");
+            }
+            
+            kontoTxt.setText(konto2);
+            opisTxt.setText(opis);
+            parrentTxt.setText(parrent);
+            
+            if(debet==1){
+                debetCheck.setSelected(true);
+            }
+            if(kredit==1){
+                kreditCheck.setSelected(true);
+            }
+            if(stm==1){
+                stmCheck.setSelected(true);
+            }
+            if(partner==1){
+                partnerCheck.setSelected(true);
+            }
+            
+        } catch (SQLException ex) {
+
+        }
+        finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                //Logger lgr = Logger.getLogger(Version.class.getName());
+                //lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
     }
        
     /**
@@ -631,10 +1072,25 @@ public class kontniNacrt extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox debetCheck;
     private javax.swing.JButton dodajKonto;
+    private javax.swing.JPanel dodajKontoPanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     public javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     public javax.swing.JTable jTable1;
+    private javax.swing.JTextField kontoTxt;
+    private javax.swing.JCheckBox kreditCheck;
     private javax.swing.JButton natisni;
+    private javax.swing.JTextField opisTxt;
     private javax.swing.JButton osvezi;
+    private javax.swing.JTextField parrentTxt;
+    private javax.swing.JCheckBox partnerCheck;
+    private javax.swing.JButton potrdiButt;
+    private javax.swing.JPanel spremeniKontoPanel;
+    private javax.swing.JCheckBox stmCheck;
     // End of variables declaration//GEN-END:variables
 }

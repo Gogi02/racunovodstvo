@@ -28,8 +28,8 @@ public class Login extends javax.swing.JFrame {
      //Preferences preferences = Preferences.userNodeForPackage(osnovna.class);
 public static String uporabnik, geslo, geslo1, anUporabnik, dburl, dbuser, dbpassword;
 public static int skupina;
-public static Object value;
-public static String stariKonto, staraDrzava;
+//public static Object value;
+//public static String stariKonto, staraDrzava;
     
 public void prijava()
 {

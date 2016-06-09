@@ -32,8 +32,8 @@ import static racunovodstvo.Login.dburl;
 import static racunovodstvo.Login.dbuser;
 import static racunovodstvo.Login.geslo1;
 import static racunovodstvo.Login.skupina;
-import static racunovodstvo.Login.value;
-import static racunovodstvo.Login.stariKonto;
+//import static racunovodstvo.Login.value;
+//import static racunovodstvo.Login.stariKonto;
 
 
 import javax.swing.JOptionPane;
@@ -49,7 +49,7 @@ public class spremeniKonto extends javax.swing.JFrame {
 
     public void spremeniKonto2()
     {
-       String sKonto=Login.stariKonto;
+       String sKonto=kontniNacrt.stariKonto;
        //osnovna.test.setText(Login.stariKonto);
        
        
