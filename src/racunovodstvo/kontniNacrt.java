@@ -41,8 +41,9 @@ public class kontniNacrt extends javax.swing.JFrame {
     public static Object value;
     public static String stariKonto=null, staraDrzava;
     String konto, konto2, nKonto, opis, parrent, nParrent, tekstNapake;
+    String dodajKonto2, dodajKonto3, nDodajKonto, dodajOpis, dodajParrent, nDodajParrent, dodajTekstNapake;
     int debet, kredit, stm, zapst, partner, napaka;
-    
+    int dodajDebet, dodajKredit, dodajStm, dodajZapst, dodajPartner, dodajNapaka;
 
     /**
      * Creates new form kontniNacrt
@@ -188,13 +189,14 @@ public class kontniNacrt extends javax.swing.JFrame {
             pst = con.prepareStatement("SELECT konto, opis, debet, kredit, stm, partner FROM kontniNacrt WHERE parrent=?");
             pst.setString(1, "1234567890");
             rs = pst.executeQuery();
-            pst5 = con.prepareStatement("SELECT spremeniKonto FROM dovoljenja WHERE skupina=?");
+            pst5 = con.prepareStatement("SELECT spremeniKonto, dodajKonto FROM dovoljenja WHERE skupina=?");
             pst5.setInt(1, Login.skupina);
             rs5 = pst5.executeQuery();
             
             if (rs5.next()) {           
               dovoljenjaSpremeniKonto=rs5.getInt("spremeniKonto");
-              osnovna.test.setText(String.valueOf(dovoljenjaSpremeniKonto));
+              dovoljenjaDodajKonto=rs5.getInt("dodajKonto");
+              //osnovna.test.setText(String.valueOf(dovoljenjaSpremeniKonto));
             }
             
         } catch (SQLException ex) {
@@ -311,6 +313,18 @@ public class kontniNacrt extends javax.swing.JFrame {
         osvezi = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         dodajKontoPanel = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        dodajKontoTxt = new javax.swing.JTextField();
+        dodajOpisTxt = new javax.swing.JTextField();
+        dodajParrentTxt = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        dodajDebetCheck = new javax.swing.JCheckBox();
+        dodajKreditCheck = new javax.swing.JCheckBox();
+        dodajStmCheck = new javax.swing.JCheckBox();
+        dodajParnterCheck = new javax.swing.JCheckBox();
+        dodajButt = new javax.swing.JButton();
         spremeniKontoPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -479,15 +493,94 @@ public class kontniNacrt extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Konto");
+
+        jLabel6.setText("Opis");
+
+        jLabel7.setText("Gornja skupina");
+
+        jLabel8.setText("Dovoljena knjižba");
+
+        dodajDebetCheck.setText("Debet");
+
+        dodajKreditCheck.setText("Kredit");
+
+        dodajStmCheck.setText("Obvezno stroškovno mesto");
+        dodajStmCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dodajStmCheckActionPerformed(evt);
+            }
+        });
+
+        dodajParnterCheck.setText("Obvezen vnos partnerja");
+
+        dodajButt.setText("Dodaj konto");
+        dodajButt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dodajButtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout dodajKontoPanelLayout = new javax.swing.GroupLayout(dodajKontoPanel);
         dodajKontoPanel.setLayout(dodajKontoPanelLayout);
         dodajKontoPanelLayout.setHorizontalGroup(
             dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 873, Short.MAX_VALUE)
+            .addGroup(dodajKontoPanelLayout.createSequentialGroup()
+                .addGroup(dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dodajKontoPanelLayout.createSequentialGroup()
+                        .addGap(65, 65, 65)
+                        .addGroup(dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dodajKontoPanelLayout.createSequentialGroup()
+                                .addComponent(dodajKontoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(200, 200, 200)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(dodajDebetCheck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(dodajKreditCheck))
+                            .addGroup(dodajKontoPanelLayout.createSequentialGroup()
+                                .addComponent(dodajOpisTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dodajParnterCheck)
+                                    .addComponent(dodajStmCheck)))))
+                    .addGroup(dodajKontoPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dodajParrentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(dodajButt)
+                .addContainerGap())
         );
         dodajKontoPanelLayout.setVerticalGroup(
             dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 114, Short.MAX_VALUE)
+            .addGroup(dodajKontoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(dodajKontoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(dodajDebetCheck)
+                    .addComponent(dodajKreditCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(dodajOpisTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dodajStmCheck))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(dodajKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(dodajParrentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dodajParnterCheck))
+                .addContainerGap(19, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dodajKontoPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(dodajButt)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Dodaj konto", dodajKontoPanel);
@@ -519,7 +612,7 @@ public class kontniNacrt extends javax.swing.JFrame {
 
         partnerCheck.setText("Obvezen vnos partnerja");
 
-        potrdiButt.setText("Potrdi");
+        potrdiButt.setText("Spremeni konto");
         potrdiButt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 potrdiButtActionPerformed(evt);
@@ -533,6 +626,10 @@ public class kontniNacrt extends javax.swing.JFrame {
             .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
                 .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(parrentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
                         .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
                                 .addGap(65, 65, 65)
@@ -543,16 +640,12 @@ public class kontniNacrt extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(kontoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(opisTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(parrentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(22, 22, 22)
+                            .addComponent(opisTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(23, 23, 23)
                 .addGroup(spremeniKontoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
                         .addComponent(partnerCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                         .addComponent(potrdiButt))
                     .addComponent(stmCheck)
                     .addGroup(spremeniKontoPanelLayout.createSequentialGroup()
@@ -741,6 +834,70 @@ public class kontniNacrt extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_potrdiButtActionPerformed
 
+    private void dodajStmCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajStmCheckActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dodajStmCheckActionPerformed
+
+    private void dodajButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajButtActionPerformed
+        if(dovoljenjaDodajKonto==1)
+        {
+            dodajKonto();
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(null,"Nimate dovoljenja za dodajanje konta","Spremeni konto - napaka",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_dodajButtActionPerformed
+
+    public void dodajKonto()
+    {
+        preberiDodajSpremenljivke();
+        preveriDodajSpremenljivke();        
+    }
+    
+    public void preberiDodajSpremenljivke()
+    {
+       dodajKonto2=dodajKontoTxt.getText();
+       nDodajKonto=dodajKonto2.replaceAll("[^0-9]", "");       
+       dodajOpis=dodajOpisTxt.getText();
+       dodajParrent=dodajParrentTxt.getText();
+       nDodajParrent=dodajParrent.replaceAll("[^0-9]", "");
+       if(dodajDebetCheck.isSelected())
+       {
+           dodajDebet=1;
+       }
+       else
+       {
+           dodajDebet=0;
+       }
+       if(dodajKreditCheck.isSelected())
+       {
+           dodajKredit=1;
+       }
+       else
+       {
+           dodajKredit=0;
+       }
+       if(dodajStmCheck.isSelected())
+       {
+           dodajStm=1;
+       }
+       else
+       {
+           dodajStm=0;
+       }
+    }
+    
+    public void preveriDodajSpremenljivke()
+    {
+        
+    }
+    
+    public void dodajKonto2()
+    {
+        
+    }
+    
     public void preberiSpremenljivke()
     {
        konto=kontoTxt.getText();
@@ -969,9 +1126,6 @@ public class kontniNacrt extends javax.swing.JFrame {
         int row = jTable1.getSelectedRow();
         value=jTable1.getValueAt(row, 0);
         stariKonto=String.valueOf(value);
-        //osnovna.test.setText(Login.stariKonto);
-        //jTabbedPane1.setSelectedIndex(1);
-        //new spremeniKonto().setVisible(true);
     }
     
     public void populateSK() //izpolni vrednosti v področju spremeni konto
@@ -1073,12 +1227,24 @@ public class kontniNacrt extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox debetCheck;
+    private javax.swing.JButton dodajButt;
+    private javax.swing.JCheckBox dodajDebetCheck;
     private javax.swing.JButton dodajKonto;
     private javax.swing.JPanel dodajKontoPanel;
+    private javax.swing.JTextField dodajKontoTxt;
+    private javax.swing.JCheckBox dodajKreditCheck;
+    private javax.swing.JTextField dodajOpisTxt;
+    private javax.swing.JCheckBox dodajParnterCheck;
+    private javax.swing.JTextField dodajParrentTxt;
+    private javax.swing.JCheckBox dodajStmCheck;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     public javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     public javax.swing.JTable jTable1;
