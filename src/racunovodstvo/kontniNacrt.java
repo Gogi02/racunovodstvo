@@ -40,7 +40,7 @@ public class kontniNacrt extends javax.swing.JFrame {
     int dovoljenjaDodajKonto, dovoljenjaSpremeniKonto;
     public static Object value;
     public static String stariKonto=null, staraDrzava;
-    String konto, konto2, nKonto, opis, parrent, nParrent, tekstNapake;
+    String konto, konto2, nKonto, opis, parrent, nParrent, tekstNapake, naslovNapake;
     String dodajKonto2, dodajKonto3, nDodajKonto, dodajOpis, dodajParrent, nDodajParrent, dodajTekstNapake;
     int debet, kredit, stm, zapst, partner, napaka;
     int dodajDebet, dodajKredit, dodajStm, dodajZapst, dodajPartner, dodajNapaka;
@@ -890,12 +890,149 @@ public class kontniNacrt extends javax.swing.JFrame {
     
     public void preveriDodajSpremenljivke()
     {
+        dodajNapaka=0; //resetira napake
+        //osnovna.test.setText(String.valueOf(nDodajKonto));
         
+        if(nDodajKonto!=null&&!nDodajKonto.isEmpty()) //preveri, če je vrednost konta prazna
+        {
+            
+        }
+        else
+        {
+            dodajNapaka=1;            
+        }        
+                
+        Connection con = null; //če novi konto ni enak staremu, preveri, če že obstaja
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+            
+        try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword); 
+            pst = con.prepareStatement("SELECT * FROM kontniNacrt WHERE konto=?");          
+            pst.setString(1, nDodajKonto);                        
+            rs=pst.executeQuery();
+            if (rs.next()) {           
+               dodajNapaka=2;
+               }            
+            }            
+            catch (SQLException ex)
+            {
+            }
+            finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } 
+            catch (SQLException ex) {
+                //Logger lgr = Logger.getLogger(Version.class.getName());
+                //lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }            
+        
+        
+        if(dodajOpis!=null&&!dodajOpis.isEmpty()) //preveri, če je vrednost opisa prazna
+        {
+            
+        }
+        else
+        {
+            dodajNapaka=3;            
+        }
+        
+        if(nDodajParrent!=null&&!nDodajParrent.isEmpty()) //preveri, če je vrednost gornje skupine prazna
+        {
+            
+        }
+        else
+        {
+            dodajNapaka=4;            
+        } 
+        
+        osnovna.test.setText(String.valueOf(dodajNapaka));
+        
+        switch (dodajNapaka)
+        {
+            case 1:
+                tekstNapake="Vrednost konta ne sme biti prazna!";
+                break;
+            case 2:
+                tekstNapake="Konto že obstaja!";
+                break;
+            case 3:
+                tekstNapake="Vrednost opisa ne sme biti prazna!";
+                break;
+            case 4:
+                tekstNapake="Vrednost gornje skupine ne sme biti prazna!";
+                break;
+        }        
+        if(dodajNapaka==0)
+        {
+            dodajKonto2();
+        }
+        else
+        {
+            naslovNapake="Dodaj konto - napaka";
+            prikazNapake(tekstNapake);
+        }
     }
     
     public void dodajKonto2()
     {
-        
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;       
+
+        try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            pst = con.prepareStatement("INSERT INTO kontniNacrt"+"(konto, opis, debet, kredit, parrent, stm, partner) VALUES"+"(?,?,?,?,?,?,?)");
+            pst.setString(1, nDodajKonto);
+            pst.setString(2, dodajOpis);
+            pst.setInt(3, dodajDebet);
+            pst.setInt(4, dodajKredit);
+            pst.setString(5, nDodajParrent);
+            pst.setInt(6, dodajStm);            
+            pst.setInt(7,dodajPartner);            
+            //osnovna.test.setText(String.valueOf(pst));
+            String statement=String.valueOf(pst);
+            pst.executeUpdate();
+            pst = con.prepareStatement("INSERT INTO log"+"(tekst, uporabnik, podrocje, datum) VALUES"+"(?,?,?,?)");
+            pst.setString(1, statement);
+            pst.setString(2, Login.anUporabnik);
+            String podrocje="kontni načrt";
+            pst.setString(3, podrocje);
+            long zdaj = Instant.now().getEpochSecond();
+            pst.setLong(4,zdaj);
+            pst.executeUpdate();
+
+        } catch (SQLException ex) {
+           // Logger lgr = Logger.getLogger(Version.class.getName());
+            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                //Logger lgr = Logger.getLogger(Version.class.getName());
+                //lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        populateKN();
     }
     
     public void preberiSpremenljivke()
@@ -1022,6 +1159,7 @@ public class kontniNacrt extends javax.swing.JFrame {
         }
         else
         {
+            naslovNapake="Spremeni konto - napaka";
             prikazNapake(tekstNapake);
         }
     }
@@ -1119,7 +1257,7 @@ public class kontniNacrt extends javax.swing.JFrame {
     
     public void prikazNapake(String tekstNapake)
     {
-        JOptionPane.showMessageDialog(null,tekstNapake,"Spremeni konto - napaka",JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null,tekstNapake,naslovNapake,JOptionPane.ERROR_MESSAGE);
     }
     
     public void getValueOfSelectedRow(){
