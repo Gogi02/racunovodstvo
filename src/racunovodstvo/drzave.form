@@ -24,23 +24,26 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="jScrollPane2" min="-2" pref="453" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="83" max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="dodajDrzavo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jTabbedPane1" pref="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="453" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
-              <Component id="dodajDrzavo" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane2" min="-2" pref="295" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane2" min="-2" pref="311" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jTabbedPane1" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -69,16 +72,127 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="dodajDrzavo">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Dodaj dr&#x17e;avo"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dodajDrzavoActionPerformed"/>
-      </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="Connection con = null;&#xa;        PreparedStatement pst = null;&#xa;        ResultSet rsDovoljenja = null;        &#xa;        &#xa;        String [] aryNastavitve;&#xa;        aryNastavitve=new String[3];&#xa;        int i=0;&#xa;        &#xa;&#x9;&#x9;try (BufferedReader br = new BufferedReader(new FileReader(&quot;properties.txt&quot;)))//preberi nastavive iz datoteke&#xa;&#x9;&#x9;{&#xa;&#xa;&#x9;&#x9;&#x9;String trenutnaVrstica;&#xa;&#xa;&#x9;&#x9;&#x9;while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo&#x9;&#x9;&#x9;&#x9;&#xa;                            aryNastavitve[i]=trenutnaVrstica;&#xa;                            i++;                            &#xa;&#x9;&#x9;&#x9;}&#xa;&#xa;&#x9;&#x9;} catch (IOException e) {&#xa;&#x9;&#x9;&#x9;e.printStackTrace();&#xa;&#x9;&#x9;}&#xa;                &#xa;                String dburl = aryNastavitve[0];//spremenjivke iz tabele&#xa;                String dbuser = aryNastavitve[1];&#xa;                String dbpassword = aryNastavitve[2];                &#xa;&#xa;                try {&#xa;            con = DriverManager.getConnection(dburl, dbuser, dbpassword);&#xa;            &#xa;            pst = con.prepareStatement(&quot;SELECT * FROM dovoljenja WHERE skupina=?&quot;);&#xa;            pst.setInt(1,Login.skupina);&#xa;            rsDovoljenja = pst.executeQuery();&#xa;&#xa;            if (rsDovoljenja.next()) {           &#xa;              dovoljenjaDodajDrzavo=rsDovoljenja.getInt(&quot;dodajDrzavo&quot;);&#xa;            }&#xa;            &#xa;        } catch (SQLException ex) {           &#xa;&#xa;        } &#xa;                &#xa;        finally {&#xa;            try {&#xa;                &#xa;                if (pst != null) {&#xa;                    pst.close();&#xa;                }&#xa;                if (con != null) {&#xa;                    con.close();&#xa;                }&#xa;&#xa;            } catch (SQLException ex) {&#xa;                &#xa;            }&#xa;            }&#xa;if (dovoljenjaDodajDrzavo==0)&#xa;                {&#xa;                  dodajDrzavo.setEnabled(false);&#xa;                }"/>
-      </AuxValues>
-    </Component>
+    <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="jPanel1">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Dodaj dr&#x17e;avo">
+                <Property name="tabTitle" type="java.lang.String" value="Dodaj dr&#x17e;avo"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="448" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="107" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
+        <Container class="javax.swing.JPanel" name="jPanel2">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Spremeni dr&#x17e;avo">
+                <Property name="tabTitle" type="java.lang.String" value="Spremeni dr&#x17e;avo"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace pref="43" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="spremeniSifraDrzaveTxt" pref="60" max="32767" attributes="0"/>
+                                  <Component id="spremeniOznakaDrzaveTxt" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="spremeniDrzavoButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="spremeniOpisDrzaveTxt" min="-2" pref="270" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spremeniSifraDrzaveTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spremeniDrzavoButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spremeniOznakaDrzaveTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="spremeniOpisDrzaveTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="jLabel1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x160;ifra dr&#x17e;ave:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Oznaka dr&#x17e;ave:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel3">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Opis dr&#x17e;ave:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="spremeniSifraDrzaveTxt">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="spremeniSifraDrzaveTxtActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JTextField" name="spremeniOznakaDrzaveTxt">
+            </Component>
+            <Component class="javax.swing.JTextField" name="spremeniOpisDrzaveTxt">
+            </Component>
+            <Component class="javax.swing.JButton" name="spremeniDrzavoButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Spremeni dr&#x17e;avo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="spremeniDrzavoButtonActionPerformed"/>
+              </Events>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>

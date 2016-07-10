@@ -39,7 +39,7 @@ public class kontniNacrt extends javax.swing.JFrame {
     DefaultTableModel tm;
     int dovoljenjaDodajKonto, dovoljenjaSpremeniKonto;
     public static Object value;
-    public static String stariKonto=null, staraDrzava;
+    public static String stariKonto=null;
     String konto, konto2, nKonto, opis, parrent, nParrent, tekstNapake, naslovNapake;
     String dodajKonto2, dodajKonto3, nDodajKonto, dodajOpis, dodajParrent, nDodajParrent, dodajTekstNapake;
     int debet, kredit, stm, zapst, partner, napaka;
@@ -979,7 +979,7 @@ public class kontniNacrt extends javax.swing.JFrame {
         else
         {
             naslovNapake="Dodaj konto - napaka";
-            prikazNapake(tekstNapake);
+            prikazNapake(tekstNapake, naslovNapake);
         }
     }
     
@@ -1160,7 +1160,7 @@ public class kontniNacrt extends javax.swing.JFrame {
         else
         {
             naslovNapake="Spremeni konto - napaka";
-            prikazNapake(tekstNapake);
+            prikazNapake(tekstNapake, naslovNapake);
         }
     }
     
@@ -1255,7 +1255,7 @@ public class kontniNacrt extends javax.swing.JFrame {
         populateKN();
     }
     
-    public void prikazNapake(String tekstNapake)
+    public void prikazNapake(String tekstNapake, String naslovNapake)
     {
         JOptionPane.showMessageDialog(null,tekstNapake,naslovNapake,JOptionPane.ERROR_MESSAGE);
     }
