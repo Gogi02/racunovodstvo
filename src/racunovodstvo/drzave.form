@@ -88,15 +88,87 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="448" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="dodajSifraDrzaveTxt" pref="60" max="32767" attributes="0"/>
+                                  <Component id="dodajOznakaDrzaveTxt" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace pref="83" max="32767" attributes="0"/>
+                              <Component id="dodajDrzavoButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="dodajOpisDrzaveTxt" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="107" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dodajSifraDrzaveTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dodajDrzavoButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dodajOznakaDrzaveTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="dodajOpisDrzaveTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="jLabel4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#x160;ifra dr&#x17e;ave:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel5">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Oznaka dr&#x17e;ave:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel6">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Opis dr&#x17e;ave:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="dodajSifraDrzaveTxt">
+            </Component>
+            <Component class="javax.swing.JTextField" name="dodajOznakaDrzaveTxt">
+            </Component>
+            <Component class="javax.swing.JTextField" name="dodajOpisDrzaveTxt">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dodajOpisDrzaveTxtActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="dodajDrzavoButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Dodaj dr&#x17e;avo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dodajDrzavoButtonActionPerformed"/>
+              </Events>
+            </Component>
+          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel2">
           <Constraints>
@@ -121,13 +193,13 @@
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="spremeniSifraDrzaveTxt" pref="60" max="32767" attributes="0"/>
-                                  <Component id="spremeniOznakaDrzaveTxt" max="32767" attributes="0"/>
+                                  <Component id="spremeniOznakaDrzaveTxt" pref="60" max="32767" attributes="0"/>
+                                  <Component id="spremeniSifraDrzaveTxt" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="57" max="32767" attributes="0"/>
                               <Component id="spremeniDrzavoButton" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="spremeniOpisDrzaveTxt" min="-2" pref="270" max="-2" attributes="0"/>
+                          <Component id="spremeniOpisDrzaveTxt" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -152,7 +224,7 @@
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="spremeniOpisDrzaveTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="15" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="19" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
