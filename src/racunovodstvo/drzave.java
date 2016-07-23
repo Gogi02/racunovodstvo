@@ -508,8 +508,7 @@ public class drzave extends javax.swing.JFrame {
             pstm.executeUpdate();
 
         } catch (SQLException ex) {
-           // Logger lgr = Logger.getLogger(Version.class.getName());
-            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
+           
 
         } finally {
             try {
