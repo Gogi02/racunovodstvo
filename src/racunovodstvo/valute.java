@@ -28,22 +28,22 @@ import static racunovodstvo.Login.dbuser;
  *
  * @author gogi
  */
-public class drzave extends javax.swing.JFrame {
+public class valute extends javax.swing.JFrame {
 
     DefaultTableModel tm;
-    int dovoljenjaDodajDrzavo, dovoljenjaSpremeniDrzavo;
+    int dovoljenjaDodajValuto, dovoljenjaSpremeniValuto;
     public static Object value;
-    public static String staraDrzava=null;
-    String opisDrzave, oznakaDrzave, opisDrzaveAN, oznakaDrzaveAN, dodajOznakaDrzaveAN, dodajSifraDrzaveAN, dodajOpisDrzaveAN,sifraDrzaveAN, tekstNapake, naslovNapake, sifraDrzave;
+    public static String staraValuta=null;
+    String opisValute, oznakaValute, opisValuteAN, oznakaValuteAN, dodajOznakaValuteAN, dodajSifraValuteAN, dodajOpisValuteAN,sifraValuteAN, tekstNapake, naslovNapake, sifraValute;
     int zapst, napaka;
     /**
      * Creates new form drzave
      */
-    public drzave() {
+    public valute() {
         initComponents();
     }
     
-        public void populateDrzava(){
+        public void populateValuta(){
         Connection con = null;
         PreparedStatement pst = null;
         ResultSet rs = null;        
@@ -76,15 +76,15 @@ public class drzave extends javax.swing.JFrame {
 
                 try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-            pst = con.prepareStatement("SELECT sifraDrzave, kratica, opis FROM drzave");            
+            pst = con.prepareStatement("SELECT sifraValute, kratica, opis FROM valute");            
             rs = pst.executeQuery();
-            pst2 = con.prepareStatement("SELECT spremeniDrzavo, dodajDrzavo FROM dovoljenja WHERE skupina=?");
+            pst2 = con.prepareStatement("SELECT spremeniValuto, dodajValuto FROM dovoljenja WHERE skupina=?");
             pst2.setInt(1, Login.skupina);
             rs2 = pst2.executeQuery();
             
             if (rs2.next()) {           
-              dovoljenjaSpremeniDrzavo=rs2.getInt("spremeniDrzavo");
-              dovoljenjaDodajDrzavo=rs2.getInt("dodajDrzavo");
+              dovoljenjaSpremeniValuto=rs2.getInt("spremeniValuto");
+              dovoljenjaDodajValuto=rs2.getInt("dodajValuto");
             }
             
         } catch (SQLException ex) {
@@ -153,22 +153,22 @@ public class drzave extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        dodajSifraDrzaveTxt = new javax.swing.JTextField();
-        dodajOznakaDrzaveTxt = new javax.swing.JTextField();
-        dodajOpisDrzaveTxt = new javax.swing.JTextField();
-        dodajDrzavoButton = new javax.swing.JButton();
+        dodajSifraValuteTxt = new javax.swing.JTextField();
+        dodajOznakaValuteTxt = new javax.swing.JTextField();
+        dodajOpisValuteTxt = new javax.swing.JTextField();
+        dodajValutoButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        spremeniSifraDrzaveTxt = new javax.swing.JTextField();
-        spremeniOznakaDrzaveTxt = new javax.swing.JTextField();
-        spremeniOpisDrzaveTxt = new javax.swing.JTextField();
-        spremeniDrzavoButton = new javax.swing.JButton();
+        spremeniSifraValuteTxt = new javax.swing.JTextField();
+        spremeniOznakaValuteTxt = new javax.swing.JTextField();
+        spremeniOpisValuteTxt = new javax.swing.JTextField();
+        spremeniValutoButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        populateDrzava();
+        populateValuta();
         jTable2.setModel(tm);
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -177,22 +177,22 @@ public class drzave extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable2);
 
-        jLabel4.setText("Šifra države:");
+        jLabel4.setText("Šifra valute:");
 
-        jLabel5.setText("Oznaka države:");
+        jLabel5.setText("Oznaka valute:");
 
-        jLabel6.setText("Opis države:");
+        jLabel6.setText("Opis valute:");
 
-        dodajOpisDrzaveTxt.addActionListener(new java.awt.event.ActionListener() {
+        dodajOpisValuteTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dodajOpisDrzaveTxtActionPerformed(evt);
+                dodajOpisValuteTxtActionPerformed(evt);
             }
         });
 
-        dodajDrzavoButton.setText("Dodaj državo");
-        dodajDrzavoButton.addActionListener(new java.awt.event.ActionListener() {
+        dodajValutoButton.setText("Dodaj valuto");
+        dodajValutoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dodajDrzavoButtonActionPerformed(evt);
+                dodajValutoButtonActionPerformed(evt);
             }
         });
 
@@ -210,11 +210,11 @@ public class drzave extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(dodajSifraDrzaveTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                            .addComponent(dodajOznakaDrzaveTxt))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
-                        .addComponent(dodajDrzavoButton))
-                    .addComponent(dodajOpisDrzaveTxt))
+                            .addComponent(dodajSifraValuteTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                            .addComponent(dodajOznakaValuteTxt))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                        .addComponent(dodajValutoButton))
+                    .addComponent(dodajOpisValuteTxt))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -223,37 +223,37 @@ public class drzave extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(dodajSifraDrzaveTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dodajDrzavoButton))
+                    .addComponent(dodajSifraValuteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dodajValutoButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(dodajOznakaDrzaveTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dodajOznakaValuteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(dodajOpisDrzaveTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dodajOpisValuteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Dodaj državo", jPanel1);
+        jTabbedPane1.addTab("Dodaj valuto", jPanel1);
 
-        jLabel1.setText("Šifra države:");
+        jLabel1.setText("Šifra valute:");
 
-        jLabel2.setText("Oznaka države:");
+        jLabel2.setText("Oznaka valute:");
 
-        jLabel3.setText("Opis države:");
+        jLabel3.setText("Opis valute:");
 
-        spremeniSifraDrzaveTxt.addActionListener(new java.awt.event.ActionListener() {
+        spremeniSifraValuteTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                spremeniSifraDrzaveTxtActionPerformed(evt);
+                spremeniSifraValuteTxtActionPerformed(evt);
             }
         });
 
-        spremeniDrzavoButton.setText("Spremeni državo");
-        spremeniDrzavoButton.addActionListener(new java.awt.event.ActionListener() {
+        spremeniValutoButton.setText("Spremeni valuto");
+        spremeniValutoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                spremeniDrzavoButtonActionPerformed(evt);
+                spremeniValutoButtonActionPerformed(evt);
             }
         });
 
@@ -262,7 +262,7 @@ public class drzave extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(43, Short.MAX_VALUE)
+                .addContainerGap(51, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
@@ -271,11 +271,11 @@ public class drzave extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spremeniOznakaDrzaveTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
-                            .addComponent(spremeniSifraDrzaveTxt))
+                            .addComponent(spremeniOznakaValuteTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                            .addComponent(spremeniSifraValuteTxt))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                        .addComponent(spremeniDrzavoButton))
-                    .addComponent(spremeniOpisDrzaveTxt))
+                        .addComponent(spremeniValutoButton))
+                    .addComponent(spremeniOpisValuteTxt))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -284,20 +284,20 @@ public class drzave extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(spremeniSifraDrzaveTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spremeniDrzavoButton))
+                    .addComponent(spremeniSifraValuteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spremeniValutoButton))
                 .addGap(5, 5, 5)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(spremeniOznakaDrzaveTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spremeniOznakaValuteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(spremeniOpisDrzaveTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spremeniOpisValuteTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 19, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Spremeni državo", jPanel2);
+        jTabbedPane1.addTab("Spremeni valuto", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -327,22 +327,22 @@ public class drzave extends javax.swing.JFrame {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         if (evt.getClickCount() == 2){
-            if(dovoljenjaSpremeniDrzavo==1)
+            if(dovoljenjaSpremeniValuto==1)
             getValueOfSelectedRow();
             jTabbedPane1.setSelectedIndex(1);
-            if(staraDrzava!=null)
+            if(staraValuta!=null)
                 {
                     populateSD();
                 }
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
-    private void spremeniSifraDrzaveTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spremeniSifraDrzaveTxtActionPerformed
+    private void spremeniSifraValuteTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spremeniSifraValuteTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_spremeniSifraDrzaveTxtActionPerformed
+    }//GEN-LAST:event_spremeniSifraValuteTxtActionPerformed
 
-    private void spremeniDrzavoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spremeniDrzavoButtonActionPerformed
-        if (dovoljenjaSpremeniDrzavo==1)
+    private void spremeniValutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spremeniValutoButtonActionPerformed
+        if (dovoljenjaSpremeniValuto==1)
         {
             napaka=0;
             preberiSpremenljivke();
@@ -350,43 +350,43 @@ public class drzave extends javax.swing.JFrame {
         }
         else
         {
-            JOptionPane.showMessageDialog(null,"Nimate dovoljenja za spremembo države","Spremeni državo - napaka",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Nimate dovoljenja za spremembo valute","Spremeni valuto - napaka",JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_spremeniDrzavoButtonActionPerformed
+    }//GEN-LAST:event_spremeniValutoButtonActionPerformed
 
-    private void dodajOpisDrzaveTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajOpisDrzaveTxtActionPerformed
+    private void dodajOpisValuteTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajOpisValuteTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_dodajOpisDrzaveTxtActionPerformed
+    }//GEN-LAST:event_dodajOpisValuteTxtActionPerformed
 
-    private void dodajDrzavoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajDrzavoButtonActionPerformed
-        if (dovoljenjaDodajDrzavo==1)
+    private void dodajValutoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajValutoButtonActionPerformed
+        if (dovoljenjaDodajValuto==1)
         {
             napaka=0;
             preberiDodajSpremenljivke();
-            //osnovna.test.setText(sifraDrzaveAN);
+            //osnovna.test.setText(sifraValuteAN);
             preveriDodajSpremenljivke();
         }
         else
         {
-            JOptionPane.showMessageDialog(null,"Nimate dovoljenja za dodajanje države","Dodaj državo - napaka",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Nimate dovoljenja za dodajanje valute","Dodaj valuto - napaka",JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_dodajDrzavoButtonActionPerformed
+    }//GEN-LAST:event_dodajValutoButtonActionPerformed
 
     public void preberiDodajSpremenljivke()
     {
-       opisDrzave=dodajOpisDrzaveTxt.getText();
-       opisDrzaveAN=opisDrzave.replaceAll("[^\\p{L}]]", "");       
-       oznakaDrzave=dodajOznakaDrzaveTxt.getText();
-       dodajOznakaDrzaveAN=oznakaDrzave.replaceAll("[^\\p{L}]", "");       
-       sifraDrzave=dodajSifraDrzaveTxt.getText();
-       sifraDrzaveAN=sifraDrzave.replaceAll("[^a-zA-Z0-9]", "");
+       opisValute=dodajOpisValuteTxt.getText();
+       opisValuteAN=opisValute.replaceAll("[^\\p{L}]]", "");       
+       oznakaValute=dodajOznakaValuteTxt.getText();
+       dodajOznakaValuteAN=oznakaValute.replaceAll("[^\\p{L}]", "");       
+       sifraValute=dodajSifraValuteTxt.getText();
+       sifraValuteAN=sifraValute.replaceAll("[^a-zA-Z0-9]", "");
     }
     
     public void preveriDodajSpremenljivke()
     {
         //napaka=0;
         
-        if(sifraDrzaveAN!=null&&!sifraDrzaveAN.isEmpty()) //preveri, če je vrednost šifre države prazna
+        if(sifraValuteAN!=null&&!sifraValuteAN.isEmpty()) //preveri, če je vrednost šifre države prazna
         {
             
         }
@@ -401,8 +401,8 @@ public class drzave extends javax.swing.JFrame {
             
             try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword); 
-            pst = con.prepareStatement("SELECT * FROM drzave WHERE sifraDrzave=?");          
-            pst.setString(1, String.valueOf(sifraDrzave));                        
+            pst = con.prepareStatement("SELECT * FROM valute WHERE sifraValute=?");          
+            pst.setString(1, String.valueOf(sifraValute));                        
             rs=pst.executeQuery();
             if (rs.next()) {           
                napaka=2;
@@ -431,7 +431,7 @@ public class drzave extends javax.swing.JFrame {
         }            
         
         
-        if(opisDrzaveAN!=null&&!opisDrzaveAN.isEmpty()) //preveri, če je vrednost opisa prazna
+        if(opisValuteAN!=null&&!opisValuteAN.isEmpty()) //preveri, če je vrednost opisa prazna
         {
             
         }
@@ -440,7 +440,7 @@ public class drzave extends javax.swing.JFrame {
             napaka=3;            
         }
         
-        if(dodajOznakaDrzaveAN!=null&&!dodajOznakaDrzaveAN.isEmpty()) //preveri, če je vrednost gornje skupine prazna
+        if(dodajOznakaValuteAN!=null&&!dodajOznakaValuteAN.isEmpty()) //preveri, če je vrednost gornje skupine prazna
         {
             
         }
@@ -454,27 +454,27 @@ public class drzave extends javax.swing.JFrame {
         switch (napaka)
         {
             case 1:
-                tekstNapake="Šifra države ne sme biti prazna!";
+                tekstNapake="Šifra valute ne sme biti prazna!";
                 break;
             case 2:
-                tekstNapake="Država že obstaja!";
+                tekstNapake="Valuta že obstaja!";
                 break;
             case 3:
                 tekstNapake="Vrednost opisa ne sme biti prazna!";
                 break;
             case 4:
-                tekstNapake="Oznaka države ne sme biti prazna!";
+                tekstNapake="Oznaka valute ne sme biti prazna!";
                 break;
         }        
         if(napaka==0)
         {
-            dodajOpisDrzaveAN=opisDrzaveAN;
-            dodajSifraDrzaveAN=sifraDrzaveAN;
+            dodajOpisValuteAN=opisValuteAN;
+            dodajSifraValuteAN=sifraValuteAN;
             dodajD();
         }
         else
         {
-            naslovNapake="Spremeni državo - napaka";
+            naslovNapake="Spremeni valuto - napaka";
             kontniNacrt prikazNapake=new kontniNacrt();
             prikazNapake.prikazNapake(tekstNapake, naslovNapake);
         }
@@ -490,10 +490,10 @@ public class drzave extends javax.swing.JFrame {
         
         try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-            pstm = con.prepareStatement("INSERT INTO drzave"+"(kratica, sifraDrzave, opis) VALUES"+"(?,?,?)");
-            pstm.setString(1, dodajOznakaDrzaveAN);
-            pstm.setString(2, dodajSifraDrzaveAN);
-            pstm.setString(3, dodajOpisDrzaveAN);
+            pstm = con.prepareStatement("INSERT INTO valute"+"(kratica, sifraValute, opis) VALUES"+"(?,?,?)");
+            pstm.setString(1, dodajOznakaValuteAN);
+            pstm.setString(2, dodajSifraValuteAN);
+            pstm.setString(3, dodajOpisValuteAN);
                         
             //osnovna.test.setText(String.valueOf(pstm));
             String statement=String.valueOf(pstm);
@@ -501,7 +501,7 @@ public class drzave extends javax.swing.JFrame {
             pstm = con.prepareStatement("INSERT INTO log"+"(tekst, uporabnik, podrocje, datum) VALUES"+"(?,?,?,?)");
             pstm.setString(1, statement);
             pstm.setString(2, Login.anUporabnik);
-            String podrocje="drzave";
+            String podrocje="valute";
             pstm.setString(3, podrocje);
             long zdaj = Instant.now().getEpochSecond();
             pstm.setLong(4,zdaj);
@@ -528,18 +528,18 @@ public class drzave extends javax.swing.JFrame {
                 //lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
-        populateDrzava();
+        populateValuta();
     }
     
     public void preberiSpremenljivke()
     {
-       opisDrzave=spremeniOpisDrzaveTxt.getText();
-       opisDrzaveAN=opisDrzave.replaceAll("[^\\p{L}]]", "");       
-       oznakaDrzave=spremeniOznakaDrzaveTxt.getText();
-       oznakaDrzaveAN=oznakaDrzave.replaceAll("[^\\p{L}]", "");
-       //osnovna.test.setText(opisDrzaveAN);
-       sifraDrzave=spremeniSifraDrzaveTxt.getText();
-       sifraDrzaveAN=sifraDrzave.replaceAll("[^a-zA-Z0-9]", "");
+       opisValute=spremeniOpisValuteTxt.getText();
+       opisValuteAN=opisValute.replaceAll("[^\\p{L}]]", "");       
+       oznakaValute=spremeniOznakaValuteTxt.getText();
+       oznakaValuteAN=oznakaValute.replaceAll("[^\\p{L}]", "");
+       //osnovna.test.setText(opisValuteAN);
+       sifraValute=spremeniSifraValuteTxt.getText();
+       sifraValuteAN=sifraValute.replaceAll("[^a-zA-Z0-9]", "");
               
     }
     
@@ -547,9 +547,9 @@ public class drzave extends javax.swing.JFrame {
     {
         napaka=0;
         
-        if(sifraDrzaveAN!=null&&!sifraDrzaveAN.isEmpty()) //preveri, če je vrednost šifre države prazna
+        if(sifraValuteAN!=null&&!sifraValuteAN.isEmpty()) //preveri, če je vrednost šifre države prazna
         {
-            if(!staraDrzava.equals(sifraDrzaveAN)) //preveri, če je nova država enaka stari
+            if(!staraValuta.equals(sifraValuteAN)) //preveri, če je nova država enaka stari
             {
                 Connection con = null; //če nova država ni enaka staremu, preveri, če že obstaja
                 PreparedStatement pst = null;
@@ -557,8 +557,8 @@ public class drzave extends javax.swing.JFrame {
             
                 try {
                 con = DriverManager.getConnection(dburl, dbuser, dbpassword); 
-                pst = con.prepareStatement("SELECT * FROM drzave WHERE sifraDrzave=?");          
-                pst.setString(1, sifraDrzaveAN);                        
+                pst = con.prepareStatement("SELECT * FROM valute WHERE sifraValute=?");          
+                pst.setString(1, sifraValuteAN);                        
                 rs=pst.executeQuery();
                 if (rs.next()) {           
                 napaka=2;
@@ -594,7 +594,7 @@ public class drzave extends javax.swing.JFrame {
         
         
         
-        if(opisDrzaveAN!=null&&!opisDrzaveAN.isEmpty()) //preveri, če je vrednost opisa prazna
+        if(opisValuteAN!=null&&!opisValuteAN.isEmpty()) //preveri, če je vrednost opisa prazna
         {
             
         }
@@ -603,7 +603,7 @@ public class drzave extends javax.swing.JFrame {
             napaka=3;            
         }
         
-        if(oznakaDrzaveAN!=null&&!oznakaDrzaveAN.isEmpty()) //preveri, če je vrednost gornje skupine prazna
+        if(oznakaValuteAN!=null&&!oznakaValuteAN.isEmpty()) //preveri, če je vrednost gornje skupine prazna
         {
             
         }
@@ -617,19 +617,19 @@ public class drzave extends javax.swing.JFrame {
         switch (napaka)
         {
             case 1:
-                tekstNapake="Šifra države ne sme biti prazna!";
+                tekstNapake="Šifra valute ne sme biti prazna!";
                 break;
             case 2:
-                tekstNapake="Država že obstaja!";
+                tekstNapake="Valuta že obstaja!";
                 break;
             case 3:
                 tekstNapake="Vrednost opisa ne sme biti prazna!";
                 break;
             case 4:
-                tekstNapake="Oznaka države ne sme biti prazna!";
+                tekstNapake="Oznaka valute ne sme biti prazna!";
                 break;
             case 5:
-                tekstNapake="Šifra države ne sme biti negativna";
+                tekstNapake="Šifra valute ne sme biti negativna";
                 break;
         }        
         if(napaka==0)
@@ -638,7 +638,7 @@ public class drzave extends javax.swing.JFrame {
         }
         else
         {
-            naslovNapake="Spremeni državo - napaka";
+            naslovNapake="Spremeni valuto - napaka";
             kontniNacrt prikazNapake=new kontniNacrt();
             prikazNapake.prikazNapake(tekstNapake, naslovNapake);
         }
@@ -654,10 +654,10 @@ public class drzave extends javax.swing.JFrame {
         
         try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-            pst = con.prepareStatement("UPDATE drzave SET kratica=?, opis=?, sifraDrzave=? WHERE zapst=?");
-            pst.setString(1, oznakaDrzaveAN);
-            pst.setString(2, opisDrzaveAN);
-            pst.setString(3, sifraDrzaveAN);            
+            pst = con.prepareStatement("UPDATE valute SET kratica=?, opis=?, sifraValute=? WHERE zapst=?");
+            pst.setString(1, oznakaValuteAN);
+            pst.setString(2, opisValuteAN);
+            pst.setString(3, sifraValuteAN);            
             pst.setInt(4, zapst);
             //osnovna.test.setText(String.valueOf(pst));
             String statement=String.valueOf(pst);
@@ -665,7 +665,7 @@ public class drzave extends javax.swing.JFrame {
             pst = con.prepareStatement("INSERT INTO log"+"(tekst, uporabnik, podrocje, datum) VALUES"+"(?,?,?,?)");
             pst.setString(1, statement);
             pst.setString(2, Login.anUporabnik);
-            String podrocje="drzave";
+            String podrocje="valute";
             pst.setString(3, podrocje);
             long zdaj = Instant.now().getEpochSecond();
             pst.setLong(4,zdaj);
@@ -692,7 +692,7 @@ public class drzave extends javax.swing.JFrame {
                 //lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
-        populateDrzava();
+        populateValuta();
         
     }
     
@@ -705,20 +705,20 @@ public class drzave extends javax.swing.JFrame {
 
         try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword); //populate with old values
-            pst = con.prepareStatement("SELECT * FROM drzave WHERE sifraDrzave=?");          
-            pst.setString(1, String.valueOf(staraDrzava));                        
+            pst = con.prepareStatement("SELECT * FROM valute WHERE sifraValute=?");          
+            pst.setString(1, String.valueOf(staraValuta));                        
             rs=pst.executeQuery();
             if (rs.next()) {           
-               opisDrzave= rs.getString("opis"); 
+               opisValute= rs.getString("opis"); 
                zapst= rs.getInt("zapst");
-               oznakaDrzave= rs.getString("kratica");
-               sifraDrzave=rs.getString("sifraDrzave"); 
+               oznakaValute= rs.getString("kratica");
+               sifraValute=rs.getString("sifraValute"); 
               
             }
             
-            spremeniOpisDrzaveTxt.setText(opisDrzave);
-            spremeniOznakaDrzaveTxt.setText(oznakaDrzave);
-            spremeniSifraDrzaveTxt.setText(String.valueOf(sifraDrzave));         
+            spremeniOpisValuteTxt.setText(opisValute);
+            spremeniOznakaValuteTxt.setText(oznakaValute);
+            spremeniSifraValuteTxt.setText(String.valueOf(sifraValute));         
             
             
         } catch (SQLException ex) {
@@ -747,9 +747,9 @@ public class drzave extends javax.swing.JFrame {
     {
         int row = jTable2.getSelectedRow();
         value=jTable2.getValueAt(row, 0);
-        staraDrzava=String.valueOf(value);
+        staraValuta=String.valueOf(value);
         //osnovna.test.setText(Login.stariKonto);
-        //new spremeniDrzavo().setVisible(true);
+        //new spremeniValuto().setVisible(true);
     }
     
     /**
@@ -769,29 +769,30 @@ public class drzave extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(drzave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(valute.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(drzave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(valute.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(drzave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(valute.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(drzave.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(valute.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new drzave().setVisible(true);
+                new valute().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton dodajDrzavoButton;
-    private javax.swing.JTextField dodajOpisDrzaveTxt;
-    private javax.swing.JTextField dodajOznakaDrzaveTxt;
-    private javax.swing.JTextField dodajSifraDrzaveTxt;
+    private javax.swing.JTextField dodajOpisValuteTxt;
+    private javax.swing.JTextField dodajOznakaValuteTxt;
+    private javax.swing.JTextField dodajSifraValuteTxt;
+    private javax.swing.JButton dodajValutoButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -803,9 +804,9 @@ public class drzave extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JButton spremeniDrzavoButton;
-    private javax.swing.JTextField spremeniOpisDrzaveTxt;
-    private javax.swing.JTextField spremeniOznakaDrzaveTxt;
-    private javax.swing.JTextField spremeniSifraDrzaveTxt;
+    private javax.swing.JTextField spremeniOpisValuteTxt;
+    private javax.swing.JTextField spremeniOznakaValuteTxt;
+    private javax.swing.JTextField spremeniSifraValuteTxt;
+    private javax.swing.JButton spremeniValutoButton;
     // End of variables declaration//GEN-END:variables
 }

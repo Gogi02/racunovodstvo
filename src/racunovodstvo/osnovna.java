@@ -52,6 +52,7 @@ int dovoljenjaDrzave=0;
         kontniNacrt = new javax.swing.JMenuItem();
         partnerji = new javax.swing.JMenuItem();
         drzave = new javax.swing.JMenuItem();
+        valute = new javax.swing.JMenuItem();
         orodja = new javax.swing.JMenu();
         nastavitve = new javax.swing.JMenuItem();
 
@@ -279,6 +280,14 @@ int dovoljenjaDrzave=0;
         });
         sifranti.add(drzave);
 
+        valute.setText("Valute");
+        valute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valuteActionPerformed(evt);
+            }
+        });
+        sifranti.add(valute);
+
         jMenuBar1.add(sifranti);
 
         orodja.setText("Orodja");
@@ -388,6 +397,10 @@ int dovoljenjaDrzave=0;
         new drzave().setVisible(true);
     }//GEN-LAST:event_drzaveActionPerformed
 
+    private void valuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valuteActionPerformed
+        new valute().setVisible(true);
+    }//GEN-LAST:event_valuteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -435,5 +448,6 @@ int dovoljenjaDrzave=0;
     private javax.swing.JMenu program;
     private javax.swing.JMenu sifranti;
     public static javax.swing.JLabel test;
+    private javax.swing.JMenuItem valute;
     // End of variables declaration//GEN-END:variables
 }
