@@ -22,6 +22,7 @@ int dovoljenjaKontniNacrt=0;
 int dovoljenjaPartnerji=0;
 int dovoljenjaNastavitve=0;
 int dovoljenjaDrzave=0;
+int dovoljenjaValute=0;
     /**
      * Creates new form osnovna
      */
@@ -280,6 +281,63 @@ int dovoljenjaDrzave=0;
         });
         sifranti.add(drzave);
 
+        con = null;
+        pst = null;
+        rsDovoljenja = null;
+
+        aryNastavitve=new String[3];
+        i=0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+        {
+
+            String trenutnaVrstica;
+
+            while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo
+                aryNastavitve[i]=trenutnaVrstica;
+                i++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        dburl = aryNastavitve[0];//spremenjivke iz tabele
+        dbuser = aryNastavitve[1];
+        dbpassword = aryNastavitve[2];
+
+        try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            pst = con.prepareStatement("SELECT * FROM dovoljenja WHERE skupina=?");
+            pst.setInt(1,Login.skupina);
+            rsDovoljenja = pst.executeQuery();
+            if (rsDovoljenja.next()) {
+                dovoljenjaValute=rsDovoljenja.getInt("valute");
+            }
+
+        } catch (SQLException ex) {
+
+        }
+
+        finally {
+            try {
+
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+
+            }
+        }
+
+        if (dovoljenjaValute==0)
+        {
+            valute.setEnabled(false);
+        }
         valute.setText("Valute");
         valute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -381,7 +439,7 @@ int dovoljenjaDrzave=0;
     }//GEN-LAST:event_kontniNacrtActionPerformed
 
     private void partnerjiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partnerjiActionPerformed
-        // TODO add your handling code here:
+        new partnerji().setVisible(true);
     }//GEN-LAST:event_partnerjiActionPerformed
 
     private void izhodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_izhodActionPerformed
