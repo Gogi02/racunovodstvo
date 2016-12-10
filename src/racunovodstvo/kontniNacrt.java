@@ -100,7 +100,7 @@ public class kontniNacrt extends javax.swing.JFrame {
                         i++;
                         parrent = rs3.getString("konto");
                         
-                        pst = con.prepareStatement("SELECT konto, opis FROM kontniNacrt WHERE parrent = ?");
+                       /* pst = con.prepareStatement("SELECT konto, opis FROM kontniNacrt WHERE parrent = ?");
                         pst.setString(1,parrent);
                         ResultSet rs4=pst.executeQuery();        
                         while(rs4.next()){
@@ -108,7 +108,7 @@ public class kontniNacrt extends javax.swing.JFrame {
                             i++;
                             kontniNacrt[i]=rs4.getString("opis");
                             i++;                            
-        }
+        }*/
         }
         }
         }

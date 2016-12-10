@@ -30,6 +30,7 @@ public class partnerji extends javax.swing.JFrame {
     String ime, priimek, naziv, davcnaStevilka, predpona, hisnaStevilka, posta, postnaStevilka, kraj,
            naslov, tansakcijskiRacun, drzava, sifraPartnerjaTemp;
     DefaultTableModel tm;
+    public static Object value;
     /**
      * Creates new form partnerji
      */
@@ -155,11 +156,39 @@ public class partnerji extends javax.swing.JFrame {
         isciSifraPartnerjaTxt = new javax.swing.JTextField();
         isciDavcnaStevilkaTxt = new javax.swing.JTextField();
         isciButton = new javax.swing.JToggleButton();
+        jPanel2 = new javax.swing.JPanel();
+        popraviSifraPartnerjaTxt = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        popraviNazivTxt = new javax.swing.JTextField();
+        popraviImeTxt = new javax.swing.JTextField();
+        popraviPriimekTxt = new javax.swing.JTextField();
+        popraviNaslovTxt = new javax.swing.JTextField();
+        popraviHisnaStevilkaTxt = new javax.swing.JTextField();
+        popraviKrajTxt = new javax.swing.JTextField();
+        popraviPostnaStevilkaTxt = new javax.swing.JTextField();
+        popraviPostaTxt = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         populatePartnerji();
         jTable1.setModel(tm);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setText("Naziv:");
@@ -238,11 +267,136 @@ public class partnerji extends javax.swing.JFrame {
                             .addComponent(isciImeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(isciButton)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                        .addComponent(isciButton, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Iskanje partnerja", jPanel1);
+        jTabbedPane1.addTab("Išči partnerja", jPanel1);
+
+        jLabel6.setText("Naziv:");
+
+        jLabel7.setText("Ime:");
+
+        jLabel8.setText("Priimek:");
+
+        jLabel9.setText("Ulica:");
+
+        jLabel10.setText("Hišna številka: ");
+
+        jLabel11.setText("Kraj:");
+
+        jLabel12.setText("Poštna številka:");
+
+        jLabel13.setText("Pošta:");
+
+        jLabel14.setText("Država:");
+
+        jLabel15.setText("Šifra partnerja:");
+
+        jLabel16.setText("ID za DDV - predpona:");
+
+        jLabel17.setText("Davčna številka:");
+
+        popraviNazivTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popraviNazivTxtActionPerformed(evt);
+            }
+        });
+
+        popraviPriimekTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popraviPriimekTxtActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel17)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel10))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(popraviPriimekTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                            .addComponent(popraviImeTxt)
+                            .addComponent(popraviNazivTxt)
+                            .addComponent(popraviSifraPartnerjaTxt)
+                            .addComponent(popraviNaslovTxt)
+                            .addComponent(popraviHisnaStevilkaTxt)
+                            .addComponent(popraviKrajTxt)
+                            .addComponent(popraviPostnaStevilkaTxt)
+                            .addComponent(popraviPostaTxt)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(447, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(popraviSifraPartnerjaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(popraviNazivTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(popraviImeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(popraviPriimekTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(popraviNaslovTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(popraviHisnaStevilkaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(popraviKrajTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(popraviPostnaStevilkaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(popraviPostaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel17)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Popravi partnerja", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -259,7 +413,7 @@ public class partnerji extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
@@ -276,32 +430,118 @@ public class partnerji extends javax.swing.JFrame {
         naziv=isciNazivTxt.getText();
         ime=isciImeTxt.getText();
         priimek=isciPriimekTxt.getText();
-        sifraPartnerjaTemp=isciSifraPartnerjaTxt.getText();
-        if(sifraPartnerjaTemp!=null&&!sifraPartnerjaTemp.isEmpty()) //preveri, če je vrednost gornje skupine prazna
+        sifraPartnerjaTemp=isciSifraPartnerjaTxt.getText().replaceAll("[^0-9]", "");
+        if(sifraPartnerjaTemp!=null&&!sifraPartnerjaTemp.isEmpty())
         {
-            sifraPartnerja=Integer.parseInt(sifraPartnerjaTemp);
+            sifraPartnerja=Integer.parseInt(sifraPartnerjaTemp);            
         }
         davcnaStevilka=isciDavcnaStevilkaTxt.getText().replaceAll("[^0-9]", "");
         //osnovna.test.setText(davcnaStevilka);
         
-        Connection con = null; 
+        if(naziv!=null&&!naziv.isEmpty())
+        {
+            
+        }
+        else
+        {
+            naziv="%";
+        }
+        
+        if(ime!=null&&!ime.isEmpty())
+        {
+            
+        }
+        else
+        {
+            ime="%";
+        }
+        
+        if(priimek!=null&&!priimek.isEmpty())
+        {
+            
+        }
+        else
+        {
+            priimek="%";
+        }
+        
+        if(davcnaStevilka!=null&&!davcnaStevilka.isEmpty())
+        {
+            
+        }
+        else
+        {
+            davcnaStevilka="%";
+        }
+        
+            Connection con = null; 
             PreparedStatement pst = null;
             ResultSet rs = null;
             
             try {
-            con = DriverManager.getConnection(dburl, dbuser, dbpassword); 
-            pst = con.prepareStatement("SELECT * FROM partnerji WHERE (naziv LIKE ? AND ime LIKE ?)");          
-            pst.setString(1, naziv);
-            pst.setString(2,ime);
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            if (sifraPartnerja>0)
+            {
+                pst = con.prepareStatement("SELECT sifraPartnerja, naziv, priimek, ime, davcnaStevilka FROM partnerji WHERE (naziv LIKE ? AND ime LIKE ? AND priimek LIKE ? AND sifraPartnerja LIKE ? AND davcnaStevilka LIKE ?)");          
+                pst.setString(1, naziv);
+                pst.setString(2, ime);
+                pst.setString(3, priimek);
+                pst.setInt(4, sifraPartnerja);
+                pst.setString(5, davcnaStevilka);
+            }
+            else
+            {
+                pst = con.prepareStatement("SELECT sifraPartnerja, naziv, priimek, ime, davcnaStevilka FROM partnerji WHERE (naziv LIKE ? AND ime LIKE ? AND priimek LIKE ? AND davcnaStevilka LIKE ?)");          
+                pst.setString(1, naziv);
+                pst.setString(2, ime);
+                pst.setString(3, priimek);
+                pst.setString(4, davcnaStevilka);
+            }
+            
+            //osnovna.test.setText(String.valueOf(pst));
             rs=pst.executeQuery();
-            if (rs.next()) {               
-               sifraPartnerjaTemp=rs.getString("ime");
-               //osnovna.test.setText(sifraPartnerjaTemp);
-               }            
+            /*if (rs.next()) {               
+               sifraPartnerjaTemp=rs.getString("davcnaStevilka");
+               osnovna.test.setText(sifraPartnerjaTemp);
+               }*/
             }            
             catch (SQLException ex)
             {
             }
+            try {
+            int i=0;
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+            tm = (DefaultTableModel) jTable1.getModel();
+            jTable1.setModel(tm);
+
+            jTable1.setRowSelectionAllowed(true);
+            tm.setColumnCount(0);
+
+            // add specified columns to table
+            for (i = 1; i <= columnCount; i++ ) {
+            tm.addColumn(rsmd.getColumnName(i));
+            }   
+
+        // clear existing rows
+        tm.setRowCount(0);
+
+        // add rows to table
+        while (rs.next()) {
+            //parrent = rs.getString("konto");
+            //osnovna.test.setText(String.valueOf(parrent));
+            String[] a = new String[columnCount];
+            for(i = 0; i < columnCount; i++) {
+                a[i] = rs.getString(i+1);
+            }
+        tm.addRow(a);
+        }
+        tm.fireTableDataChanged();
+       
+        } catch (Exception ex) { 
+    //JOptionPane.showMessageDialog(this, ex, ex.getMessage(), WIDTH, null);
+        }
             finally {
             try {
                 if (rs != null) {
@@ -318,9 +558,36 @@ public class partnerji extends javax.swing.JFrame {
                 //Logger lgr = Logger.getLogger(Version.class.getName());
                 //lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
-        
+            }  
+           
     }//GEN-LAST:event_isciButtonActionPerformed
+
+    private void popraviNazivTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popraviNazivTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_popraviNazivTxtActionPerformed
+
+    private void popraviPriimekTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popraviPriimekTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_popraviPriimekTxtActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 2){
+            
+            getValueOfSelectedRow();
+            
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+    
+    public void getValueOfSelectedRow()
+    {
+        int row = jTable1.getSelectedRow();
+        value=jTable1.getValueAt(row, 0);
+        sifraPartnerjaTemp=String.valueOf(value);
+        sifraPartnerja=Integer.parseInt(sifraPartnerjaTemp);
+        //osnovna.test.setText(Login.stariKonto);
+        //new spremeniDrzavo().setVisible(true);
     }
+    
     /**
      * @param args the command line arguments
      */
@@ -363,14 +630,37 @@ public class partnerji extends javax.swing.JFrame {
     private javax.swing.JTextField isciNazivTxt;
     private javax.swing.JTextField isciPriimekTxt;
     private javax.swing.JTextField isciSifraPartnerjaTxt;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField popraviHisnaStevilkaTxt;
+    private javax.swing.JTextField popraviImeTxt;
+    private javax.swing.JTextField popraviKrajTxt;
+    private javax.swing.JTextField popraviNaslovTxt;
+    private javax.swing.JTextField popraviNazivTxt;
+    private javax.swing.JTextField popraviPostaTxt;
+    private javax.swing.JTextField popraviPostnaStevilkaTxt;
+    private javax.swing.JTextField popraviPriimekTxt;
+    private javax.swing.JTextField popraviSifraPartnerjaTxt;
     // End of variables declaration//GEN-END:variables
 }
