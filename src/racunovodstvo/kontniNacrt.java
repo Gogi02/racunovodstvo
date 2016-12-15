@@ -1136,7 +1136,7 @@ public class kontniNacrt extends javax.swing.JFrame {
             napaka=4;            
         } 
         
-        osnovna.test.setText(String.valueOf(napaka));
+        //osnovna.test.setText(String.valueOf(napaka));
         
         switch (napaka)
         {

@@ -180,6 +180,8 @@ public class partnerji extends javax.swing.JFrame {
         sifraPartnerjaLabel = new javax.swing.JLabel();
         popraviDrzavaTxt = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        popraviPredponaTxt = new javax.swing.JTextField();
+        popraviDavcnaStevilkaTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -316,6 +318,12 @@ public class partnerji extends javax.swing.JFrame {
             }
         });
 
+        popraviDrzavaTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popraviDrzavaTxtActionPerformed(evt);
+            }
+        });
+
         jButton1.setText("Išči");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -330,35 +338,41 @@ public class partnerji extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel17)
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel13)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel10))
+                .addGap(55, 55, 55)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(popraviPriimekTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                    .addComponent(popraviImeTxt)
+                    .addComponent(popraviNazivTxt)
+                    .addComponent(popraviNaslovTxt)
+                    .addComponent(popraviHisnaStevilkaTxt)
+                    .addComponent(popraviKrajTxt)
+                    .addComponent(popraviPostnaStevilkaTxt)
+                    .addComponent(popraviPostaTxt)
+                    .addComponent(sifraPartnerjaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(popraviDrzavaTxt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addGap(27, 27, 27)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel15)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel10))
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(popraviDavcnaStevilkaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(popraviPriimekTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-                            .addComponent(popraviImeTxt)
-                            .addComponent(popraviNazivTxt)
-                            .addComponent(popraviNaslovTxt)
-                            .addComponent(popraviHisnaStevilkaTxt)
-                            .addComponent(popraviKrajTxt)
-                            .addComponent(popraviPostnaStevilkaTxt)
-                            .addComponent(popraviPostaTxt)
-                            .addComponent(sifraPartnerjaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(popraviDrzavaTxt))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
-                .addContainerGap(403, Short.MAX_VALUE))
+                        .addComponent(popraviPredponaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,16 +413,19 @@ public class partnerji extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(popraviPostaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(1, 1, 1)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(popraviDrzavaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(4, 4, 4)
-                .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel17)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(popraviDrzavaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1)
+                        .addComponent(jLabel16)
+                        .addComponent(popraviPredponaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel17)
+                    .addComponent(popraviDavcnaStevilkaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Popravi partnerja", jPanel2);
@@ -580,6 +597,10 @@ public class partnerji extends javax.swing.JFrame {
         new isciDrzavo().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void popraviDrzavaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popraviDrzavaTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_popraviDrzavaTxtActionPerformed
+
     public void getValueOfSelectedRow() {
         int row = jTable1.getSelectedRow();
         value = jTable1.getValueAt(row, 0);
@@ -612,15 +633,16 @@ public class partnerji extends javax.swing.JFrame {
                kraj=rs.getString("kraj");
                postnaStevilka=rs.getString("postnaStevilka");
                posta=rs.getString("posta");
-               davcnaStevilka=rs.getString("davcnaStevilka");
-               dobavitelj=rs.getInt("dobavitelj");
-               kupec=rs.getInt("kupec");
-               aktiven=rs.getInt("aktiven");
+               davcnaStevilka=rs.getString("davcnaStevilka");
+               dobavitelj=rs.getInt("dobavitelj");
+               kupec=rs.getInt("kupec");
+               aktiven=rs.getInt("aktiven");
             }
             
             sifraPartnerjaLabel.setText(String.valueOf(staraSifraPartnerja));
-            spremeniOznakaDrzaveTxt.setText(oznakaDrzave);
-            spremeniSifraDrzaveTxt.setText(String.valueOf(sifraDrzave));         
+            popraviNazivTxt.setText(naziv);
+            popraviImeTxt.setText(ime);
+            popraviPriimekTxt.setText("priimek");
             
             
         } catch (SQLException ex) {
@@ -710,6 +732,7 @@ public class partnerji extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField popraviDavcnaStevilkaTxt;
     public static javax.swing.JTextField popraviDrzavaTxt;
     private javax.swing.JTextField popraviHisnaStevilkaTxt;
     private javax.swing.JTextField popraviImeTxt;
@@ -718,6 +741,7 @@ public class partnerji extends javax.swing.JFrame {
     private javax.swing.JTextField popraviNazivTxt;
     private javax.swing.JTextField popraviPostaTxt;
     private javax.swing.JTextField popraviPostnaStevilkaTxt;
+    private javax.swing.JTextField popraviPredponaTxt;
     private javax.swing.JTextField popraviPriimekTxt;
     private javax.swing.JLabel sifraPartnerjaLabel;
     // End of variables declaration//GEN-END:variables
