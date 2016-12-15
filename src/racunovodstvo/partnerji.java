@@ -612,7 +612,10 @@ public class partnerji extends javax.swing.JFrame {
                kraj=rs.getString("kraj");
                postnaStevilka=rs.getString("postnaStevilka");
                posta=rs.getString("posta");
-               drzava=rs.getString("drzava");
+               davcnaStevilka=rs.getString("davcnaStevilka");
+               dobavitelj=rs.getInt("dobavitelj");
+               kupec=rs.getInt("kupec");
+               aktiven=rs.getInt("aktiven");
             }
             
             sifraPartnerjaLabel.setText(String.valueOf(staraSifraPartnerja));
