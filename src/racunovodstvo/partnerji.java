@@ -29,11 +29,11 @@ public class partnerji extends javax.swing.JFrame {
 
     int dovoljenjaDodajPartnerja, dovoljenjaSpremeniPartnerja, napaka, sifraPartnerja, staraSifraPartnerja, dobavitelj, kupec, aktiven,
             zavezanecDDV, popraviDobavitelj, popraviKupec, popraviAktiven, popraviZavezanecDDV, popraviNapaka;
-    String tekstNapake, naslovNapake, ime, priimek, naziv, davcnaStevilka, predpona, hisnaStevilka, posta, postnaStevilka, kraj,
+    String sifraDrzaveTemp, tekstNapake, naslovNapake, ime, priimek, naziv, davcnaStevilka, predpona, hisnaStevilka, posta, postnaStevilka, kraj,
             naslov, transakcijskiRacun, drzava, drzavaText, sifraPartnerjaTemp, popraviIme, popraviPriimek, popraviNaziv, popraviDavcnaStevilka, popraviPredpona, popraviHisnaStevilka, popraviPosta, popraviPostnaStevilka, popraviKraj,
             popraviNaslov, popraviTransakcijskiRacun, popraviDrzava, popraviDrzavaText, popraviSifraPartnerjaTemp;
-    DefaultTableModel tm;
-    public static Object value;
+    DefaultTableModel tm, tm2;
+    public static Object value, value2;
 
     /**
      * Creates new form partnerji
@@ -142,6 +142,13 @@ public class partnerji extends javax.swing.JFrame {
 
         isciDrzavo = new javax.swing.JDialog();
         jButton2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;   //Disallow the editing of any cell
+            }
+        };
+        jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable(){
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -196,27 +203,55 @@ public class partnerji extends javax.swing.JFrame {
         popraviTransakcijskiRacunTxt = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
 
-        isciDrzavo.setMinimumSize(new java.awt.Dimension(297, 169));
+        isciDrzavo.setMinimumSize(new java.awt.Dimension(525, 420));
         isciDrzavo.setModal(true);
         isciDrzavo.setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
+        isciDrzavo.setPreferredSize(new java.awt.Dimension(525, 420));
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Potrdi");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        populateDrzava2();
+        jTable2.setModel(tm2);
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+
+        jButton3.setText("Prekliči");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout isciDrzavoLayout = new javax.swing.GroupLayout(isciDrzavo.getContentPane());
         isciDrzavo.getContentPane().setLayout(isciDrzavoLayout);
         isciDrzavoLayout.setHorizontalGroup(
             isciDrzavoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(isciDrzavoLayout.createSequentialGroup()
-                .addGap(109, 109, 109)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, isciDrzavoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addGap(8, 8, 8))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
         );
         isciDrzavoLayout.setVerticalGroup(
             isciDrzavoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(isciDrzavoLayout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addComponent(jButton2)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(isciDrzavoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -726,6 +761,35 @@ public class partnerji extends javax.swing.JFrame {
        jTabbedPane1.setSelectedIndex(0);
     }//GEN-LAST:event_popraviOpustiButtonActionPerformed
 
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        if (evt.getClickCount() == 2) {
+            getValueOfSelectedRow2();
+            popraviDrzavaTxt.setText(sifraDrzaveTemp);
+            poisciTextDrzave();
+            popraviDrzavaLabel.setText(drzavaText);
+            isciDrzavo.dispose();
+        }
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        isciDrzavo.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+            getValueOfSelectedRow2();
+            popraviDrzavaTxt.setText(sifraDrzaveTemp);
+            poisciTextDrzave();
+            popraviDrzavaLabel.setText(drzavaText);
+            isciDrzavo.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    public void getValueOfSelectedRow2()
+    {
+        int row = jTable2.getSelectedRow();
+        value = jTable2.getValueAt(row, 0);
+        sifraDrzaveTemp = String.valueOf(value);
+    }
+    
     public void getValueOfSelectedRow() {
         int row = jTable1.getSelectedRow();
         value = jTable1.getValueAt(row, 0);
@@ -753,7 +817,7 @@ public class partnerji extends javax.swing.JFrame {
                priimek= rs.getString("priimek");
                drzava=rs.getString("drzava");
                
-               poisciTextDrzave();           
+               //poisciTextDrzave();           
                naslov=rs.getString("naslov");
                hisnaStevilka=rs.getString("hisnaStevilka");
                kraj=rs.getString("kraj");               
@@ -773,9 +837,10 @@ public class partnerji extends javax.swing.JFrame {
             sifraPartnerjaLabel.setText(String.valueOf(staraSifraPartnerja));
             popraviNazivTxt.setText(naziv);
             popraviImeTxt.setText(ime);
-            popraviPriimekTxt.setText(priimek);
-            popraviDrzavaLabel.setText(drzavaText);
+            popraviPriimekTxt.setText(priimek);            
             popraviDrzavaTxt.setText(drzava);
+            poisciTextDrzave();
+            popraviDrzavaLabel.setText(drzavaText);
             popraviNaslovTxt.setText(naslov);
             popraviHisnaStevilkaTxt.setText(hisnaStevilka);
             popraviKrajTxt.setText(kraj);
@@ -821,6 +886,8 @@ public class partnerji extends javax.swing.JFrame {
     
     public void poisciTextDrzave()
     {
+        String drzavaText2=popraviDrzavaTxt.getText();
+        osnovna.test.setText(drzavaText2);
         Connection conDrzavaText = null;        
         PreparedStatement pstDrzavaText = null;
         ResultSet rsDrzavaText = null;       
@@ -828,11 +895,13 @@ public class partnerji extends javax.swing.JFrame {
         try {
             conDrzavaText = DriverManager.getConnection(dburl, dbuser, dbpassword);
             pstDrzavaText = conDrzavaText.prepareStatement("SELECT * FROM drzave WHERE sifraDrzave=?");            
-            pstDrzavaText.setString(1, drzava);            
+            
+            
+            pstDrzavaText.setString(1, drzavaText2);            
             rsDrzavaText=pstDrzavaText.executeQuery();
             if (rsDrzavaText.next()) {           
                drzavaText=rsDrzavaText.getString("opis");
-               //osnovna.test.setText(drzavaText);
+               
             }
             
         } catch (SQLException ex) {
@@ -1067,6 +1136,96 @@ public class partnerji extends javax.swing.JFrame {
         
     }
     
+    public void populateDrzava2(){
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;        
+        //ResultSet rs2 = null;        
+        //PreparedStatement pst2 = null;
+        
+        //String parrent="a";
+
+        String [] aryNastavitve;
+        aryNastavitve=new String[3];
+        int i=0;
+        
+		try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+		{
+
+			String trenutnaVrstica;
+
+			while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo				
+                            aryNastavitve[i]=trenutnaVrstica;
+                            i++;                            
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+                
+                String dburl = aryNastavitve[0];//spremenjivke iz tabele
+                String dbuser = aryNastavitve[1];
+                String dbpassword = aryNastavitve[2];                
+
+                try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            pst = con.prepareStatement("SELECT sifraDrzave, kratica, opis FROM drzave");            
+            rs = pst.executeQuery();
+            //pst2 = con.prepareStatement("SELECT spremeniDrzavo, dodajDrzavo FROM dovoljenja WHERE skupina=?");
+            //pst2.setInt(1, Login.skupina);
+            //rs2 = pst2.executeQuery();
+            
+            /*if (rs2.next()) {           
+              dovoljenjaSpremeniDrzavo=rs2.getInt("spremeniDrzavo");
+              dovoljenjaDodajDrzavo=rs2.getInt("dodajDrzavo");
+            }*/
+            
+        } catch (SQLException ex) {
+           // Logger lgr = Logger.getLogger(Version.class.getName());
+            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+
+        try {
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+            tm2 = (DefaultTableModel) jTable2.getModel();
+            jTable2.setModel(tm2);
+
+            jTable2.setRowSelectionAllowed(true);
+            tm2.setColumnCount(0);
+
+            // add specified columns to table
+            for (i = 1; i <= columnCount; i++ ) {
+            tm2.addColumn(rsmd.getColumnName(i));
+            }   
+
+        // clear existing rows
+        tm2.setRowCount(0);
+
+        // add rows to table
+        while (rs.next()) {
+            //parrent = rs.getString("konto");
+            //osnovna.test.setText(String.valueOf(parrent));
+            String[] a = new String[columnCount];
+            for(i = 0; i < columnCount; i++) {
+                a[i] = rs.getString(i+1);
+            }
+        tm2.addRow(a);
+        }
+        tm2.fireTableDataChanged();
+
+        // Close ResultSet and Statement
+        rs.close();
+        pst.close();
+
+        } catch (Exception ex) { 
+    //JOptionPane.showMessageDialog(this, ex, ex.getMessage(), WIDTH, null);
+        }
+
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -1112,6 +1271,7 @@ public class partnerji extends javax.swing.JFrame {
     private javax.swing.JTextField isciSifraPartnerjaTxt;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1132,8 +1292,10 @@ public class partnerji extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JCheckBox popraviAktivenCheck;
     private javax.swing.JButton popraviButton;
     private javax.swing.JTextField popraviDavcnaStevilkaTxt;
