@@ -56,6 +56,8 @@ int dovoljenjaValute=0;
         valute = new javax.swing.JMenuItem();
         orodja = new javax.swing.JMenu();
         nastavitve = new javax.swing.JMenuItem();
+        knjizenje = new javax.swing.JMenu();
+        vnosPrometa = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Računovodstvo");
@@ -403,7 +405,7 @@ int dovoljenjaValute=0;
             }
         }
 
-        if (dovoljenjaPartnerji==0)
+        if (dovoljenjaNastavitve==0)
         {
             nastavitve.setEnabled(false);
         }
@@ -411,6 +413,75 @@ int dovoljenjaValute=0;
         orodja.add(nastavitve);
 
         jMenuBar1.add(orodja);
+
+        knjizenje.setText("Knjiženje");
+
+        con = null;
+        pst = null;
+        rsDovoljenja = null;
+
+        aryNastavitve=new String[3];
+        i=0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+        {
+
+            String trenutnaVrstica;
+
+            while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo
+                aryNastavitve[i]=trenutnaVrstica;
+                i++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        dburl = aryNastavitve[0];//spremenjivke iz tabele
+        dbuser = aryNastavitve[1];
+        dbpassword = aryNastavitve[2];
+
+        try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            pst = con.prepareStatement("SELECT * FROM dovoljenja WHERE skupina=?");
+            pst.setInt(1,Login.skupina);
+            rsDovoljenja = pst.executeQuery();
+            if (rsDovoljenja.next()) {
+                dovoljenjaPartnerji=rsDovoljenja.getInt("vnosPrometa");
+            }
+
+        } catch (SQLException ex) {
+
+        }
+
+        finally {
+            try {
+
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+
+            }
+        }
+
+        if (dovoljenjaPartnerji==0)
+        {
+            vnosPrometa.setEnabled(false);
+        }
+        vnosPrometa.setText("Vnos prometa");
+        vnosPrometa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vnosPrometaActionPerformed(evt);
+            }
+        });
+        knjizenje.add(vnosPrometa);
+
+        jMenuBar1.add(knjizenje);
 
         setJMenuBar(jMenuBar1);
 
@@ -459,6 +530,10 @@ int dovoljenjaValute=0;
         new valute().setVisible(true);
     }//GEN-LAST:event_valuteActionPerformed
 
+    private void vnosPrometaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vnosPrometaActionPerformed
+        new vnosPrometa().setVisible(true);
+    }//GEN-LAST:event_vnosPrometaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -498,6 +573,7 @@ int dovoljenjaValute=0;
     private javax.swing.JMenuItem drzave;
     private javax.swing.JMenuItem izhod;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu knjizenje;
     private javax.swing.JMenuItem kontniNacrt;
     private javax.swing.JMenuItem nastavitve;
     private javax.swing.JMenuItem odjava;
@@ -507,5 +583,6 @@ int dovoljenjaValute=0;
     private javax.swing.JMenu sifranti;
     public static javax.swing.JLabel test;
     private javax.swing.JMenuItem valute;
+    private javax.swing.JMenuItem vnosPrometa;
     // End of variables declaration//GEN-END:variables
 }

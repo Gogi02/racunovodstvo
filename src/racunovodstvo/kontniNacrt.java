@@ -302,7 +302,6 @@ public class kontniNacrt extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dodajKonto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable(){
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -341,13 +340,6 @@ public class kontniNacrt extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Kontni načrt");
-
-        dodajKonto.setText("Dodaj konto");
-        dodajKonto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dodajKontoActionPerformed(evt);
-            }
-        });
 
         populateKN();
 
@@ -576,7 +568,7 @@ public class kontniNacrt extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(dodajParrentTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dodajParnterCheck))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dodajKontoPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(dodajButt)
@@ -695,8 +687,6 @@ public class kontniNacrt extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(dodajKonto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(osvezi)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(natisni)
@@ -709,7 +699,6 @@ public class kontniNacrt extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dodajKonto)
                     .addComponent(natisni)
                     .addComponent(osvezi))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -719,72 +708,8 @@ public class kontniNacrt extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rsDovoljenja = null;
-
-        String [] aryNastavitve;
-        aryNastavitve=new String[3];
-        int i=0;
-
-        try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
-        {
-
-            String trenutnaVrstica;
-
-            while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo
-                aryNastavitve[i]=trenutnaVrstica;
-                i++;
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String dburl = aryNastavitve[0];//spremenjivke iz tabele
-        String dbuser = aryNastavitve[1];
-        String dbpassword = aryNastavitve[2];
-
-        try {
-            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-
-            pst = con.prepareStatement("SELECT * FROM dovoljenja WHERE skupina=?");
-            pst.setInt(1,Login.skupina);
-            rsDovoljenja = pst.executeQuery();
-
-            if (rsDovoljenja.next()) {
-                dovoljenjaDodajKonto=rsDovoljenja.getInt("dodajKonto");
-            }
-
-        } catch (SQLException ex) {
-
-        }
-
-        finally {
-            try {
-
-                if (pst != null) {
-                    pst.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-
-            } catch (SQLException ex) {
-
-            }
-        }
-        if (dovoljenjaDodajKonto==0)
-        {
-            dodajKonto.setEnabled(false);
-        }
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void dodajKontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKontoActionPerformed
-        new dodajKonto().setVisible(true);
-    }//GEN-LAST:event_dodajKontoActionPerformed
 
     private void natisniActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_natisniActionPerformed
         
@@ -1367,7 +1292,6 @@ public class kontniNacrt extends javax.swing.JFrame {
     private javax.swing.JCheckBox debetCheck;
     private javax.swing.JButton dodajButt;
     private javax.swing.JCheckBox dodajDebetCheck;
-    private javax.swing.JButton dodajKonto;
     private javax.swing.JPanel dodajKontoPanel;
     private javax.swing.JTextField dodajKontoTxt;
     private javax.swing.JCheckBox dodajKreditCheck;
