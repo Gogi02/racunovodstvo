@@ -36,68 +36,9 @@ public class vnosPrometa extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void preveriObstajaZacasnaTemeljnica()
-    {
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;       
-
-        String [] aryNastavitve;
-        aryNastavitve=new String[3];
-        int i=0;
-        
-		try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
-		{
-
-			String trenutnaVrstica;
-
-			while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo				
-                            aryNastavitve[i]=trenutnaVrstica;
-                            i++;                            
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-                
-                dburl = aryNastavitve[0];//spremenjivke iz tabele
-                dbuser = aryNastavitve[1];
-                dbpassword = aryNastavitve[2];                
-
-                try {
-            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-            pst = con.prepareStatement("SELECT stevilka FROM zacasnaTemeljnica");
-            rs = pst.executeQuery();
-
-            if (rs.next()) {
-               populateZacasnaTemeljnica();
-            } 
-
-        } catch (SQLException ex) {
-           // Logger lgr = Logger.getLogger(Version.class.getName());
-            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
-
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pst != null) {
-                    pst.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-
-            } catch (SQLException ex) {
-                //Logger lgr = Logger.getLogger(Version.class.getName());
-                //lgr.log(Level.WARNING, ex.getMessage(), ex);
-            }
-        }
-    }
-    
     public void populateZacasnaTemeljnica()
     {
+        //osnovna.test.setText("populateZacasnaTemeljnica");
         Connection con = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
@@ -128,15 +69,17 @@ public class vnosPrometa extends javax.swing.JFrame {
         String dbpassword = aryNastavitve[2];
 
         try {
-            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-            pst = con.prepareStatement("SELECT stevilka, datum, mesec, leto, opomba FROM zacasnaTemeljnica");
-            rs = pst.executeQuery();
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);            
+            pst = con.prepareStatement("SELECT stevilka, datum, mesec, leto, opomba FROM zacasneTemeljnice");
+            rs = pst.executeQuery();            
             pst2 = con.prepareStatement("SELECT vnosPrometa FROM dovoljenja WHERE skupina=?");
             pst2.setInt(1, Login.skupina);
             rs2 = pst2.executeQuery();
+            
 
             if (rs2.next()) {
-                dovoljenjaVnosPrometa = rs2.getInt("vnosPrometa");                
+                dovoljenjaVnosPrometa = rs2.getInt("vnosPrometa");
+                //osnovna.test.setText(String.valueOf(dovoljenjaVnosPrometa));
             }
 
         } catch (SQLException ex) {
@@ -165,7 +108,7 @@ public class vnosPrometa extends javax.swing.JFrame {
 
             // add rows to table
             while (rs.next()) {
-                //parrent = rs.getString("konto");
+                //int parrent = rs.getInt("stevilka");
                 //osnovna.test.setText(String.valueOf(parrent));
                 String[] a = new String[columnCount];
                 for (i = 0; i < columnCount; i++) {
@@ -202,7 +145,7 @@ public class vnosPrometa extends javax.swing.JFrame {
 
             setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-            preveriObstajaZacasnaTemeljnica();
+            populateZacasnaTemeljnica();
             jTable1.setModel(tm);
             jScrollPane1.setViewportView(jTable1);
 

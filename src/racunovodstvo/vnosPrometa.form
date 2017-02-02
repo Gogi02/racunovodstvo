@@ -64,7 +64,7 @@
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){&#xa;    public boolean isCellEditable(int rowIndex, int colIndex) {&#xa;        return false;   //Disallow the editing of any cell&#xa;    }}"/>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="preveriObstajaZacasnaTemeljnica();"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="populateZacasnaTemeljnica();"/>
           </AuxValues>
         </Component>
       </SubComponents>
