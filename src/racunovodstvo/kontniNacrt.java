@@ -1180,7 +1180,7 @@ public class kontniNacrt extends javax.swing.JFrame {
         populateKN();
     }
     
-    public void prikazNapake(String tekstNapake, String naslovNapake)
+    public static void prikazNapake(String tekstNapake, String naslovNapake)
     {
         JOptionPane.showMessageDialog(null,tekstNapake,naslovNapake,JOptionPane.ERROR_MESSAGE);
     }
