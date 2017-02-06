@@ -33,9 +33,9 @@ import static racunovodstvo.Login.skupina;
 public class vnosPrometa extends javax.swing.JFrame {
     DefaultTableModel tm;
     int dovoljenjaVnosPrometa, maxStevilkaZacasneTemeljnice, zacetnaStevilkaTemeljnice,
-            maxStevilkaTemeljnice, maxStevilkaTemeljnic, stevilkaZacasneTemeljnice, dodajTemeljnicaMesec, dodajTemeljnicaLeto,
+            maxStevilkaTemeljnice, maxStevilkaTemeljnic, dodajTemeljnicaMesec, dodajTemeljnicaLeto,
             dodajNapaka;
-    public static int prva, druga, tretja;
+    public static int prva, druga, tretja, stevilkaZacasneTemeljnice;
     String dodajTemeljnicaOpomba, uporabnik, tekstNapake, naslovNapake;
     long dodajDatumZacasneTemeljnice;
     Date dodajDatumZacasneTemeljniceRaw;
@@ -254,6 +254,7 @@ public class vnosPrometa extends javax.swing.JFrame {
             }
         }
         populateZacasnaTemeljnica();
+        new knjizenje().setVisible(true);
     }
     
     public void generirajStevilkoTemeljnice()
@@ -418,7 +419,8 @@ public class vnosPrometa extends javax.swing.JFrame {
             dodajTemeljnicaOpombaTXT = new javax.swing.JTextField();
             dodajTemeljnicaButton = new javax.swing.JButton();
             jLabel5 = new javax.swing.JLabel();
-            jPanel2 = new javax.swing.JPanel();
+            jButton1 = new javax.swing.JButton();
+            jButton2 = new javax.swing.JButton();
 
             setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -536,18 +538,9 @@ public class vnosPrometa extends javax.swing.JFrame {
 
             jTabbedPane1.addTab("Dodaj Temeljnico", jPanel1);
 
-            javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-            jPanel2.setLayout(jPanel2Layout);
-            jPanel2Layout.setHorizontalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 686, Short.MAX_VALUE)
-            );
-            jPanel2Layout.setVerticalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGap(0, 122, Short.MAX_VALUE)
-            );
+            jButton1.setText("Odpri");
 
-            jTabbedPane1.addTab("Spremeni temeljnico", jPanel2);
+            jButton2.setText("Izbriši");
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
@@ -557,13 +550,22 @@ public class vnosPrometa extends javax.swing.JFrame {
                     .addContainerGap()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPane1)
-                        .addComponent(jTabbedPane1))
+                        .addComponent(jTabbedPane1)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButton1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jButton2)
+                            .addGap(0, 0, Short.MAX_VALUE)))
                     .addContainerGap())
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(39, 39, 39)
+                    .addGap(4, 4, 4)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton2))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -572,26 +574,16 @@ public class vnosPrometa extends javax.swing.JFrame {
             pack();
         }// </editor-fold>//GEN-END:initComponents
 
-    private void dodajTemeljnicaDatumFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaDatumFTFKeyPressed
+    private void dodajTemeljnicaButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaButtonKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            dodajTemeljnicaMesecFTF.requestFocusInWindow();
-        }
-    }//GEN-LAST:event_dodajTemeljnicaDatumFTFKeyPressed
 
-    private void dodajTemeljnicaMesecFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaMesecFTFKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
-        {
-            dodajTemeljnicaLetoFTF.requestFocusInWindow();
         }
-    }//GEN-LAST:event_dodajTemeljnicaMesecFTFKeyPressed
+    }//GEN-LAST:event_dodajTemeljnicaButtonKeyPressed
 
-    private void dodajTemeljnicaLetoFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaLetoFTFKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
-        {
-            dodajTemeljnicaOpombaTXT.requestFocusInWindow();
-        }
-    }//GEN-LAST:event_dodajTemeljnicaLetoFTFKeyPressed
+    private void dodajTemeljnicaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajTemeljnicaButtonActionPerformed
+        dodajTemeljnico();
+    }//GEN-LAST:event_dodajTemeljnicaButtonActionPerformed
 
     private void dodajTemeljnicaOpombaTXTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaOpombaTXTKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
@@ -600,16 +592,26 @@ public class vnosPrometa extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_dodajTemeljnicaOpombaTXTKeyPressed
 
-    private void dodajTemeljnicaButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaButtonKeyPressed
+    private void dodajTemeljnicaLetoFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaLetoFTFKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            
+            dodajTemeljnicaOpombaTXT.requestFocusInWindow();
         }
-    }//GEN-LAST:event_dodajTemeljnicaButtonKeyPressed
+    }//GEN-LAST:event_dodajTemeljnicaLetoFTFKeyPressed
 
-    private void dodajTemeljnicaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajTemeljnicaButtonActionPerformed
-        dodajTemeljnico();
-    }//GEN-LAST:event_dodajTemeljnicaButtonActionPerformed
+    private void dodajTemeljnicaMesecFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaMesecFTFKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            dodajTemeljnicaLetoFTF.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_dodajTemeljnicaMesecFTFKeyPressed
+
+    private void dodajTemeljnicaDatumFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaDatumFTFKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            dodajTemeljnicaMesecFTF.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_dodajTemeljnicaDatumFTFKeyPressed
 
     /**
      * @param args the command line arguments
@@ -652,13 +654,14 @@ public class vnosPrometa extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField dodajTemeljnicaLetoFTF;
     private javax.swing.JFormattedTextField dodajTemeljnicaMesecFTF;
     private javax.swing.JTextField dodajTemeljnicaOpombaTXT;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
