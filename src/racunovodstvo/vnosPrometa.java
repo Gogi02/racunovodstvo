@@ -34,11 +34,13 @@ public class vnosPrometa extends javax.swing.JFrame {
     DefaultTableModel tm;
     int dovoljenjaVnosPrometa, maxStevilkaZacasneTemeljnice, zacetnaStevilkaTemeljnice,
             maxStevilkaTemeljnice, maxStevilkaTemeljnic, dodajTemeljnicaMesec, dodajTemeljnicaLeto,
-            dodajNapaka;
-    public static int prva, druga, tretja, stevilkaZacasneTemeljnice;
+            dodajNapaka, zaklep, i;
+    public static int prva, druga, tretja, stevilkaZacasneTemeljnice, zaklenjen, dovoljenOgledTujeTemeljnice;
     String dodajTemeljnicaOpomba, uporabnik, tekstNapake, naslovNapake;
     long dodajDatumZacasneTemeljnice;
     Date dodajDatumZacasneTemeljniceRaw;
+    public static Object value;
+    public static String uporabnikTemeljnice;
     /**
      * Creates new form vnosPrometa
      */
@@ -82,13 +84,14 @@ public class vnosPrometa extends javax.swing.JFrame {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);            
             pst = con.prepareStatement("SELECT stevilka, mesec, leto, opomba FROM zacasneTemeljnice");
             rs = pst.executeQuery();            
-            pst2 = con.prepareStatement("SELECT vnosPrometa FROM dovoljenja WHERE skupina=?");
+            pst2 = con.prepareStatement("SELECT vnosPrometa, ogledTujeTemeljnice FROM dovoljenja WHERE skupina=?");
             pst2.setInt(1, Login.skupina);
             rs2 = pst2.executeQuery();
             
 
             if (rs2.next()) {
                 dovoljenjaVnosPrometa = rs2.getInt("vnosPrometa");
+                dovoljenOgledTujeTemeljnice = rs2.getInt("ogledTujetemeljnice");
                 //osnovna.test.setText(String.valueOf(dovoljenjaVnosPrometa));
             }
 
@@ -213,13 +216,15 @@ public class vnosPrometa extends javax.swing.JFrame {
 
         try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-            pst = con.prepareStatement("INSERT INTO zacasneTemeljnice"+"(stevilka, datum, mesec, leto, opomba, uporabnik) VALUES"+"(?,?,?,?,?,?)");
+            pst = con.prepareStatement("INSERT INTO zacasneTemeljnice"+"(stevilka, datum, mesec, leto, opomba, uporabnik, zaklenjen) VALUES"+"(?,?,?,?,?,?,?)");
             pst.setInt(1, stevilkaZacasneTemeljnice);
             pst.setLong(2, dodajDatumZacasneTemeljnice);
             pst.setInt(3, dodajTemeljnicaMesec);
             pst.setInt(4, dodajTemeljnicaLeto);
             pst.setString(5, dodajTemeljnicaOpomba);
-            pst.setString(6, uporabnik);                       
+            pst.setString(6, uporabnik);            
+            zaklenjen=1;
+            pst.setInt(7,zaklenjen);
             //osnovna.test.setText(String.valueOf(pst));
             String statement=String.valueOf(pst);
             pst.executeUpdate();
@@ -253,7 +258,7 @@ public class vnosPrometa extends javax.swing.JFrame {
                 //lgr.log(Level.WARNING, ex.getMessage(), ex);
             }
         }
-        populateZacasnaTemeljnica();
+        populateZacasnaTemeljnica();        
         new knjizenje().setVisible(true);
     }
     
@@ -391,7 +396,174 @@ public class vnosPrometa extends javax.swing.JFrame {
         return Integer.MIN_VALUE;
     }
     
+    public void getValueOfSelectedRow()
+    {
+        int row = jTable1.getSelectedRow();
+        value = jTable1.getValueAt(row, 0);
+        String stevilkaZacasneTemeljniceTemp= String.valueOf(value);
+        stevilkaZacasneTemeljnice=Integer.parseInt(stevilkaZacasneTemeljniceTemp);
+    }
     
+    public static String ugotoviUporabnikaTemeljnice()
+    {
+        Connection con = null;
+            PreparedStatement pst = null;
+            ResultSet rs = null;
+        
+            String[] aryNastavitve;
+            aryNastavitve = new String[3];
+            int i = 0;
+
+            try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+            {
+
+                String trenutnaVrstica;
+
+                while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo				
+                    aryNastavitve[i] = trenutnaVrstica;
+                    i++;
+                }
+            }
+            catch (IOException e) 
+            {
+                e.printStackTrace();
+            }
+
+            String dburl = aryNastavitve[0];//spremenjivke iz tabele
+            String dbuser = aryNastavitve[1];
+            String dbpassword = aryNastavitve[2];
+        
+            try {
+                con = DriverManager.getConnection(dburl, dbuser, dbpassword); 
+                pst = con.prepareStatement("SELECT uporabnik FROM zacasneTemeljnice WHERE stevilka =?");          
+                pst.setInt(1, stevilkaZacasneTemeljnice);
+                rs=pst.executeQuery();            
+            
+                if (rs.next()) {           
+                    uporabnikTemeljnice=rs.getString("uporabnik");
+                }            
+            }
+            catch (SQLException ex)
+            {
+            }
+            finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (pst != null) {
+                        pst.close();
+                    }                
+                    if (con != null) {
+                        con.close();
+                    }
+                } 
+                catch (SQLException ex) {
+                    //Logger lgr = Logger.getLogger(Version.class.getName());
+                    //lgr.log(Level.WARNING, ex.getMessage(), ex);
+                }
+                }
+        return uporabnikTemeljnice;
+    }
+    
+    public static int ugotoviZaklenjenaTemleljnica()
+    {
+            Connection con = null;
+            PreparedStatement pst = null;
+            ResultSet rs = null;
+        
+            String[] aryNastavitve;
+            aryNastavitve = new String[3];
+            int i = 0;
+
+            try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+            {
+
+                String trenutnaVrstica;
+
+                while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo				
+                    aryNastavitve[i] = trenutnaVrstica;
+                    i++;
+                }
+            }
+            catch (IOException e) 
+            {
+                e.printStackTrace();
+            }
+
+            String dburl = aryNastavitve[0];//spremenjivke iz tabele
+            String dbuser = aryNastavitve[1];
+            String dbpassword = aryNastavitve[2];
+        
+            try {
+                con = DriverManager.getConnection(dburl, dbuser, dbpassword); 
+                pst = con.prepareStatement("SELECT zaklenjen FROM zacasneTemeljnice WHERE stevilka =?");          
+                pst.setInt(1, stevilkaZacasneTemeljnice);
+                rs=pst.executeQuery();            
+            
+                if (rs.next()) {           
+                    zaklenjen=rs.getInt("zaklenjen");
+                }            
+            }
+            catch (SQLException ex)
+            {
+            }
+            finally {
+                try {
+                    if (rs != null) {
+                        rs.close();
+                    }
+                    if (pst != null) {
+                        pst.close();
+                    }                
+                    if (con != null) {
+                        con.close();
+                    }
+                } 
+                catch (SQLException ex) {
+                    //Logger lgr = Logger.getLogger(Version.class.getName());
+                    //lgr.log(Level.WARNING, ex.getMessage(), ex);
+                }
+                }
+            return zaklenjen;
+    }
+    
+    public static void zakleniOdkleniTemeljnico(int stevilka, int zaklep)
+    {
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;       
+
+        try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            pst = con.prepareStatement("UPDATE zacasneTemeljnice SET zaklenjen=? WHERE stevilka=?");
+            pst.setInt(1, zaklep);
+            pst.setInt(2, stevilka);            
+            //osnovna.test.setText(String.valueOf(pst));            
+            pst.executeUpdate();            
+
+        } catch (SQLException ex) {
+           // Logger lgr = Logger.getLogger(Version.class.getName());
+            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                //Logger lgr = Logger.getLogger(Version.class.getName());
+                //lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -419,13 +591,18 @@ public class vnosPrometa extends javax.swing.JFrame {
             dodajTemeljnicaOpombaTXT = new javax.swing.JTextField();
             dodajTemeljnicaButton = new javax.swing.JButton();
             jLabel5 = new javax.swing.JLabel();
-            jButton1 = new javax.swing.JButton();
-            jButton2 = new javax.swing.JButton();
+            zacasnaTemeljnicaOdpriButton = new javax.swing.JButton();
+            zacasnaTemeljnicaIzbrisiButton = new javax.swing.JButton();
 
             setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
             populateZacasnaTemeljnica();
             jTable1.setModel(tm);
+            jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    jTable1MouseClicked(evt);
+                }
+            });
             jScrollPane1.setViewportView(jTable1);
 
             jLabel1.setText("Datum:");
@@ -463,6 +640,64 @@ public class vnosPrometa extends javax.swing.JFrame {
                 }
             });
 
+            Connection con = null;
+            PreparedStatement pst = null;
+            ResultSet rsDovoljenja = null;
+
+            String [] aryNastavitve;
+            aryNastavitve=new String[3];
+            i=0;
+
+            try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+            {
+
+                String trenutnaVrstica;
+
+                while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo
+                    aryNastavitve[i]=trenutnaVrstica;
+                    i++;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            dburl = aryNastavitve[0];//spremenjivke iz tabele
+            dbuser = aryNastavitve[1];
+            dbpassword = aryNastavitve[2];
+
+            try {
+                con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+                pst = con.prepareStatement("SELECT * FROM dovoljenja WHERE skupina=?");
+                pst.setInt(1,Login.skupina);
+                rsDovoljenja = pst.executeQuery();
+                if (rsDovoljenja.next()) {
+                    dovoljenjaVnosPrometa=rsDovoljenja.getInt("spremeniVnosPrometa");
+                }
+
+            } catch (SQLException ex) {
+
+            }
+
+            finally {
+                try {
+
+                    if (pst != null) {
+                        pst.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+
+                } catch (SQLException ex) {
+
+                }
+            }
+
+            if (dovoljenjaVnosPrometa==0)
+            {
+                dodajTemeljnicaButton.setEnabled(false);
+            }
             dodajTemeljnicaButton.setText("Dodaj temeljnico");
             dodajTemeljnicaButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -538,9 +773,133 @@ public class vnosPrometa extends javax.swing.JFrame {
 
             jTabbedPane1.addTab("Dodaj Temeljnico", jPanel1);
 
-            jButton1.setText("Odpri");
+            con = null;
+            pst = null;
+            rsDovoljenja = null;
 
-            jButton2.setText("Izbriši");
+            aryNastavitve=new String[3];
+            i=0;
+
+            try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+            {
+
+                String trenutnaVrstica;
+
+                while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo
+                    aryNastavitve[i]=trenutnaVrstica;
+                    i++;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            dburl = aryNastavitve[0];//spremenjivke iz tabele
+            dbuser = aryNastavitve[1];
+            dbpassword = aryNastavitve[2];
+
+            try {
+                con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+                pst = con.prepareStatement("SELECT * FROM dovoljenja WHERE skupina=?");
+                pst.setInt(1,Login.skupina);
+                rsDovoljenja = pst.executeQuery();
+                if (rsDovoljenja.next()) {
+                    dovoljenjaVnosPrometa=rsDovoljenja.getInt("spremeniVnosPrometa");
+                }
+
+            } catch (SQLException ex) {
+
+            }
+
+            finally {
+                try {
+
+                    if (pst != null) {
+                        pst.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+
+                } catch (SQLException ex) {
+
+                }
+            }
+
+            if (dovoljenjaVnosPrometa==0)
+            {
+                zacasnaTemeljnicaOdpriButton.setEnabled(false);
+            }
+            zacasnaTemeljnicaOdpriButton.setText("Odpri");
+            zacasnaTemeljnicaOdpriButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    zacasnaTemeljnicaOdpriButtonActionPerformed(evt);
+                }
+            });
+
+            con = null;
+            pst = null;
+            rsDovoljenja = null;
+
+            aryNastavitve=new String[3];
+            i=0;
+
+            try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+            {
+
+                String trenutnaVrstica;
+
+                while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo
+                    aryNastavitve[i]=trenutnaVrstica;
+                    i++;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            dburl = aryNastavitve[0];//spremenjivke iz tabele
+            dbuser = aryNastavitve[1];
+            dbpassword = aryNastavitve[2];
+
+            try {
+                con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+                pst = con.prepareStatement("SELECT * FROM dovoljenja WHERE skupina=?");
+                pst.setInt(1,Login.skupina);
+                rsDovoljenja = pst.executeQuery();
+                if (rsDovoljenja.next()) {
+                    dovoljenjaVnosPrometa=rsDovoljenja.getInt("spremeniVnosPrometa");
+                }
+
+            } catch (SQLException ex) {
+
+            }
+
+            finally {
+                try {
+
+                    if (pst != null) {
+                        pst.close();
+                    }
+                    if (con != null) {
+                        con.close();
+                    }
+
+                } catch (SQLException ex) {
+
+                }
+            }
+
+            if (dovoljenjaVnosPrometa==0)
+            {
+                zacasnaTemeljnicaIzbrisiButton.setEnabled(false);
+            }
+            zacasnaTemeljnicaIzbrisiButton.setText("Izbriši");
+            zacasnaTemeljnicaIzbrisiButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    zacasnaTemeljnicaIzbrisiButtonActionPerformed(evt);
+                }
+            });
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
@@ -552,9 +911,9 @@ public class vnosPrometa extends javax.swing.JFrame {
                         .addComponent(jScrollPane1)
                         .addComponent(jTabbedPane1)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton1)
+                            .addComponent(zacasnaTemeljnicaOdpriButton)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButton2)
+                            .addComponent(zacasnaTemeljnicaIzbrisiButton)
                             .addGap(0, 0, Short.MAX_VALUE)))
                     .addContainerGap())
             );
@@ -563,8 +922,8 @@ public class vnosPrometa extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addGap(4, 4, 4)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
-                        .addComponent(jButton2))
+                        .addComponent(zacasnaTemeljnicaOdpriButton)
+                        .addComponent(zacasnaTemeljnicaIzbrisiButton))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -573,7 +932,7 @@ public class vnosPrometa extends javax.swing.JFrame {
 
             pack();
         }// </editor-fold>//GEN-END:initComponents
-
+            
     private void dodajTemeljnicaButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajTemeljnicaButtonKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
@@ -612,6 +971,55 @@ public class vnosPrometa extends javax.swing.JFrame {
             dodajTemeljnicaMesecFTF.requestFocusInWindow();
         }
     }//GEN-LAST:event_dodajTemeljnicaDatumFTFKeyPressed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 2) {
+            
+            getValueOfSelectedRow();
+            zaklenjen=ugotoviZaklenjenaTemleljnica();
+            if (zaklenjen==0)
+            {
+                if (dovoljenOgledTujeTemeljnice==1)
+                {
+                   zaklep=1;
+                    zakleniOdkleniTemeljnico(stevilkaZacasneTemeljnice, zaklep);
+                    new knjizenje().setVisible(true); 
+                }
+                else
+                {
+                    uporabnikTemeljnice=ugotoviUporabnikaTemeljnice();
+                    if(Login.uporabnik.equals(uporabnikTemeljnice))
+                    {
+                        zaklep=1;
+                        zakleniOdkleniTemeljnico(stevilkaZacasneTemeljnice, zaklep);
+                        new knjizenje().setVisible(true);
+                    }
+                    else
+                    {
+                        naslovNapake="Odpri temeljnico - napaka";
+                        tekstNapake="Nimate dovoljenja za ogled te temeljnice";
+                        kontniNacrt.prikazNapake(tekstNapake, naslovNapake);
+                    }
+                }                
+            }
+            else
+            {
+                naslovNapake="Odpri temeljnico - napaka";
+                tekstNapake="Temeljnica je že odprta";
+                kontniNacrt.prikazNapake(tekstNapake, naslovNapake);
+            }
+                       
+            //osnovna.test.setText(String.valueOf(stevilkaZacasneTemeljnice));            
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void zacasnaTemeljnicaOdpriButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zacasnaTemeljnicaOdpriButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_zacasnaTemeljnicaOdpriButtonActionPerformed
+
+    private void zacasnaTemeljnicaIzbrisiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zacasnaTemeljnicaIzbrisiButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_zacasnaTemeljnicaIzbrisiButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -654,8 +1062,6 @@ public class vnosPrometa extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField dodajTemeljnicaLetoFTF;
     private javax.swing.JFormattedTextField dodajTemeljnicaMesecFTF;
     private javax.swing.JTextField dodajTemeljnicaOpombaTXT;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -665,5 +1071,7 @@ public class vnosPrometa extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton zacasnaTemeljnicaIzbrisiButton;
+    private javax.swing.JButton zacasnaTemeljnicaOdpriButton;
     // End of variables declaration//GEN-END:variables
 }

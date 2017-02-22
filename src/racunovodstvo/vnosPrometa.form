@@ -29,9 +29,9 @@
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Component id="jTabbedPane1" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                      <Component id="zacasnaTemeljnicaOdpriButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                      <Component id="zacasnaTemeljnicaIzbrisiButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -44,8 +44,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="zacasnaTemeljnicaOdpriButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="zacasnaTemeljnicaIzbrisiButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" pref="285" max="32767" attributes="0"/>
@@ -69,6 +69,9 @@
               <Connection code="tm" type="code"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable1MouseClicked"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable(){&#xa;    public boolean isCellEditable(int rowIndex, int colIndex) {&#xa;        return false;   //Disallow the editing of any cell&#xa;    }}"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="populateZacasnaTemeljnica();"/>
@@ -229,6 +232,9 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dodajTemeljnicaButtonActionPerformed"/>
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="dodajTemeljnicaButtonKeyPressed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Connection con = null;&#xa;        PreparedStatement pst = null;&#xa;        ResultSet rsDovoljenja = null;        &#xa;        &#xa;        String [] aryNastavitve;        &#xa;        aryNastavitve=new String[3];&#xa;        i=0;&#xa;        &#xa;&#x9;&#x9;try (BufferedReader br = new BufferedReader(new FileReader(&quot;properties.txt&quot;)))//preberi nastavive iz datoteke&#xa;&#x9;&#x9;{&#xa;&#xa;&#x9;&#x9;&#x9;String trenutnaVrstica;&#xa;&#xa;&#x9;&#x9;&#x9;while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo&#x9;&#x9;&#x9;&#x9;&#xa;                            aryNastavitve[i]=trenutnaVrstica;&#xa;                            i++;                            &#xa;&#x9;&#x9;&#x9;}&#xa;&#xa;&#x9;&#x9;} catch (IOException e) {&#xa;&#x9;&#x9;&#x9;e.printStackTrace();&#xa;&#x9;&#x9;}&#xa;                &#xa;                dburl = aryNastavitve[0];//spremenjivke iz tabele&#xa;                dbuser = aryNastavitve[1];&#xa;                dbpassword = aryNastavitve[2];              &#xa;&#xa;                try {&#xa;            con = DriverManager.getConnection(dburl, dbuser, dbpassword);&#xa;            pst = con.prepareStatement(&quot;SELECT * FROM dovoljenja WHERE skupina=?&quot;);&#xa;            pst.setInt(1,Login.skupina);&#xa;            rsDovoljenja = pst.executeQuery();&#xa;            if (rsDovoljenja.next()) {           &#xa;               dovoljenjaVnosPrometa=rsDovoljenja.getInt(&quot;spremeniVnosPrometa&quot;);&#xa;            }            &#xa;            &#xa;        } catch (SQLException ex) {           &#xa;&#xa;        } &#xa;                &#xa;        finally {&#xa;            try {&#xa;                &#xa;                if (pst != null) {&#xa;                    pst.close();&#xa;                }&#xa;                if (con != null) {&#xa;                    con.close();&#xa;                }&#xa;&#xa;            } catch (SQLException ex) {&#xa;                &#xa;            }&#xa;            }&#xa;&#xa;if (dovoljenjaVnosPrometa==0)&#xa;    {&#xa;        dodajTemeljnicaButton.setEnabled(false);&#xa;    }"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
@@ -239,15 +245,27 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="zacasnaTemeljnicaOdpriButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Odpri"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="zacasnaTemeljnicaOdpriButtonActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="con = null;&#xa;    pst = null;&#xa;    rsDovoljenja = null;       &#xa;                &#xa;        aryNastavitve=new String[3];&#xa;        i=0;&#xa;        &#xa;&#x9;&#x9;try (BufferedReader br = new BufferedReader(new FileReader(&quot;properties.txt&quot;)))//preberi nastavive iz datoteke&#xa;&#x9;&#x9;{&#xa;&#xa;&#x9;&#x9;&#x9;String trenutnaVrstica;&#xa;&#xa;&#x9;&#x9;&#x9;while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo&#x9;&#x9;&#x9;&#x9;&#xa;                            aryNastavitve[i]=trenutnaVrstica;&#xa;                            i++;                            &#xa;&#x9;&#x9;&#x9;}&#xa;&#xa;&#x9;&#x9;} catch (IOException e) {&#xa;&#x9;&#x9;&#x9;e.printStackTrace();&#xa;&#x9;&#x9;}&#xa;                &#xa;                dburl = aryNastavitve[0];//spremenjivke iz tabele&#xa;                dbuser = aryNastavitve[1];&#xa;                dbpassword = aryNastavitve[2];              &#xa;&#xa;                try {&#xa;            con = DriverManager.getConnection(dburl, dbuser, dbpassword);&#xa;            pst = con.prepareStatement(&quot;SELECT * FROM dovoljenja WHERE skupina=?&quot;);&#xa;            pst.setInt(1,Login.skupina);&#xa;            rsDovoljenja = pst.executeQuery();&#xa;            if (rsDovoljenja.next()) {           &#xa;               dovoljenjaVnosPrometa=rsDovoljenja.getInt(&quot;spremeniVnosPrometa&quot;);&#xa;            }            &#xa;            &#xa;        } catch (SQLException ex) {           &#xa;&#xa;        } &#xa;                &#xa;        finally {&#xa;            try {&#xa;                &#xa;                if (pst != null) {&#xa;                    pst.close();&#xa;                }&#xa;                if (con != null) {&#xa;                    con.close();&#xa;                }&#xa;&#xa;            } catch (SQLException ex) {&#xa;                &#xa;            }&#xa;            }&#xa;&#xa;if (dovoljenjaVnosPrometa==0)&#xa;    {&#xa;        zacasnaTemeljnicaOdpriButton.setEnabled(false);&#xa;    }"/>
+      </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="zacasnaTemeljnicaIzbrisiButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Izbri&#x161;i"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="zacasnaTemeljnicaIzbrisiButtonActionPerformed"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="con = null;&#xa;    pst = null;&#xa;    rsDovoljenja = null;        &#xa;        &#xa;        aryNastavitve=new String[3];&#xa;        i=0;&#xa;        &#xa;&#x9;&#x9;try (BufferedReader br = new BufferedReader(new FileReader(&quot;properties.txt&quot;)))//preberi nastavive iz datoteke&#xa;&#x9;&#x9;{&#xa;&#xa;&#x9;&#x9;&#x9;String trenutnaVrstica;&#xa;&#xa;&#x9;&#x9;&#x9;while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo&#x9;&#x9;&#x9;&#x9;&#xa;                            aryNastavitve[i]=trenutnaVrstica;&#xa;                            i++;                            &#xa;&#x9;&#x9;&#x9;}&#xa;&#xa;&#x9;&#x9;} catch (IOException e) {&#xa;&#x9;&#x9;&#x9;e.printStackTrace();&#xa;&#x9;&#x9;}&#xa;                &#xa;                dburl = aryNastavitve[0];//spremenjivke iz tabele&#xa;                dbuser = aryNastavitve[1];&#xa;                dbpassword = aryNastavitve[2];              &#xa;&#xa;                try {&#xa;            con = DriverManager.getConnection(dburl, dbuser, dbpassword);&#xa;            pst = con.prepareStatement(&quot;SELECT * FROM dovoljenja WHERE skupina=?&quot;);&#xa;            pst.setInt(1,Login.skupina);&#xa;            rsDovoljenja = pst.executeQuery();&#xa;            if (rsDovoljenja.next()) {           &#xa;               dovoljenjaVnosPrometa=rsDovoljenja.getInt(&quot;spremeniVnosPrometa&quot;);&#xa;            }            &#xa;            &#xa;        } catch (SQLException ex) {           &#xa;&#xa;        } &#xa;                &#xa;        finally {&#xa;            try {&#xa;                &#xa;                if (pst != null) {&#xa;                    pst.close();&#xa;                }&#xa;                if (con != null) {&#xa;                    con.close();&#xa;                }&#xa;&#xa;            } catch (SQLException ex) {&#xa;                &#xa;            }&#xa;            }&#xa;&#xa;if (dovoljenjaVnosPrometa==0)&#xa;    {&#xa;        zacasnaTemeljnicaIzbrisiButton.setEnabled(false);&#xa;}"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
