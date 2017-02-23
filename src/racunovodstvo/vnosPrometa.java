@@ -34,7 +34,7 @@ public class vnosPrometa extends javax.swing.JFrame {
     DefaultTableModel tm;
     int dovoljenjaVnosPrometa, maxStevilkaZacasneTemeljnice, zacetnaStevilkaTemeljnice,
             maxStevilkaTemeljnice, maxStevilkaTemeljnic, dodajTemeljnicaMesec, dodajTemeljnicaLeto,
-            dodajNapaka, zaklep, i;
+            dodajNapaka, zaklep, i, j;
     public static int prva, druga, tretja, stevilkaZacasneTemeljnice, zaklenjen, dovoljenOgledTujeTemeljnice;
     String dodajTemeljnicaOpomba, uporabnik, tekstNapake, naslovNapake;
     long dodajDatumZacasneTemeljnice;
