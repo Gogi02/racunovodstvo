@@ -495,7 +495,7 @@ public class valute extends javax.swing.JFrame {
             pstm.setString(2, dodajSifraValuteAN);
             pstm.setString(3, dodajOpisValuteAN);
                         
-            //osnovna.test.setText(String.valueOf(pstm));
+            osnovna.test.setText(String.valueOf(pstm));
             String statement=String.valueOf(pstm);
             pstm.executeUpdate();
             pstm = con.prepareStatement("INSERT INTO log"+"(tekst, uporabnik, podrocje, datum) VALUES"+"(?,?,?,?)");

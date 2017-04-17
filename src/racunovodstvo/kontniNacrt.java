@@ -182,21 +182,24 @@ public class kontniNacrt extends javax.swing.JFrame {
                 
                 String dburl = aryNastavitve[0];//spremenjivke iz tabele
                 String dbuser = aryNastavitve[1];
-                String dbpassword = aryNastavitve[2];                
+                String dbpassword = aryNastavitve[2];
+                
 
                 try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);
             pst = con.prepareStatement("SELECT konto, opis, debet, kredit, stm, partner FROM kontniNacrt WHERE parrent=?");
             pst.setString(1, "1234567890");
             rs = pst.executeQuery();
+            //osnovna.test.setText(String.valueOf(Login.skupina));
             pst5 = con.prepareStatement("SELECT spremeniKonto, dodajKonto FROM dovoljenja WHERE skupina=?");
             pst5.setInt(1, Login.skupina);
             rs5 = pst5.executeQuery();
             
+            
             if (rs5.next()) {           
               dovoljenjaSpremeniKonto=rs5.getInt("spremeniKonto");
               dovoljenjaDodajKonto=rs5.getInt("dodajKonto");
-              //osnovna.test.setText(String.valueOf(dovoljenjaSpremeniKonto));
+              osnovna.test.setText(String.valueOf(dovoljenjaDodajKonto));
             }
             
         } catch (SQLException ex) {

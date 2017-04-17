@@ -34,7 +34,7 @@ public class vnosPrometa extends javax.swing.JFrame {
     DefaultTableModel tm;
     int dovoljenjaVnosPrometa, maxStevilkaZacasneTemeljnice, zacetnaStevilkaTemeljnice,
             maxStevilkaTemeljnice, maxStevilkaTemeljnic, dodajTemeljnicaMesec, dodajTemeljnicaLeto,
-            dodajNapaka, zaklep, i, j;
+            dodajNapaka, zaklep, i;
     public static int prva, druga, tretja, stevilkaZacasneTemeljnice, zaklenjen, dovoljenOgledTujeTemeljnice;
     String dodajTemeljnicaOpomba, uporabnik, tekstNapake, naslovNapake;
     long dodajDatumZacasneTemeljnice;
@@ -307,7 +307,7 @@ public class vnosPrometa extends javax.swing.JFrame {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword); 
             pst = con.prepareStatement("SELECT stevilka FROM zacasneTemeljnice ORDER BY stevilka DESC LIMIT 1");          
             rs=pst.executeQuery();
-            pst2 = con.prepareStatement("SELECT stevilkaTemeljnice FROM knjizbe ORDER BY stevilkaTemeljnice DESC LIMIT 1");          
+            pst2 = con.prepareStatement("SELECT stevilkaTemeljnice FROM glavnaKnjiga ORDER BY stevilkaTemeljnice DESC LIMIT 1");          
             rs2=pst2.executeQuery();
             pst3 = con.prepareStatement("SELECT zacetnaStevilkaTemeljnice FROM nastavitve");          
             rs3=pst3.executeQuery();

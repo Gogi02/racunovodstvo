@@ -81,7 +81,7 @@ public void prijava()
                skupina = rs.getInt("skupina");
             }
             
-            if (napacnoGeslo<4)
+            if (napacnoGeslo<4) //če želimo deaktivirati uporavnika nastavimo napako na 5 (v bazi)
             {
                 if (anGeslo.equals(geslo1)) //preveri, če je gelso pravilno
                 {                    
