@@ -1014,7 +1014,39 @@ public class vnosPrometa extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void zacasnaTemeljnicaOdpriButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zacasnaTemeljnicaOdpriButtonActionPerformed
-        // TODO add your handling code here:
+        getValueOfSelectedRow();
+            zaklenjen=ugotoviZaklenjenaTemleljnica();
+            if (zaklenjen==0)
+            {
+                if (dovoljenOgledTujeTemeljnice==1)
+                {
+                   zaklep=1;
+                    zakleniOdkleniTemeljnico(stevilkaZacasneTemeljnice, zaklep);
+                    new knjizenje().setVisible(true); 
+                }
+                else
+                {
+                    uporabnikTemeljnice=ugotoviUporabnikaTemeljnice();
+                    if(Login.uporabnik.equals(uporabnikTemeljnice))
+                    {
+                        zaklep=1;
+                        zakleniOdkleniTemeljnico(stevilkaZacasneTemeljnice, zaklep);
+                        new knjizenje().setVisible(true);
+                    }
+                    else
+                    {
+                        naslovNapake="Odpri temeljnico - napaka";
+                        tekstNapake="Nimate dovoljenja za ogled te temeljnice";
+                        kontniNacrt.prikazNapake(tekstNapake, naslovNapake);
+                    }
+                }                
+            }
+            else
+            {
+                naslovNapake="Odpri temeljnico - napaka";
+                tekstNapake="Temeljnica je že odprta";
+                kontniNacrt.prikazNapake(tekstNapake, naslovNapake);
+            }
     }//GEN-LAST:event_zacasnaTemeljnicaOdpriButtonActionPerformed
 
     private void zacasnaTemeljnicaIzbrisiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zacasnaTemeljnicaIzbrisiButtonActionPerformed

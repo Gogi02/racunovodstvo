@@ -15,6 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.*;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import static racunovodstvo.Login.dbpassword;
 import static racunovodstvo.Login.dburl;
@@ -28,19 +30,26 @@ import static racunovodstvo.vnosPrometa.stevilkaZacasneTemeljnice;
  */
 public class knjizenje extends javax.swing.JFrame {
     
-    int isciPartner, dovoljenjaSpremeniPartnerja, dovoljenjaDodajPartnerja, sifraPartnerja;
-    String naziv, priimek, ime, davcnaStevilka, sifraPartnerjaTemp;
+    int isciPartner, isciPartner2, isciVezniDokument, dovoljenjaSpremeniPartnerja, dovoljenjaDodajPartnerja, sifraPartnerja;
+    String naziv, priimek, ime, davcnaStevilka, sifraPartnerjaTemp, vezniDokumentTemp;
     
-    DefaultTableModel tm;
+    DefaultTableModel tm, tm3;
 
     /**
      * Creates new form knjizenje
      */
     public knjizenje() {
-        
+        isciPartner2=1;
         initComponents();
         stevilkaZacasneTemeljniceLabel.setText(String.valueOf(stevilkaZacasneTemeljnice));
         stevilkaZacasneTemeljniceLabel2.setText(String.valueOf(stevilkaZacasneTemeljnice));
+    }
+    
+    public void getValueOfSelectedRow3()
+    {
+        int row = jTable3.getSelectedRow();
+        value = jTable3.getValueAt(row, 0);
+        sifraPartnerjaTemp = String.valueOf(value);
     }
     
     public void populateZacasneKnjizbe()
@@ -119,12 +128,107 @@ public class knjizenje extends javax.swing.JFrame {
             // Close ResultSet and Statement
             rs.close();
             pst.close();
+            con.close();
 
         } catch (Exception ex) {
             //JOptionPane.showMessageDialog(this, ex, ex.getMessage(), WIDTH, null);
         }
     }
 
+    public void populateVezniDokument()
+    {
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        //dodajKnjizboPartnerFTF.setValue(new Integer(isciPartner2));
+        //isciPartner2=((Number)dodajKnjizboPartnerFTF.getValue()).intValue();
+        
+        String[] aryNastavitve;
+        aryNastavitve = new String[3];
+        int i = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+        {
+
+            String trenutnaVrstica;
+
+            while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo				
+                aryNastavitve[i] = trenutnaVrstica;
+                i++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String dburl = aryNastavitve[0];//spremenjivke iz tabele
+        String dbuser = aryNastavitve[1];
+        String dbpassword = aryNastavitve[2];
+
+        try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            pst = con.prepareStatement("SELECT vezniDokument, datum, debet, kredit FROM glavnaKnjiga", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            //pst.setInt(1, isciPartner2);
+            //int zaprto=0;
+            //pst.setInt(2,zaprto);
+            rs = pst.executeQuery();            
+
+        } catch (SQLException ex) {
+            // Logger lgr = Logger.getLogger(Version.class.getName());
+            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+
+        try {
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+            tm3 = (DefaultTableModel) jTable3.getModel();
+            jTable3.setModel(tm3);
+
+            jTable3.setRowSelectionAllowed(true);
+            tm3.setColumnCount(0);
+
+            // add specified columns to table
+            for (i = 1; i <= columnCount; i++) {
+                tm3.addColumn(rsmd.getColumnName(i));
+            }
+
+            // clear existing rows
+            tm3.setRowCount(0);
+
+            // add rows to table
+            while (rs.next()) {
+                /*int datumEpoch=rs.getInt("datum");
+                datumEpoch=datumEpoch*1000;
+                Date datum= new Date(datumEpoch);
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                                
+                String datumString=format.format(datum);
+                osnovna.test.setText(datumString);
+                */
+                rs.updateString("datum","1234");
+                rs.updateRow();
+                String Test=rs.getString("datum");
+                osnovna.test.setText(Test);
+                String[] a = new String[columnCount];
+                for (i = 0; i < columnCount; i++) {
+                    a[i] = rs.getString(i + 1);
+                }
+                tm3.addRow(a);
+            }
+            tm3.fireTableDataChanged();
+
+            // Close ResultSet and Statement
+            rs.close();
+            pst.close();
+
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(this, ex, ex.getMessage(), WIDTH, null);
+        }
+    }
+    
     public void populatePartnerji()
     {
         Connection con = null;
@@ -249,6 +353,15 @@ public class knjizenje extends javax.swing.JFrame {
         isciDavcnaStevilkaTxt = new javax.swing.JTextField();
         knjizenjeIsciButton = new javax.swing.JButton();
         knjizenjeIzberiButton = new javax.swing.JButton();
+        knjizenjeIsciVezniDokument = new javax.swing.JDialog();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return false;   //Disallow the editing of any cell
+            }
+        };
+        isciVezniDokumentIzberiButton = new javax.swing.JButton();
+        isciVezniDokumentZapri = new javax.swing.JButton();
         zapriButton = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
@@ -286,6 +399,7 @@ public class knjizenje extends javax.swing.JFrame {
         dodajKnjizboDebetVALFTF = new javax.swing.JFormattedTextField();
         jLabel26 = new javax.swing.JLabel();
         dodajKnjizboKreditVALFTF = new javax.swing.JFormattedTextField();
+        dodajIzbrisiKnjizbo = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         stevilkaZacasneTemeljniceLabel2 = new javax.swing.JLabel();
@@ -310,6 +424,8 @@ public class knjizenje extends javax.swing.JFrame {
         popraviKnjizboValutaLabel = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         popraviKnjizboTecajFTF = new javax.swing.JFormattedTextField();
+        jLabel28 = new javax.swing.JLabel();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable(){
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -320,6 +436,11 @@ public class knjizenje extends javax.swing.JFrame {
 
             populatePartnerji();
             jTable2.setModel(tm);
+            jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    jTable2MouseClicked(evt);
+                }
+            });
             jScrollPane2.setViewportView(jTable2);
 
             jLabel9.setText("Naziv:");
@@ -406,6 +527,55 @@ public class knjizenje extends javax.swing.JFrame {
                     .addGap(211, 211, 211))
             );
 
+            knjizenjeIsciVezniDokument.setMinimumSize(new java.awt.Dimension(450, 600));
+
+            populateVezniDokument();
+            jTable3.setModel(tm3);
+            jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    jTable3MouseClicked(evt);
+                }
+            });
+            jScrollPane3.setViewportView(jTable3);
+
+            isciVezniDokumentIzberiButton.setText("Izberi");
+            isciVezniDokumentIzberiButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    isciVezniDokumentIzberiButtonActionPerformed(evt);
+                }
+            });
+
+            isciVezniDokumentZapri.setText("Zapri");
+            isciVezniDokumentZapri.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    isciVezniDokumentZapriActionPerformed(evt);
+                }
+            });
+
+            javax.swing.GroupLayout knjizenjeIsciVezniDokumentLayout = new javax.swing.GroupLayout(knjizenjeIsciVezniDokument.getContentPane());
+            knjizenjeIsciVezniDokument.getContentPane().setLayout(knjizenjeIsciVezniDokumentLayout);
+            knjizenjeIsciVezniDokumentLayout.setHorizontalGroup(
+                knjizenjeIsciVezniDokumentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(knjizenjeIsciVezniDokumentLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(knjizenjeIsciVezniDokumentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(isciVezniDokumentZapri)
+                        .addComponent(isciVezniDokumentIzberiButton)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(22, Short.MAX_VALUE))
+            );
+            knjizenjeIsciVezniDokumentLayout.setVerticalGroup(
+                knjizenjeIsciVezniDokumentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(knjizenjeIsciVezniDokumentLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(isciVezniDokumentIzberiButton)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(isciVezniDokumentZapri)
+                    .addContainerGap(123, Short.MAX_VALUE))
+            );
+
             setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
             zapriButton.setText("Zapri");
@@ -441,6 +611,11 @@ public class knjizenje extends javax.swing.JFrame {
             });
 
             dodajKnjizboIsciVezniDokumentButton.setText("Išči");
+            dodajKnjizboIsciVezniDokumentButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    dodajKnjizboIsciVezniDokumentButtonActionPerformed(evt);
+                }
+            });
 
             dodajKnjizboKontoFTF.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -497,6 +672,11 @@ public class knjizenje extends javax.swing.JFrame {
             dodajKnjizboIsciValutoButton.setText("Išči");
 
             dodajKnjizboButton.setText("Dodaj knjižbo");
+            dodajKnjizboButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    dodajKnjizboButtonActionPerformed(evt);
+                }
+            });
 
             dodajKnjizboProtiknjizba.setText("Protiknjižba");
 
@@ -541,6 +721,13 @@ public class knjizenje extends javax.swing.JFrame {
                 }
             });
 
+            dodajIzbrisiKnjizbo.setText("Izbriši knjižbo");
+            dodajIzbrisiKnjizbo.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    dodajIzbrisiKnjizboActionPerformed(evt);
+                }
+            });
+
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
             jPanel1.setLayout(jPanel1Layout);
             jPanel1Layout.setHorizontalGroup(
@@ -568,11 +755,13 @@ public class knjizenje extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(dodajKnjizboIsciValutoButton))
                                 .addComponent(dodajKnjizboValutaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                            .addComponent(jButton1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(dodajKnjizboButton)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jButton1)
+                                .addComponent(dodajKnjizboButton))
+                            .addGap(17, 17, 17)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(dodajIzbrisiKnjizbo)
                                 .addComponent(dodajKnjizboProtiknjizba))
                             .addGap(23, 23, 23))
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -682,7 +871,9 @@ public class knjizenje extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
                             .addComponent(dodajKnjizboTecajFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(dodajKnjizboButton))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dodajKnjizboButton)
+                            .addComponent(dodajIzbrisiKnjizbo)))
                     .addGap(20, 20, 20))
             );
 
@@ -749,6 +940,10 @@ public class knjizenje extends javax.swing.JFrame {
 
             jLabel27.setText("Tečaj:");
 
+            jLabel28.setText("Debet:");
+
+            jFormattedTextField1.setText("jFormattedTextField1");
+
             javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
             jPanel2.setLayout(jPanel2Layout);
             jPanel2Layout.setHorizontalGroup(
@@ -793,8 +988,12 @@ public class knjizenje extends javax.swing.JFrame {
                                             .addComponent(popraviKnjizboValutaFTF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(popraviKnjizboIsciValutoButton)))
-                                    .addGap(0, 26, Short.MAX_VALUE)))
-                            .addGap(346, 346, 346))
+                                    .addGap(0, 37, Short.MAX_VALUE)))
+                            .addGap(3, 3, 3)
+                            .addComponent(jLabel28)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(137, 137, 137))
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addComponent(popraviKnjizboTecajFTF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -809,7 +1008,9 @@ public class knjizenje extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel16)
-                        .addComponent(popraviKnjizboKontoFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(popraviKnjizboKontoFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel28)
+                        .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel17)
@@ -845,7 +1046,7 @@ public class knjizenje extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel27)
                         .addComponent(popraviKnjizboTecajFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap(40, Short.MAX_VALUE))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
             jTabbedPane1.addTab("Popravi knjižbo", jPanel2);
@@ -1073,7 +1274,7 @@ public class knjizenje extends javax.swing.JFrame {
             }
             else
             {
-                osnovna.test.setText(String.valueOf(sifraPartnerjaTemp));
+                //osnovna.test.setText(String.valueOf(sifraPartnerjaTemp));
                 dodajKnjizboPartnerFTF.setValue(new Integer(sifraPartnerjaTemp));
                 //poisciTextDrzave2();
                 //dodajDrzavaLabel.setText(drzavaText);
@@ -1157,6 +1358,84 @@ public class knjizenje extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_dodajKnjizboKreditVALFTFKeyPressed
 
+    private void dodajKnjizboIsciVezniDokumentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKnjizboIsciVezniDokumentButtonActionPerformed
+        isciVezniDokument=1;
+        knjizenjeIsciVezniDokument.setVisible(true);
+    }//GEN-LAST:event_dodajKnjizboIsciVezniDokumentButtonActionPerformed
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        if (evt.getClickCount() == 2) {
+            getValueOfSelectedRow2();
+        if (isciPartner==0)
+            {
+                /*popraviDrzavaTxt.setText(sifraPartnerjaTemp);
+                poisciTextDrzave();
+                popraviDrzavaLabel.setText(drzavaText);*/
+            }
+            else
+            {
+                //osnovna.test.setText(String.valueOf(sifraPartnerjaTemp));
+                dodajKnjizboPartnerFTF.setValue(new Integer(sifraPartnerjaTemp));
+                //poisciTextDrzave2();
+                //dodajDrzavaLabel.setText(drzavaText);
+            }
+            
+            knjizenjeIsciPartnerja.dispose();
+        }
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void dodajIzbrisiKnjizboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajIzbrisiKnjizboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dodajIzbrisiKnjizboActionPerformed
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        if (evt.getClickCount() == 2) {
+            getValueOfSelectedRow3();
+        if (isciVezniDokument==0)
+            {
+                /*popraviDrzavaTxt.setText(sifraPartnerjaTemp);
+                poisciTextDrzave();
+                popraviDrzavaLabel.setText(drzavaText);*/
+            }
+            else
+            {
+                //osnovna.test.setText(String.valueOf(sifraPartnerjaTemp));
+                dodajKnjizboVezniDokumentFTF.setValue(new Integer(vezniDokumentTemp));
+                //poisciTextDrzave2();
+                //dodajDrzavaLabel.setText(drzavaText);
+            }
+            
+            knjizenjeIsciVezniDokument.dispose();
+        }
+    }//GEN-LAST:event_jTable3MouseClicked
+
+    private void isciVezniDokumentZapriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isciVezniDokumentZapriActionPerformed
+        knjizenjeIsciVezniDokument.dispose();
+    }//GEN-LAST:event_isciVezniDokumentZapriActionPerformed
+
+    private void isciVezniDokumentIzberiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_isciVezniDokumentIzberiButtonActionPerformed
+        getValueOfSelectedRow3();
+        if (isciVezniDokument==0)
+            {
+                /*popraviDrzavaTxt.setText(sifraPartnerjaTemp);
+                poisciTextDrzave();
+                popraviDrzavaLabel.setText(drzavaText);*/
+            }
+            else
+            {
+                //osnovna.test.setText(String.valueOf(sifraPartnerjaTemp));
+                dodajKnjizboVezniDokumentFTF.setValue(new Integer(vezniDokumentTemp));
+                //poisciTextDrzave2();
+                //dodajDrzavaLabel.setText(drzavaText);
+            }
+            
+            knjizenjeIsciVezniDokument.dispose();
+    }//GEN-LAST:event_isciVezniDokumentIzberiButtonActionPerformed
+
+    private void dodajKnjizboButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKnjizboButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dodajKnjizboButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1193,6 +1472,7 @@ public class knjizenje extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton dodajIzbrisiKnjizbo;
     private javax.swing.JButton dodajKnjizboButton;
     private javax.swing.JFormattedTextField dodajKnjizboDatumFTF;
     private javax.swing.JFormattedTextField dodajKnjizboDebetFTF;
@@ -1217,7 +1497,10 @@ public class knjizenje extends javax.swing.JFrame {
     private javax.swing.JTextField isciNazivTxt;
     private javax.swing.JTextField isciPriimekTxt;
     private javax.swing.JTextField isciSifraPartnerjaTxt;
+    private javax.swing.JButton isciVezniDokumentIzberiButton;
+    private javax.swing.JButton isciVezniDokumentZapri;
     private javax.swing.JButton jButton1;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1238,6 +1521,7 @@ public class knjizenje extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1249,11 +1533,14 @@ public class knjizenje extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
     private javax.swing.JButton knjizenjeIsciButton;
     private javax.swing.JDialog knjizenjeIsciPartnerja;
+    private javax.swing.JDialog knjizenjeIsciVezniDokument;
     private javax.swing.JButton knjizenjeIzberiButton;
     private javax.swing.JFormattedTextField popraviKnjizboDatumFTF;
     private javax.swing.JButton popraviKnjizboIsciPartnerButton;
