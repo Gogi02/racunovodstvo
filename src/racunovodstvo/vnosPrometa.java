@@ -148,19 +148,45 @@ public class vnosPrometa extends javax.swing.JFrame {
     
     public void preberiDodajSpremenljivke()
     {
+        dodajNapaka=0;
         dodajDatumZacasneTemeljniceRaw=(Date)dodajTemeljnicaDatumFTF.getValue();
-        dodajDatumZacasneTemeljnice=dodajDatumZacasneTemeljniceRaw.getTime();
-        dodajTemeljnicaMesec=((Number)dodajTemeljnicaMesecFTF.getValue()).intValue();
-        dodajTemeljnicaLeto=((Number)dodajTemeljnicaLetoFTF.getValue()).intValue();
+        String dodajDatumZacasneTemeljniceString=dodajTemeljnicaDatumFTF.getText();
+        if(dodajDatumZacasneTemeljniceString!=null&&!dodajDatumZacasneTemeljniceString.isEmpty()) //preveri, če je vrednost datuma prazna
+        {
+            dodajDatumZacasneTemeljnice=dodajDatumZacasneTemeljniceRaw.getTime();
+        }
+        else
+        {
+            dodajNapaka=1;            
+        }
+        String dodajTemeljnicaMesecString=dodajTemeljnicaMesecFTF.getText();
+        if(dodajTemeljnicaMesecString!=null&&!dodajTemeljnicaMesecString.isEmpty()) //preveri, če je vrednost datuma prazna
+        {
+            dodajTemeljnicaMesec=((Number)dodajTemeljnicaMesecFTF.getValue()).intValue();
+        }
+        else
+        {
+            dodajNapaka=2;            
+        }
+        String dodajTemeljnicaLetoString=dodajTemeljnicaMesecFTF.getText();
+        if(dodajTemeljnicaLetoString!=null&&!dodajTemeljnicaLetoString.isEmpty()) //preveri, če je vrednost datuma prazna
+        {
+            dodajTemeljnicaLeto=((Number)dodajTemeljnicaLetoFTF.getValue()).intValue();
+        }
+        else
+        {
+            dodajNapaka=3;            
+        }
+        
         dodajTemeljnicaOpomba=dodajTemeljnicaOpombaTXT.getText();
         uporabnik=Login.anUporabnik;
     }
     
     public void preveriDodajSpremenljivke()
     {
-        dodajNapaka=0;
-        String dodajDatumZacasneTemljniceString=String.valueOf(dodajDatumZacasneTemeljnice);
-        if(dodajDatumZacasneTemljniceString!=null&&!dodajDatumZacasneTemljniceString.isEmpty()) //preveri, če je vrednost datuma prazna
+        //dodajNapaka=0;
+        String dodajDatumZacasneTemeljniceString=String.valueOf(dodajDatumZacasneTemeljnice);
+        if(dodajDatumZacasneTemeljniceString!=null&&!dodajDatumZacasneTemeljniceString.isEmpty()) //preveri, če je vrednost datuma prazna
         {
             
         }
@@ -267,7 +293,7 @@ public class vnosPrometa extends javax.swing.JFrame {
         ugotoviMaxStevilkeTemeljnic();
         maxStevilkaTemeljnic=ugotoviMaxStevilkoTemeljnice(maxStevilkaZacasneTemeljnice, maxStevilkaTemeljnice, zacetnaStevilkaTemeljnice);
         stevilkaZacasneTemeljnice=maxStevilkaTemeljnic+1;
-        //osnovna.test.setText(String.valueOf(maxStevilkaTemeljnic));
+        //osnovna.test.setText(String.valueOf(stevilkaZacasneTemeljnice));
     }
     
     public void ugotoviMaxStevilkeTemeljnic()
@@ -304,16 +330,20 @@ public class vnosPrometa extends javax.swing.JFrame {
         String dbpassword = aryNastavitve[2];
         
         try {
-            con = DriverManager.getConnection(dburl, dbuser, dbpassword); 
+            
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);            
             pst = con.prepareStatement("SELECT stevilka FROM zacasneTemeljnice ORDER BY stevilka DESC LIMIT 1");          
-            rs=pst.executeQuery();
+            rs=pst.executeQuery();            
             pst2 = con.prepareStatement("SELECT stevilkaTemeljnice FROM glavnaKnjiga ORDER BY stevilkaTemeljnice DESC LIMIT 1");          
             rs2=pst2.executeQuery();
             pst3 = con.prepareStatement("SELECT zacetnaStevilkaTemeljnice FROM nastavitve");          
             rs3=pst3.executeQuery();
+            //osnovna.test.setText("test");
             
-            if (rs.next()) {           
+            if (rs.next()) {
+                
                maxStevilkaZacasneTemeljnice=rs.getInt("stevilka");
+               //osnovna.test.setText(String.valueOf(maxStevilkaZacasneTemeljnice));
                }
             else
             {
@@ -373,6 +403,12 @@ public class vnosPrometa extends javax.swing.JFrame {
     
     public static int ugotoviMaxStevilkoTemeljnice(int prva, int druga, int tretja)
     {
+        /*String prvaString=String.valueOf(prva);       
+        String drugaString=String.valueOf(druga);
+        String tretjaString=String.valueOf(tretja);
+                
+        osnovna.test.setText(prvaString+", "+drugaString+", "+tretjaString);*/
+        
         if (prva==druga)
         {
             druga=prva-1;
@@ -565,6 +601,16 @@ public class vnosPrometa extends javax.swing.JFrame {
         }
     }
     
+    public static void izbrisiKnjizbe()
+    {
+        
+    }
+    
+    public static void izbrisiTemeljnico()
+    {
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -574,6 +620,12 @@ public class vnosPrometa extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        potrdiIzbrisTemeljnice = new javax.swing.JDialog();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable(){
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -593,6 +645,65 @@ public class vnosPrometa extends javax.swing.JFrame {
             jLabel5 = new javax.swing.JLabel();
             zacasnaTemeljnicaOdpriButton = new javax.swing.JButton();
             zacasnaTemeljnicaIzbrisiButton = new javax.swing.JButton();
+
+            potrdiIzbrisTemeljnice.setLocation(new java.awt.Point(400, 200));
+            potrdiIzbrisTemeljnice.setMinimumSize(new java.awt.Dimension(400, 200));
+            potrdiIzbrisTemeljnice.setResizable(false);
+
+            jButton1.setText("Ne");
+            jButton1.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton1ActionPerformed(evt);
+                }
+            });
+
+            jButton2.setText("Da");
+            jButton2.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton2ActionPerformed(evt);
+                }
+            });
+
+            jLabel6.setText("Brisanje temeljnice bo izbrisalo tudi vse knjižbe");
+
+            jLabel7.setText("s te temeljnice.");
+
+            jLabel8.setText("Ste prepričani, da želite izbrisati temeljnico?");
+
+            javax.swing.GroupLayout potrdiIzbrisTemeljniceLayout = new javax.swing.GroupLayout(potrdiIzbrisTemeljnice.getContentPane());
+            potrdiIzbrisTemeljnice.getContentPane().setLayout(potrdiIzbrisTemeljniceLayout);
+            potrdiIzbrisTemeljniceLayout.setHorizontalGroup(
+                potrdiIzbrisTemeljniceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(potrdiIzbrisTemeljniceLayout.createSequentialGroup()
+                    .addGap(35, 35, 35)
+                    .addGroup(potrdiIzbrisTemeljniceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel7)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(potrdiIzbrisTemeljniceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, potrdiIzbrisTemeljniceLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11))
+                            .addComponent(jLabel8)))
+                    .addContainerGap(36, Short.MAX_VALUE))
+            );
+            potrdiIzbrisTemeljniceLayout.setVerticalGroup(
+                potrdiIzbrisTemeljniceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(potrdiIzbrisTemeljniceLayout.createSequentialGroup()
+                    .addGap(22, 22, 22)
+                    .addComponent(jLabel6)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel7)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel8)
+                    .addGap(31, 31, 31)
+                    .addGroup(potrdiIzbrisTemeljniceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton2)
+                        .addComponent(jButton1))
+                    .addContainerGap(41, Short.MAX_VALUE))
+            );
 
             setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -766,7 +877,7 @@ public class vnosPrometa extends javax.swing.JFrame {
                                 .addComponent(jLabel3))
                             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(dodajTemeljnicaButton)
                             .addContainerGap())))
             );
@@ -1050,8 +1161,19 @@ public class vnosPrometa extends javax.swing.JFrame {
     }//GEN-LAST:event_zacasnaTemeljnicaOdpriButtonActionPerformed
 
     private void zacasnaTemeljnicaIzbrisiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zacasnaTemeljnicaIzbrisiButtonActionPerformed
-        // TODO add your handling code here:
+        potrdiIzbrisTemeljnice.setVisible(true);
     }//GEN-LAST:event_zacasnaTemeljnicaIzbrisiButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        potrdiIzbrisTemeljnice.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        getValueOfSelectedRow();
+        //osnovna.test.setText(String.valueOf(stevilkaZacasneTemeljnice));
+        izbrisiKnjizbe();
+        izbrisiTemeljnico();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1094,15 +1216,21 @@ public class vnosPrometa extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField dodajTemeljnicaLetoFTF;
     private javax.swing.JFormattedTextField dodajTemeljnicaMesecFTF;
     private javax.swing.JTextField dodajTemeljnicaOpombaTXT;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JDialog potrdiIzbrisTemeljnice;
     private javax.swing.JButton zacasnaTemeljnicaIzbrisiButton;
     private javax.swing.JButton zacasnaTemeljnicaOdpriButton;
     // End of variables declaration//GEN-END:variables

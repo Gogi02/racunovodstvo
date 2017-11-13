@@ -49,7 +49,7 @@ public class knjizenje extends javax.swing.JFrame {
     {
         int row = jTable3.getSelectedRow();
         value = jTable3.getValueAt(row, 0);
-        sifraPartnerjaTemp = String.valueOf(value);
+        vezniDokumentTemp = String.valueOf(value);
     }
     
     public void populateZacasneKnjizbe()
@@ -135,6 +135,107 @@ public class knjizenje extends javax.swing.JFrame {
         }
     }
 
+    public void populateVezniDokument2()
+    {
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        //dodajKnjizboPartnerFTF.setValue(new Integer(isciPartner2));
+        //isciPartner2=((Number)dodajKnjizboPartnerFTF.getValue()).intValue();
+        
+        String[] aryNastavitve;
+        aryNastavitve = new String[3];
+        int i = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+        {
+
+            String trenutnaVrstica;
+
+            while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo				
+                aryNastavitve[i] = trenutnaVrstica;
+                i++;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String dburl = aryNastavitve[0];//spremenjivke iz tabele
+        String dbuser = aryNastavitve[1];
+        String dbpassword = aryNastavitve[2];
+
+        try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            pst = con.prepareStatement("SELECT vezniDokument, datum, konto, debet, kredit FROM glavnaKnjiga WHERE odprto=? AND sifraPartnerja=?");
+            //pst.setInt(1, isciPartner2);
+            int odprto=1;
+            pst.setInt(1, odprto);
+            String tempPartner2x=dodajKnjizboPartnerFTF.getText();
+            int tempPartner2=Integer.parseInt(tempPartner2x);
+            pst.setInt(2, tempPartner2);
+            
+            rs = pst.executeQuery();            
+
+        } catch (SQLException ex) {
+            // Logger lgr = Logger.getLogger(Version.class.getName());
+            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+
+        try {
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+
+            tm3 = (DefaultTableModel) jTable3.getModel();
+            jTable3.setModel(tm3);
+
+            jTable3.setRowSelectionAllowed(true);
+            tm3.setColumnCount(0);
+
+            // add specified columns to table
+            for (i = 1; i <= columnCount; i++) {
+                tm3.addColumn(rsmd.getColumnName(i));
+            }
+
+            // clear existing rows
+            tm3.setRowCount(0);
+            //osnovna.test.setText("test");
+            // add rows to table
+            while (rs.next()) {
+                Long datumEpoch=rs.getLong("datum");
+                datumEpoch=datumEpoch*1000L;
+                Date datum= new Date(datumEpoch);
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                                
+                String datumString=format.format(datum);
+                //osnovna.test.setText(datumString);                           
+                
+                String[] a = new String[columnCount];
+                for (i = 0; i < columnCount; i++) {
+                    if (i==1)
+                    {
+                        a[1] = datumString;
+                    }                    
+                    else
+                    {
+                        a[i] = rs.getString(i + 1);
+                    }
+                }
+                tm3.addRow(a);
+            }
+            tm3.fireTableDataChanged();
+
+            // Close ResultSet and Statement
+            rs.close();
+            pst.close();
+
+        } catch (Exception ex) {
+            //JOptionPane.showMessageDialog(this, ex, ex.getMessage(), WIDTH, null);
+        }
+    }
+    
     public void populateVezniDokument()
     {
         Connection con = null;
@@ -168,10 +269,14 @@ public class knjizenje extends javax.swing.JFrame {
 
         try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-            pst = con.prepareStatement("SELECT vezniDokument, datum, debet, kredit FROM glavnaKnjiga", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            pst = con.prepareStatement("SELECT vezniDokument, datum, konto, debet, kredit FROM glavnaKnjiga WHERE odprto=?");
             //pst.setInt(1, isciPartner2);
-            //int zaprto=0;
-            //pst.setInt(2,zaprto);
+            int odprto=1;
+            pst.setInt(1, odprto);
+            //String tempPartner2x=dodajKnjizboPartnerFTF.getText();
+            //int tempPartner2=Integer.parseInt(tempPartner2x);
+            //pst.setInt(2, tempPartner2);
+            
             rs = pst.executeQuery();            
 
         } catch (SQLException ex) {
@@ -197,24 +302,27 @@ public class knjizenje extends javax.swing.JFrame {
 
             // clear existing rows
             tm3.setRowCount(0);
-
+            //osnovna.test.setText("test");
             // add rows to table
             while (rs.next()) {
-                /*int datumEpoch=rs.getInt("datum");
-                datumEpoch=datumEpoch*1000;
+                Long datumEpoch=rs.getLong("datum");
+                datumEpoch=datumEpoch*1000L;
                 Date datum= new Date(datumEpoch);
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                                 
                 String datumString=format.format(datum);
-                osnovna.test.setText(datumString);
-                */
-                rs.updateString("datum","1234");
-                rs.updateRow();
-                String Test=rs.getString("datum");
-                osnovna.test.setText(Test);
+                //osnovna.test.setText(datumString);                           
+                
                 String[] a = new String[columnCount];
                 for (i = 0; i < columnCount; i++) {
-                    a[i] = rs.getString(i + 1);
+                    if (i==1)
+                    {
+                        a[1] = datumString;
+                    }                    
+                    else
+                    {
+                        a[i] = rs.getString(i + 1);
+                    }
                 }
                 tm3.addRow(a);
             }
@@ -296,11 +404,17 @@ public class knjizenje extends javax.swing.JFrame {
 
             // clear existing rows
             tm.setRowCount(0);
-
+            
+            
             // add rows to table
             while (rs.next()) {
-                //parrent = rs.getString("konto");
-                //osnovna.test.setText(String.valueOf(parrent));
+                //String parrent = rs.getString("ime");
+                //osnovna.test.setText("test3");
+                //parrent="test";
+                //rs.updateString("ime", parrent);
+                //String parrent=rs.getString("ime");
+                //osnovna.test.setText(parrent);
+                //rs.updateRow();
                 String[] a = new String[columnCount];
                 for (i = 0; i < columnCount; i++) {
                     a[i] = rs.getString(i + 1);
@@ -323,6 +437,16 @@ public class knjizenje extends javax.swing.JFrame {
         int row = jTable2.getSelectedRow();
         value = jTable2.getValueAt(row, 0);
         sifraPartnerjaTemp = String.valueOf(value);
+    }
+    
+    public void preberiSpremenljivkeDodajKnjizbo()
+    {
+        
+    }
+            
+    public void preveriSpremenljivkeDodajKnjizbo()
+    {
+        
     }
     
     /**
@@ -634,6 +758,7 @@ public class knjizenje extends javax.swing.JFrame {
                 }
             });
 
+            dodajKnjizboPartnerFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
             dodajKnjizboPartnerFTF.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     dodajKnjizboPartnerFTFActionPerformed(evt);
@@ -1076,10 +1201,10 @@ public class knjizenje extends javax.swing.JFrame {
                     .addGap(19, 19, 19)
                     .addComponent(zapriButton)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(43, Short.MAX_VALUE))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
             pack();
@@ -1360,6 +1485,7 @@ public class knjizenje extends javax.swing.JFrame {
 
     private void dodajKnjizboIsciVezniDokumentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKnjizboIsciVezniDokumentButtonActionPerformed
         isciVezniDokument=1;
+        populateVezniDokument2();
         knjizenjeIsciVezniDokument.setVisible(true);
     }//GEN-LAST:event_dodajKnjizboIsciVezniDokumentButtonActionPerformed
 
@@ -1433,7 +1559,8 @@ public class knjizenje extends javax.swing.JFrame {
     }//GEN-LAST:event_isciVezniDokumentIzberiButtonActionPerformed
 
     private void dodajKnjizboButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKnjizboButtonActionPerformed
-        // TODO add your handling code here:
+        preberiSpremenljivkeDodajKnjizbo();
+        preveriSpremenljivkeDodajKnjizbo();
     }//GEN-LAST:event_dodajKnjizboButtonActionPerformed
 
     /**
