@@ -621,8 +621,8 @@ public class vnosPrometa extends javax.swing.JFrame {
     private void initComponents() {
 
         potrdiIzbrisTemeljnice = new javax.swing.JDialog();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        prekicIzbrisaTemeljnice = new javax.swing.JButton();
+        potrditevIzbrisaTemeljnice = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -650,17 +650,17 @@ public class vnosPrometa extends javax.swing.JFrame {
             potrdiIzbrisTemeljnice.setMinimumSize(new java.awt.Dimension(400, 200));
             potrdiIzbrisTemeljnice.setResizable(false);
 
-            jButton1.setText("Ne");
-            jButton1.addActionListener(new java.awt.event.ActionListener() {
+            prekicIzbrisaTemeljnice.setText("Ne");
+            prekicIzbrisaTemeljnice.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton1ActionPerformed(evt);
+                    prekicIzbrisaTemeljniceActionPerformed(evt);
                 }
             });
 
-            jButton2.setText("Da");
-            jButton2.addActionListener(new java.awt.event.ActionListener() {
+            potrditevIzbrisaTemeljnice.setText("Da");
+            potrditevIzbrisaTemeljnice.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton2ActionPerformed(evt);
+                    potrditevIzbrisaTemeljniceActionPerformed(evt);
                 }
             });
 
@@ -682,9 +682,9 @@ public class vnosPrometa extends javax.swing.JFrame {
                         .addGroup(potrdiIzbrisTemeljniceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, potrdiIzbrisTemeljniceLayout.createSequentialGroup()
                                 .addGap(30, 30, 30)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(potrditevIzbrisaTemeljnice, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(prekicIzbrisaTemeljnice, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(11, 11, 11))
                             .addComponent(jLabel8)))
                     .addContainerGap(36, Short.MAX_VALUE))
@@ -700,8 +700,8 @@ public class vnosPrometa extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addGap(31, 31, 31)
                     .addGroup(potrdiIzbrisTemeljniceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
-                        .addComponent(jButton1))
+                        .addComponent(potrditevIzbrisaTemeljnice)
+                        .addComponent(prekicIzbrisaTemeljnice))
                     .addContainerGap(41, Short.MAX_VALUE))
             );
 
@@ -1164,16 +1164,16 @@ public class vnosPrometa extends javax.swing.JFrame {
         potrdiIzbrisTemeljnice.setVisible(true);
     }//GEN-LAST:event_zacasnaTemeljnicaIzbrisiButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void prekicIzbrisaTemeljniceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prekicIzbrisaTemeljniceActionPerformed
         potrdiIzbrisTemeljnice.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_prekicIzbrisaTemeljniceActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void potrditevIzbrisaTemeljniceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_potrditevIzbrisaTemeljniceActionPerformed
         getValueOfSelectedRow();
         //osnovna.test.setText(String.valueOf(stevilkaZacasneTemeljnice));
         izbrisiKnjizbe();
         izbrisiTemeljnico();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_potrditevIzbrisaTemeljniceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1216,8 +1216,6 @@ public class vnosPrometa extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField dodajTemeljnicaLetoFTF;
     private javax.swing.JFormattedTextField dodajTemeljnicaMesecFTF;
     private javax.swing.JTextField dodajTemeljnicaOpombaTXT;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1231,6 +1229,8 @@ public class vnosPrometa extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JDialog potrdiIzbrisTemeljnice;
+    private javax.swing.JButton potrditevIzbrisaTemeljnice;
+    private javax.swing.JButton prekicIzbrisaTemeljnice;
     private javax.swing.JButton zacasnaTemeljnicaIzbrisiButton;
     private javax.swing.JButton zacasnaTemeljnicaOdpriButton;
     // End of variables declaration//GEN-END:variables
