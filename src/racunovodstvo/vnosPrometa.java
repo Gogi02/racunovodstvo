@@ -149,10 +149,11 @@ public class vnosPrometa extends javax.swing.JFrame {
     public void preberiDodajSpremenljivke()
     {
         dodajNapaka=0;
-        dodajDatumZacasneTemeljniceRaw=(Date)dodajTemeljnicaDatumFTF.getValue();
+        
         String dodajDatumZacasneTemeljniceString=dodajTemeljnicaDatumFTF.getText();
         if(dodajDatumZacasneTemeljniceString!=null&&!dodajDatumZacasneTemeljniceString.isEmpty()) //preveri, če je vrednost datuma prazna
         {
+            dodajDatumZacasneTemeljniceRaw=(Date)dodajTemeljnicaDatumFTF.getValue();
             dodajDatumZacasneTemeljnice=dodajDatumZacasneTemeljniceRaw.getTime();
         }
         else
@@ -228,7 +229,7 @@ public class vnosPrometa extends javax.swing.JFrame {
         }
         else
         {
-            naslovNapake="Dodaj konto - napaka";
+            naslovNapake="Dodaj začasno temeljnico - napaka";
             kontniNacrt.prikazNapake(tekstNapake, naslovNapake);
         }        
     }
@@ -719,6 +720,11 @@ public class vnosPrometa extends javax.swing.JFrame {
             jLabel1.setText("Datum:");
 
             dodajTemeljnicaDatumFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+            dodajTemeljnicaDatumFTF.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    dodajTemeljnicaDatumFTFActionPerformed(evt);
+                }
+            });
             dodajTemeljnicaDatumFTF.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     dodajTemeljnicaDatumFTFKeyPressed(evt);
@@ -1174,6 +1180,10 @@ public class vnosPrometa extends javax.swing.JFrame {
         izbrisiKnjizbe();
         izbrisiTemeljnico();
     }//GEN-LAST:event_potrditevIzbrisaTemeljniceActionPerformed
+
+    private void dodajTemeljnicaDatumFTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajTemeljnicaDatumFTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dodajTemeljnicaDatumFTFActionPerformed
 
     /**
      * @param args the command line arguments

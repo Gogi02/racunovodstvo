@@ -30,9 +30,12 @@ import static racunovodstvo.vnosPrometa.stevilkaZacasneTemeljnice;
  */
 public class knjizenje extends javax.swing.JFrame {
     
-    int isciPartner, isciPartner2, isciVezniDokument, isciValuto, dovoljenjaSpremeniPartnerja, dovoljenjaDodajPartnerja, sifraPartnerja;
-    String naziv, priimek, ime, davcnaStevilka, sifraPartnerjaTemp, vezniDokumentTemp, valutaTemp;
-    
+    int isciPartner, obvezenVnos, isciPartner2, isciVezniDokument, isciValuto, dovoljenjaSpremeniPartnerja, dovoljenjaDodajPartnerja, sifraPartnerja, vezniDokument, dodajNapaka;
+    long datum;
+    String naziv, priimek, ime, davcnaStevilka, sifraPartnerjaTemp, vezniDokumentTemp, valutaTemp, konto, protikonto;
+    String sifraPartnerjaRaw, vezniDokumentRaw, STM, tekstNapake, naslovNapake, datumRawString, sifraValute, opisValute;
+    byte obvezenPartner, obvezenSTM, obvezenVezniDokument;
+    Date datumRaw;
     DefaultTableModel tm, tm3, tm4;
 
     /**
@@ -536,8 +539,254 @@ public class knjizenje extends javax.swing.JFrame {
     
     public void preberiSpremenljivkeDodajKnjizbo()
     {
+        dodajNapaka=0;
+        konto=dodajKnjizboKontoFTF.getText();
+        if(konto!=null&&!konto.isEmpty()) //preveri, če je vrednost datuma prazna
+        {
+            
+        }
+        else
+        {
+            dodajNapaka=1;            
+        }
         
-    }    
+        protikonto=dodajKnjizboProtikontoFTF.getText();
+        if(protikonto!=null&&!protikonto.isEmpty()) //preveri, če je vrednost datuma prazna
+        {
+            
+        }
+        else
+        {
+            dodajNapaka=2;            
+        }
+        
+        sifraPartnerjaRaw=dodajKnjizboPartnerFTF.getText();
+        obvezenPartner=obvezenVnos(2);
+        if(sifraPartnerjaRaw!=null&&!sifraPartnerjaRaw.isEmpty()) //preveri, če je vrednost datuma prazna
+        {
+            sifraPartnerja=((Number)dodajKnjizboPartnerFTF.getValue()).intValue();            
+            if (obvezenPartner==0)
+                    {
+                        dodajNapaka=3;
+                    }
+        }
+        else
+        {            
+            if (obvezenPartner==1)
+                    {
+                        dodajNapaka=4;
+                    }                        
+        }
+        
+        vezniDokumentRaw=dodajKnjizboVezniDokumentFTF.getText();
+        obvezenVezniDokument=obvezenVnos(3);
+        if(vezniDokumentRaw!=null&&!vezniDokumentRaw.isEmpty()) //preveri, če je vrednost datuma prazna
+        {
+            vezniDokument=((Number)dodajKnjizboVezniDokumentFTF.getValue()).intValue();
+            if (obvezenVezniDokument==0)
+                    {
+                        dodajNapaka=5;
+                    }
+        }
+        else
+        {            
+            if (obvezenVezniDokument==1)
+                    {
+                        dodajNapaka=6;
+                    }                        
+        }
+        
+        STM=dodajKnjizboSTMFTF.getText();
+        obvezenSTM=obvezenVnos(1);
+        if(STM!=null&&!STM.isEmpty()) //preveri, če je vrednost datuma prazna
+        {            
+            if (obvezenSTM==0)
+                    {
+                        dodajNapaka=7;
+                    }
+        }
+        else
+        {            
+            if (obvezenSTM==1)
+                    {
+                        dodajNapaka=8;
+                    }                        
+        }
+        
+        datumRawString=dodajKnjizboDatumFTF.getText();
+        if(datumRawString!=null&&!datumRawString.isEmpty()) //preveri, če je vrednost datuma prazna
+        {
+            datumRaw=(Date)dodajKnjizboDatumFTF.getValue();
+            datum=datumRaw.getTime();
+        }
+        else
+        {
+            dodajNapaka=9;            
+        }
+        
+        
+        switch (dodajNapaka)
+        {
+            case 1:
+                tekstNapake="Datum mora biti določen!";
+                break;
+            case 2:
+                tekstNapake="Mesec mora biti določen!";
+                break;
+            case 3:
+                tekstNapake="Leto mora biti določeno!";
+                break;
+        }
+        if(dodajNapaka==0)
+        {
+            //dodajZacasnoTemeljnico2();
+        }
+        else
+        {
+            naslovNapake="Dodaj knjižbo - napaka";
+            kontniNacrt.prikazNapake(tekstNapake, naslovNapake);
+        } 
+    }
+
+    public byte obvezenVnos(int obvezenVnos)
+    {
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        String [] aryNastavitve;
+        aryNastavitve=new String[3];
+        int i=0;
+        
+		try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+		{
+
+			String trenutnaVrstica;
+
+			while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo				
+                            aryNastavitve[i]=trenutnaVrstica;
+                            i++;                            
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+                
+                dburl = aryNastavitve[0];//spremenjivke iz tabele
+                dbuser = aryNastavitve[1];
+                dbpassword = aryNastavitve[2];                
+
+                try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            konto=dodajKnjizboKontoFTF.getText();
+            pst = con.prepareStatement("SELECT stm, partner,vezniDokument FROM kontniNacrt WHERE konto=?");
+            pst.setString(1, konto);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+               obvezenSTM = rs.getByte("stm");
+               obvezenPartner = rs.getByte("partner");
+               obvezenVezniDokument = rs.getByte("vezniDokument");
+            }            
+
+        } catch (SQLException ex) {
+           // Logger lgr = Logger.getLogger(Version.class.getName());
+            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                //Logger lgr = Logger.getLogger(Version.class.getName());
+                //lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        
+        switch(obvezenVnos)
+        {
+            case 1:
+                return obvezenSTM;
+            case 2:
+                return obvezenPartner;
+            case 3:
+                return obvezenVezniDokument;
+            default:
+                return 0;
+        }
+    
+    }
+    
+    public void izpisiTekstValute(String sifraValute)
+    {
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        String [] aryNastavitve;
+        aryNastavitve=new String[3];
+        int i=0;
+        
+		try (BufferedReader br = new BufferedReader(new FileReader("properties.txt")))//preberi nastavive iz datoteke
+		{
+
+			String trenutnaVrstica;
+
+			while ((trenutnaVrstica = br.readLine()) != null) { //preberi nastavitve v tabelo				
+                            aryNastavitve[i]=trenutnaVrstica;
+                            i++;                            
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+                
+                dburl = aryNastavitve[0];//spremenjivke iz tabele
+                dbuser = aryNastavitve[1];
+                dbpassword = aryNastavitve[2];                
+
+                try {
+            con = DriverManager.getConnection(dburl, dbuser, dbpassword);
+            konto=dodajKnjizboKontoFTF.getText();
+            pst = con.prepareStatement("SELECT opis FROM valute WHERE sifraValute=?");
+            pst.setString(1, sifraValute);
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+               opisValute = rs.getString("opis");
+               dadajValutaLabel.setText(opisValute);
+            }            
+
+        } catch (SQLException ex) {
+           // Logger lgr = Logger.getLogger(Version.class.getName());
+            //lgr.log(Level.SEVERE, ex.getMessage(), ex);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException ex) {
+                //Logger lgr = Logger.getLogger(Version.class.getName());
+                //lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -619,6 +868,7 @@ public class knjizenje extends javax.swing.JFrame {
         dodajKnjizboDebetVALFTF = new javax.swing.JFormattedTextField();
         jLabel26 = new javax.swing.JLabel();
         dodajKnjizboKreditVALFTF = new javax.swing.JFormattedTextField();
+        dadajValutaLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         stevilkaZacasneTemeljniceLabel2 = new javax.swing.JLabel();
@@ -859,6 +1109,12 @@ public class knjizenje extends javax.swing.JFrame {
                 }
             });
 
+            jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    jPanel1MouseClicked(evt);
+                }
+            });
+
             stevilkaZacasneTemeljniceLabel.setText("jLabel1");
 
             jLabel1.setText("Številka temeljnice:");
@@ -891,6 +1147,11 @@ public class knjizenje extends javax.swing.JFrame {
                 }
             });
 
+            try {
+                dodajKnjizboKontoFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
+            } catch (java.text.ParseException ex) {
+                ex.printStackTrace();
+            }
             dodajKnjizboKontoFTF.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     dodajKnjizboKontoFTFActionPerformed(evt);
@@ -902,6 +1163,11 @@ public class knjizenje extends javax.swing.JFrame {
                 }
             });
 
+            try {
+                dodajKnjizboProtikontoFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
+            } catch (java.text.ParseException ex) {
+                ex.printStackTrace();
+            }
             dodajKnjizboProtikontoFTF.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     dodajKnjizboProtikontoFTFKeyPressed(evt);
@@ -920,6 +1186,7 @@ public class knjizenje extends javax.swing.JFrame {
                 }
             });
 
+            dodajKnjizboVezniDokumentFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
             dodajKnjizboVezniDokumentFTF.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     dodajKnjizboVezniDokumentFTFKeyPressed(evt);
@@ -938,6 +1205,16 @@ public class knjizenje extends javax.swing.JFrame {
                 }
             });
 
+            dodajKnjizboValutaFTF.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    dodajKnjizboValutaFTFMouseClicked(evt);
+                }
+            });
+            dodajKnjizboValutaFTF.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    dodajKnjizboValutaFTFActionPerformed(evt);
+                }
+            });
             dodajKnjizboValutaFTF.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     dodajKnjizboValutaFTFKeyPressed(evt);
@@ -960,12 +1237,17 @@ public class knjizenje extends javax.swing.JFrame {
 
             jLabel15.setText("Tečaj:");
 
+            dodajKnjizboTecajFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.#############"))));
             dodajKnjizboTecajFTF.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyTyped(java.awt.event.KeyEvent evt) {
                     dodajKnjizboTecajFTFKeyTyped(evt);
                 }
+                public void keyPressed(java.awt.event.KeyEvent evt) {
+                    dodajKnjizboTecajFTFKeyPressed(evt);
+                }
             });
 
+            dodajKnjizboDebetFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
             dodajKnjizboDebetFTF.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     dodajKnjizboDebetFTFActionPerformed(evt);
@@ -981,8 +1263,16 @@ public class knjizenje extends javax.swing.JFrame {
 
             jLabel24.setText("Kredit:");
 
+            dodajKnjizboKreditFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
+            dodajKnjizboKreditFTF.addKeyListener(new java.awt.event.KeyAdapter() {
+                public void keyPressed(java.awt.event.KeyEvent evt) {
+                    dodajKnjizboKreditFTFKeyPressed(evt);
+                }
+            });
+
             jLabel25.setText("Debet VAL:");
 
+            dodajKnjizboDebetVALFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
             dodajKnjizboDebetVALFTF.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     dodajKnjizboDebetVALFTFKeyPressed(evt);
@@ -991,11 +1281,14 @@ public class knjizenje extends javax.swing.JFrame {
 
             jLabel26.setText("Kredit VAL:");
 
+            dodajKnjizboKreditVALFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
             dodajKnjizboKreditVALFTF.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     dodajKnjizboKreditVALFTFKeyPressed(evt);
                 }
             });
+
+            dadajValutaLabel.setText(" ");
 
             javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
             jPanel1.setLayout(jPanel1Layout);
@@ -1070,7 +1363,9 @@ public class knjizenje extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                             .addComponent(dodajKnjizboIsciValutoButton)
-                                            .addGap(0, 386, Short.MAX_VALUE))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(dadajValutaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGap(102, 102, 102))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                             .addGap(0, 0, Short.MAX_VALUE)
                                             .addComponent(dodajKnjizboButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -1092,11 +1387,12 @@ public class knjizenje extends javax.swing.JFrame {
                         .addComponent(jLabel26)
                         .addComponent(dodajKnjizboKreditVALFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(dodajKnjizboProtikontoFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel15)
-                        .addComponent(dodajKnjizboTecajFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(dodajKnjizboProtikontoFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(dodajKnjizboTecajFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGap(18, 18, 18)
@@ -1125,7 +1421,8 @@ public class knjizenje extends javax.swing.JFrame {
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel8)
                                         .addComponent(dodajKnjizboValutaFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(dodajKnjizboIsciValutoButton))
+                                        .addComponent(dodajKnjizboIsciValutoButton)
+                                        .addComponent(dadajValutaLabel))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(dodajKnjizboValutaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(68, 68, 68))
@@ -1404,7 +1701,9 @@ public class knjizenje extends javax.swing.JFrame {
     private void dodajKnjizboValutaFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajKnjizboValutaFTFKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            dodajKnjizboTecajFTF.requestFocusInWindow();
+            sifraValute=dodajKnjizboValutaFTF.getText();
+            izpisiTekstValute(sifraValute);
+            dodajKnjizboDebetVALFTF.requestFocusInWindow();
         }
     }//GEN-LAST:event_dodajKnjizboValutaFTFKeyPressed
 
@@ -1597,7 +1896,7 @@ public class knjizenje extends javax.swing.JFrame {
     private void dodajKnjizboTecajFTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajKnjizboTecajFTFKeyTyped
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            dodajKnjizboDebetVALFTF.requestFocusInWindow();
+            dodajKnjizboDebetFTF.requestFocusInWindow();
         }
     }//GEN-LAST:event_dodajKnjizboTecajFTFKeyTyped
 
@@ -1618,7 +1917,7 @@ public class knjizenje extends javax.swing.JFrame {
     private void dodajKnjizboKreditVALFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajKnjizboKreditVALFTFKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            dodajKnjizboDebetFTF.requestFocusInWindow();
+            dodajKnjizboTecajFTF.requestFocusInWindow();
         }
     }//GEN-LAST:event_dodajKnjizboKreditVALFTFKeyPressed
 
@@ -1731,6 +2030,34 @@ public class knjizenje extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_knjizenjeIsciValutoTableMouseClicked
 
+    private void dodajKnjizboValutaFTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKnjizboValutaFTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dodajKnjizboValutaFTFActionPerformed
+
+    private void dodajKnjizboValutaFTFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dodajKnjizboValutaFTFMouseClicked
+        sifraValute=dodajKnjizboValutaFTF.getText();
+        izpisiTekstValute(sifraValute);
+    }//GEN-LAST:event_dodajKnjizboValutaFTFMouseClicked
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        sifraValute=dodajKnjizboValutaFTF.getText();
+        izpisiTekstValute(sifraValute);
+    }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void dodajKnjizboTecajFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajKnjizboTecajFTFKeyPressed
+       if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            dodajKnjizboDebetFTF.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_dodajKnjizboTecajFTFKeyPressed
+
+    private void dodajKnjizboKreditFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajKnjizboKreditFTFKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            dodajKnjizboButton.requestFocusInWindow();
+        }
+    }//GEN-LAST:event_dodajKnjizboKreditFTFKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -1767,6 +2094,7 @@ public class knjizenje extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel dadajValutaLabel;
     private javax.swing.JButton dodajKnjizboButton;
     private javax.swing.JFormattedTextField dodajKnjizboDatumFTF;
     private javax.swing.JFormattedTextField dodajKnjizboDebetFTF;

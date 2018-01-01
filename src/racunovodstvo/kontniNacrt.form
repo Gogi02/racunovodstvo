@@ -51,7 +51,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="500" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jTabbedPane1" min="-2" pref="141" max="-2" attributes="0"/>
+              <Component id="jTabbedPane1" min="-2" pref="226" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -141,9 +141,10 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="dodajOpisTxt" min="-2" pref="310" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="dodajParnterCheck" min="-2" max="-2" attributes="0"/>
-                                          <Component id="dodajStmCheck" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="dodajPartnerCheck" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dodajStmCheck" max="32767" attributes="0"/>
+                                          <Component id="dodajVezniDokumentCheck" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -178,12 +179,16 @@
                           <Component id="dodajStmCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="dodajParrentTxt" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="dodajParnterCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="dodajParrentTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="dodajPartnerCheck" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="dodajVezniDokumentCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="22" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
@@ -238,7 +243,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dodajStmCheckActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="dodajParnterCheck">
+            <Component class="javax.swing.JCheckBox" name="dodajPartnerCheck">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Obvezen vnos partnerja"/>
               </Properties>
@@ -250,6 +255,11 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dodajButtActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="dodajVezniDokumentCheck">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Obvezen vnos veznega dokumenta"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -294,19 +304,25 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="partnerCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="68" max="32767" attributes="0"/>
+                              <EmptySpace pref="76" max="32767" attributes="0"/>
                               <Component id="potrdiButt" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="stmCheck" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="debetCheck" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="kreditCheck" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="stmCheck" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="debetCheck" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="kreditCheck" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="vezniDokumentCheck" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -333,9 +349,13 @@
                               <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="parrentTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="partnerCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="partnerCheck" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="vezniDokumentCheck" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="0" pref="25" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="45" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
@@ -397,6 +417,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Obvezen vnos partnerja"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="partnerCheckActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="potrdiButt">
               <Properties>
@@ -405,6 +428,11 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="potrdiButtActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="vezniDokumentCheck">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Obvezen vnos veznega dokumenta"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
