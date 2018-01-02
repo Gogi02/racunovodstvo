@@ -33,10 +33,12 @@ public class knjizenje extends javax.swing.JFrame {
     int isciPartner, obvezenVnos, isciPartner2, isciVezniDokument, isciValuto, dovoljenjaSpremeniPartnerja, dovoljenjaDodajPartnerja, sifraPartnerja, vezniDokument, dodajNapaka;
     long datum;
     String naziv, priimek, ime, davcnaStevilka, sifraPartnerjaTemp, vezniDokumentTemp, valutaTemp, konto, protikonto;
-    String sifraPartnerjaRaw, vezniDokumentRaw, STM, tekstNapake, naslovNapake, datumRawString, sifraValute, opisValute;
-    byte obvezenPartner, obvezenSTM, obvezenVezniDokument;
+    String sifraPartnerjaRaw, vezniDokumentRaw, STM, tekstNapake, naslovNapake, datumRawString, sifraValute, opisValute, valuta;
+    String debetVALRaw, kreditVALRaw, debetRaw, kreditRaw;
+    byte obvezenPartner, obvezenSTM, obvezenVezniDokument, obvezenDebet, obvezenKredit, debetTemp, kreditTemp;
     Date datumRaw;
     DefaultTableModel tm, tm3, tm4;
+    float debet, kredit, debetVAL, kreditVAL;
 
     /**
      * Creates new form knjizenje
@@ -551,7 +553,7 @@ public class knjizenje extends javax.swing.JFrame {
         }
         
         protikonto=dodajKnjizboProtikontoFTF.getText();
-        if(protikonto!=null&&!protikonto.isEmpty()) //preveri, če je vrednost datuma prazna
+        if(protikonto!=null&&!protikonto.isEmpty())
         {
             
         }
@@ -562,7 +564,7 @@ public class knjizenje extends javax.swing.JFrame {
         
         sifraPartnerjaRaw=dodajKnjizboPartnerFTF.getText();
         obvezenPartner=obvezenVnos(2);
-        if(sifraPartnerjaRaw!=null&&!sifraPartnerjaRaw.isEmpty()) //preveri, če je vrednost datuma prazna
+        if(sifraPartnerjaRaw!=null&&!sifraPartnerjaRaw.isEmpty())
         {
             sifraPartnerja=((Number)dodajKnjizboPartnerFTF.getValue()).intValue();            
             if (obvezenPartner==0)
@@ -598,7 +600,7 @@ public class knjizenje extends javax.swing.JFrame {
         
         STM=dodajKnjizboSTMFTF.getText();
         obvezenSTM=obvezenVnos(1);
-        if(STM!=null&&!STM.isEmpty()) //preveri, če je vrednost datuma prazna
+        if(STM!=null&&!STM.isEmpty()) 
         {            
             if (obvezenSTM==0)
                     {
@@ -624,17 +626,167 @@ public class knjizenje extends javax.swing.JFrame {
             dodajNapaka=9;            
         }
         
+        valuta=dodajKnjizboValutaFTF.getText();
+        if(valuta!=null&&!valuta.isEmpty())
+        {
+            
+        }
+        else
+        {
+            dodajNapaka=10;            
+        }
+        
+        debetVALRaw=dodajKnjizboDebetVALFTF.getText();        
+        obvezenDebet=obvezenVnos(4);
+        if(debetVALRaw!=null&&!debetVALRaw.isEmpty())
+        {
+           debetVAL=((Number)dodajKnjizboDebetVALFTF.getValue()).floatValue();
+           debetTemp=0;
+           debetTemp=1;
+            if (obvezenDebet==0)
+                    {
+                        dodajNapaka=11;
+                    }
+        }
+        else
+        {            
+            if (obvezenDebet==1)
+                    {
+                        dodajNapaka=12;
+                    }                        
+        }
+        
+        kreditVALRaw=dodajKnjizboKreditVALFTF.getText();        
+        obvezenKredit=obvezenVnos(5);
+        if(kreditVALRaw!=null&&!kreditVALRaw.isEmpty())
+        {
+           kreditVAL=((Number)dodajKnjizboKreditVALFTF.getValue()).floatValue();
+           kreditTemp=0;
+           kreditTemp=1;
+            if (obvezenKredit==0)
+                    {
+                        dodajNapaka=13;
+                    }
+        }
+        else
+        {            
+            if (obvezenKredit==1)
+                    {
+                        dodajNapaka=14;
+                    }                        
+        }
+        
+        if (debetTemp+kreditTemp>1)
+        {
+            dodajNapaka=19;
+        }
+        
+        debetRaw=dodajKnjizboDebetFTF.getText();        
+        obvezenDebet=obvezenVnos(4);
+        if(debetRaw!=null&&!debetRaw.isEmpty())
+        {
+           debet=((Number)dodajKnjizboDebetFTF.getValue()).floatValue();
+           debetTemp=0;
+           debetTemp=1;
+            if (obvezenDebet==0)
+                    {
+                        dodajNapaka=15;
+                    }
+        }
+        else
+        {            
+            if (obvezenDebet==1)
+                    {
+                        dodajNapaka=16;
+                    }                        
+        }
+        
+        kreditRaw=dodajKnjizboKreditFTF.getText();        
+        obvezenKredit=obvezenVnos(5);
+        if(kreditRaw!=null&&!kreditRaw.isEmpty())
+        {
+           kredit=((Number)dodajKnjizboKreditFTF.getValue()).floatValue();
+           kreditTemp=0;
+           kreditTemp=1;           
+           if (obvezenKredit==0)
+                    {
+                        dodajNapaka=17;
+                    }
+        }
+        else
+        {            
+            if (obvezenKredit==1)
+                    {
+                        dodajNapaka=18;
+                    }                        
+        }
+        
+        if (debetTemp+kreditTemp>1)
+        {
+            dodajNapaka=20;
+        }
         
         switch (dodajNapaka)
         {
             case 1:
-                tekstNapake="Datum mora biti določen!";
+                tekstNapake="Konto mora biti določen!";
                 break;
             case 2:
-                tekstNapake="Mesec mora biti določen!";
+                tekstNapake="Protikonto mora biti določen!";
                 break;
             case 3:
-                tekstNapake="Leto mora biti določeno!";
+                tekstNapake="Za ta konto partner ne sme biti določen!";
+                break;
+            case 4:
+                tekstNapake="Za ta konto mora biti določen partner!";
+                break;
+            case 5:
+                tekstNapake="Za ta konto ne sme biti določen vezni dokument!";
+                break;
+            case 6:
+                tekstNapake="Za ta konto mora biti določen vezni dokument!";
+                break;
+            case 7:
+                tekstNapake="Za ta konto ne sme biti določen STM!";
+                break;
+            case 8:
+                tekstNapake="Za ta konto mora biti določen STM!";
+                break;
+            case 9:
+                tekstNapake="Datum mora biti določen!";
+                break;
+            case 10:
+                tekstNapake="Valuta mora biti določena!";
+                break;
+            case 11:
+                tekstNapake="Za ta konto se ne sme knjižiti valutni debet!";
+                break;
+            case 12:
+                tekstNapake="Za ta konto mora bit določen valutni debet!";
+                break;
+            case 13:
+                tekstNapake="Za ta konto se ne sme knjižiti na valutni kredit!";
+                break;
+            case 14:
+                tekstNapake="Za ta konto mora biti določen valutni kredit!";
+                break;
+            case 15:
+                tekstNapake="Za ta konto se ne sme knjižiti na debet!";
+                break;
+            case 16:
+                tekstNapake="Za ta konto mora biti določen debet!";
+                break;
+            case 17:
+                tekstNapake="Za ta konto se ne sem knjižiti na kredit!";
+                break;
+            case 18:
+                tekstNapake="Za ta konto mora biti določen kredit!";
+                break;
+            case 19:
+                tekstNapake="Hkratna knjižba na valutni debet in valutni kredit ni dovoljena!";
+                break;
+            case 20:
+                tekstNapake="Hkratna knjižba na debet in kredit ni dovoljena!";
                 break;
         }
         if(dodajNapaka==0)
@@ -679,7 +831,7 @@ public class knjizenje extends javax.swing.JFrame {
                 try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);
             konto=dodajKnjizboKontoFTF.getText();
-            pst = con.prepareStatement("SELECT stm, partner,vezniDokument FROM kontniNacrt WHERE konto=?");
+            pst = con.prepareStatement("SELECT stm, partner, vezniDokument, debet, kredit FROM kontniNacrt WHERE konto=?");
             pst.setString(1, konto);
             rs = pst.executeQuery();
 
@@ -687,6 +839,8 @@ public class knjizenje extends javax.swing.JFrame {
                obvezenSTM = rs.getByte("stm");
                obvezenPartner = rs.getByte("partner");
                obvezenVezniDokument = rs.getByte("vezniDokument");
+               obvezenDebet=rs.getByte("debet");
+               obvezenKredit=rs.getByte("kredit");
             }            
 
         } catch (SQLException ex) {
@@ -719,6 +873,10 @@ public class knjizenje extends javax.swing.JFrame {
                 return obvezenPartner;
             case 3:
                 return obvezenVezniDokument;
+            case 4:
+                return obvezenDebet;
+            case 5:
+                return obvezenKredit;                
             default:
                 return 0;
         }
@@ -1703,6 +1861,10 @@ public class knjizenje extends javax.swing.JFrame {
         {
             sifraValute=dodajKnjizboValutaFTF.getText();
             izpisiTekstValute(sifraValute);
+            if(sifraValute.equals("978"))
+            {
+                dodajKnjizboTecajFTF.setText("1");
+            }
             dodajKnjizboDebetVALFTF.requestFocusInWindow();
         }
     }//GEN-LAST:event_dodajKnjizboValutaFTFKeyPressed
