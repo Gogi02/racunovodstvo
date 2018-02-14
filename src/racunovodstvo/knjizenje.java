@@ -338,7 +338,8 @@ public class knjizenje extends javax.swing.JFrame {
     
     public void populateVezniDokument()
     {
-        Connection con = null;
+
+       Connection con = null;
         PreparedStatement pst = null;
         ResultSet rs = null;
         
@@ -542,7 +543,7 @@ public class knjizenje extends javax.swing.JFrame {
     public void preberiSpremenljivkeDodajKnjizbo()
     {
         dodajNapaka=0;
-        konto=dodajKnjizboKontoFTF.getText();
+        konto=dodajKnjizboKontoTXT.getText();
         if(konto!=null&&!konto.isEmpty()) //preveri, če je vrednost datuma prazna
         {
             
@@ -619,6 +620,8 @@ public class knjizenje extends javax.swing.JFrame {
         if(datumRawString!=null&&!datumRawString.isEmpty()) //preveri, če je vrednost datuma prazna
         {
             datumRaw=(Date)dodajKnjizboDatumFTF.getValue();
+            
+            
             datum=datumRaw.getTime();
         }
         else
@@ -830,13 +833,14 @@ public class knjizenje extends javax.swing.JFrame {
 
                 try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-            konto=dodajKnjizboKontoFTF.getText();
+            konto=dodajKnjizboKontoTXT.getText();
             pst = con.prepareStatement("SELECT stm, partner, vezniDokument, debet, kredit FROM kontniNacrt WHERE konto=?");
             pst.setString(1, konto);
             rs = pst.executeQuery();
 
             if (rs.next()) {
                obvezenSTM = rs.getByte("stm");
+               osnovna.test.setText(String.valueOf(obvezenSTM));
                obvezenPartner = rs.getByte("partner");
                obvezenVezniDokument = rs.getByte("vezniDokument");
                obvezenDebet=rs.getByte("debet");
@@ -913,7 +917,7 @@ public class knjizenje extends javax.swing.JFrame {
 
                 try {
             con = DriverManager.getConnection(dburl, dbuser, dbpassword);
-            konto=dodajKnjizboKontoFTF.getText();
+            konto=dodajKnjizboKontoTXT.getText();
             pst = con.prepareStatement("SELECT opis FROM valute WHERE sifraValute=?");
             pst.setString(1, sifraValute);
             rs = pst.executeQuery();
@@ -1005,7 +1009,6 @@ public class knjizenje extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         dodajKnjizboIsciPartnerButton = new javax.swing.JButton();
         dodajKnjizboIsciVezniDokumentButton = new javax.swing.JButton();
-        dodajKnjizboKontoFTF = new javax.swing.JFormattedTextField();
         dodajKnjizboProtikontoFTF = new javax.swing.JFormattedTextField();
         dodajKnjizboPartnerFTF = new javax.swing.JFormattedTextField();
         dodajKnjizboPartnerLabel = new javax.swing.JLabel();
@@ -1027,6 +1030,7 @@ public class knjizenje extends javax.swing.JFrame {
         jLabel26 = new javax.swing.JLabel();
         dodajKnjizboKreditVALFTF = new javax.swing.JFormattedTextField();
         dadajValutaLabel = new javax.swing.JLabel();
+        dodajKnjizboKontoTXT = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         stevilkaZacasneTemeljniceLabel2 = new javax.swing.JLabel();
@@ -1306,22 +1310,6 @@ public class knjizenje extends javax.swing.JFrame {
             });
 
             try {
-                dodajKnjizboKontoFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
-            } catch (java.text.ParseException ex) {
-                ex.printStackTrace();
-            }
-            dodajKnjizboKontoFTF.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    dodajKnjizboKontoFTFActionPerformed(evt);
-                }
-            });
-            dodajKnjizboKontoFTF.addKeyListener(new java.awt.event.KeyAdapter() {
-                public void keyPressed(java.awt.event.KeyEvent evt) {
-                    dodajKnjizboKontoFTFKeyPressed(evt);
-                }
-            });
-
-            try {
                 dodajKnjizboProtikontoFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
             } catch (java.text.ParseException ex) {
                 ex.printStackTrace();
@@ -1357,6 +1345,12 @@ public class knjizenje extends javax.swing.JFrame {
                 }
             });
 
+            dodajKnjizboDatumFTF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("M/d/yyyy"))));
+            dodajKnjizboDatumFTF.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    dodajKnjizboDatumFTFActionPerformed(evt);
+                }
+            });
             dodajKnjizboDatumFTF.addKeyListener(new java.awt.event.KeyAdapter() {
                 public void keyPressed(java.awt.event.KeyEvent evt) {
                     dodajKnjizboDatumFTFKeyPressed(evt);
@@ -1469,20 +1463,44 @@ public class knjizenje extends javax.swing.JFrame {
                             .addComponent(stevilkaZacasneTemeljniceLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(0, 0, Short.MAX_VALUE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(dodajKnjizboValutaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(dodajKnjizboDatumFTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(dodajKnjizboSTMFTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                                                    .addComponent(dodajKnjizboVezniDokumentFTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(dodajKnjizboIsciVezniDokumentButton))))
+                                    .addGap(0, 0, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(dodajKnjizboValutaFTF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(dodajKnjizboIsciValutoButton)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(dadajValutaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGap(102, 102, 102))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                            .addGap(0, 0, Short.MAX_VALUE)
+                                            .addComponent(dodajKnjizboButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(dodajKnjizboPartnerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGap(14, 14, 14))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(dodajKnjizboKontoTXT, javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(dodajKnjizboPartnerFTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                                                .addComponent(dodajKnjizboProtikontoFTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                                .addComponent(dodajKnjizboKontoFTF, javax.swing.GroupLayout.Alignment.LEADING))
+                                                .addComponent(dodajKnjizboProtikontoFTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(dodajKnjizboIsciPartnerButton)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(dodajKnjizboPartnerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addGap(14, 14, 14)))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)))
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jLabel23)
                                         .addComponent(jLabel15)
@@ -1502,31 +1520,7 @@ public class knjizenje extends javax.swing.JFrame {
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                                             .addComponent(jLabel24)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(dodajKnjizboKreditFTF, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(dodajKnjizboValutaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(dodajKnjizboDatumFTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                    .addComponent(dodajKnjizboSTMFTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                                                    .addComponent(dodajKnjizboVezniDokumentFTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(dodajKnjizboIsciVezniDokumentButton))))
-                                    .addGap(0, 0, Short.MAX_VALUE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(dodajKnjizboValutaFTF, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(dodajKnjizboIsciValutoButton)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(dadajValutaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addGap(102, 102, 102))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                            .addGap(0, 0, Short.MAX_VALUE)
-                                            .addComponent(dodajKnjizboButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(dodajKnjizboKreditFTF, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addContainerGap())))
             );
             jPanel1Layout.setVerticalGroup(
@@ -1539,11 +1533,11 @@ public class knjizenje extends javax.swing.JFrame {
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
-                        .addComponent(dodajKnjizboKontoFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel25)
                         .addComponent(dodajKnjizboDebetVALFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel26)
-                        .addComponent(dodajKnjizboKreditVALFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(dodajKnjizboKreditVALFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dodajKnjizboKontoTXT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -1814,13 +1808,6 @@ public class knjizenje extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_dodajKnjizboPartnerFTFActionPerformed
 
-    private void dodajKnjizboKontoFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajKnjizboKontoFTFKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
-        {
-            dodajKnjizboProtikontoFTF.requestFocusInWindow();
-        }
-    }//GEN-LAST:event_dodajKnjizboKontoFTFKeyPressed
-
     private void dodajKnjizboProtikontoFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dodajKnjizboProtikontoFTFKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
@@ -2011,10 +1998,6 @@ public class knjizenje extends javax.swing.JFrame {
     private void popraviKnjizboKontoFTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popraviKnjizboKontoFTFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_popraviKnjizboKontoFTFActionPerformed
-
-    private void dodajKnjizboKontoFTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKnjizboKontoFTFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_dodajKnjizboKontoFTFActionPerformed
 
     private void popraviKnjizboKontoFTFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_popraviKnjizboKontoFTFKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_ENTER)
@@ -2220,6 +2203,10 @@ public class knjizenje extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_dodajKnjizboKreditFTFKeyPressed
 
+    private void dodajKnjizboDatumFTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKnjizboDatumFTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dodajKnjizboDatumFTFActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2264,7 +2251,7 @@ public class knjizenje extends javax.swing.JFrame {
     private javax.swing.JButton dodajKnjizboIsciPartnerButton;
     private javax.swing.JButton dodajKnjizboIsciValutoButton;
     private javax.swing.JButton dodajKnjizboIsciVezniDokumentButton;
-    private javax.swing.JFormattedTextField dodajKnjizboKontoFTF;
+    private javax.swing.JTextField dodajKnjizboKontoTXT;
     private javax.swing.JFormattedTextField dodajKnjizboKreditFTF;
     private javax.swing.JFormattedTextField dodajKnjizboKreditVALFTF;
     private javax.swing.JFormattedTextField dodajKnjizboPartnerFTF;
